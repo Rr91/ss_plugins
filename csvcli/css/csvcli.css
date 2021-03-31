@@ -1,0 +1,84 @@
+#s-importexport-header {
+    padding-bottom: 0
+}
+
+#s-importexport-header > h1 + p {
+    margin: 0
+}
+
+#csvcli.show-submit .csvcli-save {
+    display: inline-block
+}
+
+#s-csvproduct-info .field:last-child {
+    display: none !important
+}
+
+#csvcli #s-csvproduct-submit {
+    display: none !important
+}
+
+#csvcli .fields > p, #csvcli .fields > h1 {
+    display: none !important
+}
+
+#csvcli .s-csv-settings {
+    padding-left: 20px;
+    margin-top: -1px;
+    border-top: 1px solid #ddd
+}
+
+#csvcli .upload-file-url {
+    display: inline-block;
+    border: 1px solid #9af71f;
+    padding: 1px 5px 2px 6px;
+    background: #d5ff9d;
+    cursor: pointer;
+
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    border-radius: 100px
+}
+
+#csvcli .csvcli-c {
+    margin: 0 0 40px
+}
+
+#csvcli span.csvcli-command {
+    display: inline-block;
+    padding: 10px 14px;
+    border: 1px solid gray;
+    font-size: 0.95em;
+    color: #333333;
+
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px
+}
+
+#csvcli.show-submit .csvcli-info {
+    display: block
+}
+
+#csvcli .path-to-file {
+    display: inline-block;
+    width: 470px;
+    margin-bottom: 20px;
+    font-size: .95em;
+    border: 1px solid gray;
+    font-size: 0.95em;
+    color: #333333;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding: 10px 15px;
+}
+
+/*
+#csvcli.show-submit .path-to-file {
+    display: inline-block
+}
+
+#csvcli.show-submit .csvcli-c {
+    display: block
+}*/

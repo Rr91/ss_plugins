@@ -1,0 +1,11 @@
+072c746398b86d9d8f3fc11f2ccb7b5f *img/brands.png
+2362195855f7ec421430244e018c6cd1 *lib/actions/shopBrandsPluginFrontendBrand.action.php
+78cf58deffe5d44dff265568ddf975df *lib/actions/shopBrandsPluginSettings.action.php
+ae5170f9f072425c647bcb44c2a552fd *lib/config/build.php
+1c3a3946594f662968969d25b02c9ac9 *lib/config/plugin.php
+34258bfd99e6cd126c81ea05a79d2fcd *lib/config/routing.php
+5719e73450faea2e75d95e286ec2c578 *lib/shopBrands.plugin.php
+cbdd6145218a579dc5fdb7f0f280838e *locale/en_US/LC_MESSAGES/shop_brands.po
+94fc8f07118747c4511d50174bcba094 *locale/ru_RU/LC_MESSAGES/shop_brands.mo
+560d53daf036f3782cf0f4f5cf435aaa *locale/ru_RU/LC_MESSAGES/shop_brands.po
+b66716f2949a0abea674a8fd91209f5a *templates/actions/settings/Settings.html

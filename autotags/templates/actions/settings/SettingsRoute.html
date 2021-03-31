@@ -1,0 +1,19 @@
+{foreach $engines as $engine}        
+    <div class="field-group">
+        <div class="field">
+            <div class="name">
+                <h3>{$engine->getName()}</h3>
+            </div>
+            <div class="value no-shift s-ibutton-checkbox">
+                {$type = $engine->getType()}
+                {$enabled = $engine->getAutotags($route_hash, 'enabled')}
+                <input type="hidden" name="meta_tags[{$type}][enabled]" value="0" />
+                <input class="enabled-engine-checkbox" type="checkbox" name="meta_tags[{$type}][enabled]" value="1"{if $enabled} checked="checked"{/if} />
+            </div>
+        </div>
+    </div>
+
+    <div class="field-group"{if !$enabled} style="display:none"{/if}>
+        {$engine->getHtmlSettingFields($route_hash)}
+    </div>
+{/foreach}

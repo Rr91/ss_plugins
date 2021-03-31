@@ -1,0 +1,703 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>{$settings.TITLE_PAGE|default:{$plugin_name}|escape} - к заказу № {$order.id_str|default:'1234567890'|replace:'#':' '|replace:'№':' '}</title>
+		<!--=======================================================================-->
+			{if $settings.DATE_FORM == '1'}
+				{$date_form = $order.datetime}
+			{elseif $settings.DATE_FORM == '2'}	
+				{if $order.paid_datetime > '0'}
+					{$date_form = $order.paid_datetime}
+				{else}		
+					{if $settings.DATE_FORM_DEF == '1'}
+						{$date_form = $order.datetime}
+					{else}
+						{$date_form = time()|wa_date:'date'}			
+					{/if}
+				{/if}
+			{else}
+				{$date_form = time()|wa_date:'date'}
+			{/if}
+		{if ($order.shipping > 0) && !empty($settings.SHIPPING)}{$count = count($order.items) + 1}{else}{$count = count($order.items)}{/if}
+		<!--=======================================================================-->
+		{$wa->css()}
+		<style type="text/css">
+		{literal}
+			{$settings.user_css|escape}
+			@media print {
+				*{-webkit-print-color-adjust:exact;}
+				@page{margin:.5cm;}
+				.no_print{display:none;}
+				.tables{width:100%;}
+				.book{position:relative;width:235mm;height:333mm;margin:0 auto;}
+				.book .rotate{-ms-transform:rotate(90deg);-moz-transform:rotate(90deg);-webkit-transform:rotate(90deg);transform:rotate(90deg);position:absolute;width:333mm;height:363mm;margin:-13mm -432px;}
+			}
+			@media screen {
+				.tables{width:100%;}
+				.book,.landscape{width:297mm;background:#FFF;border:1px #D3D3D3 solid;border-radius:5px;box-shadow:0 0 5px rgba(0,0,0,0.1);margin:40px auto auto;padding:.3cm;}
+				.frame_form{border-bottom:2px solid;padding-bottom:30px;}
+			}
+			body{font-family:Verdana,Arial,Helvetica,sans-serif;font-size:3.7mm;}
+			.orders-alert{position:fixed;z-index:100;width:210px;height:39px;text-align:center;top:0;line-height:2.6;left:0;right:0;background:#aaa;margin:0 auto;}
+			.invoice_menu,.invoice_menu_mass{position:fixed;z-index:99;background-color:#f5f5f5;-webkit-box-shadow:0 0 6px 0 rgba(50,50,50,0.58);-moz-box-shadow:0 0 6px 0 rgba(50,50,50,0.58);box-shadow:0 0 6px 0 rgba(50,50,50,0.58);width:97%;left:0;right:0;font-size:14px;top:0;margin:0 auto;padding:9px 10px;}
+			.frame_form{page-break-after:always;}
+			.button{cursor:pointer;}
+			table{margin:0 0 2px 0;}
+			td{font-size:7pt;font-weight:400;color:#000;line-height:7pt;}
+			thead th{font-size:.5em;border:1px solid #000;}
+			thead tr:nth-child(1) th{width:25px;line-height:1.1;}
+			thead tr:nth-child(2) th{font-weight:100;width:25px;}
+			thead tr:nth-child(2) th:nth-child(1){min-width:60%;width:60%;}
+			thead tr:nth-child(3) th{font-weight:100;line-height:1.1;border-width:2px 1px!important;}			
+			thead tr:nth-child(1) th:nth-child(8),
+			thead tr:nth-child(1) th:nth-child(9),
+			thead tr:nth-child(1) th:nth-child(11) {width: 80px;}
+			.microfont{font-size:.5em;color:#000;line-height:1.2;}
+			.smallfont{font-size:7pt;color:#000;line-height:1.2;}
+			.smallfont a{font-size:8pt;text-decoration:none;color:#3A76B1;}
+			.smallfont a:hover{text-decoration:underline;}
+			.list{margin-top:0;border:1px solid #B1B1B1;}
+			.list td{padding-left:5px;padding-right:5px;border-top:1px solid #B1B1B1;}
+			.list th{padding-left:5px;padding-right:5px;font-size:10pt;font-weight:700;color:#000;height:24px;background-color:#F0F0F0;}
+			.b_left{border-left:1px solid #000;}
+			.b_right{border-right:1px solid #000;}
+			.b_top{border-top:1px solid #000;}
+			.b_light_left{border-left:1px solid #CCC;}
+			.b_light_right{border-right:1px solid #CCC;}
+			.b_light_bottom{border-bottom:1px solid #CCC;}
+			.b_light_top{border-top:1px solid #CCC;}
+			.item_cell{width:10mm;height:4mm;text-align:center;}
+			.name_cell{height:4mm;padding-right:1mm;}
+			.namelabels tr:nth-child(1) td:nth-child(1) {font-size: 10pt;font-weight: 700;}
+			.namelabels tr:nth-child(2) td {font-weight: 700;}
+			.namelabels td {padding:1mm 3mm;}			
+			.mainTable td{font-size:7pt;color:#000;padding:1px;}
+			.boldborders,.boldborders td{border-width:2px 1px!important;}
+			.vert_align_bottom{vertical-align:bottom;}
+			.normalFont{font-weight:400!important;}
+			.rightAlign{text-align:right!important;}
+			.leftAlign{text-align:left!important;}
+			.centerAlign{text-align:center!important;}
+			.comment{font-size:5pt!important;text-align:center;}
+			.separator{font-size:1pt!important;height:5px;}
+			.text{width:100%;max-width:740px;}
+			.edit_text{min-height:15px;height:15px;padding:0 3px;}
+			.edit_text:hover,.edit_text:focus{background:#B4EEBB!important;color:#000!important;}
+			.underlined,.b_bottom{border-bottom:1px solid #000;}
+			.totals td{font-weight:700;}
+			.inline_block{display:inline-block;}
+			.faximile_src,.stamp_src{cursor:alias;position:absolute;}
+		{/literal}
+			.faximile_src { 
+				width:{$settings.faximile_width|default:'40'|escape}mm; 
+				height:{$settings.faximile_height|default:'40'|escape}mm;
+				left: {$settings.faximile_x|default:'0'|escape}px; 
+				bottom: {$settings.faximile_y|default:'-40'|escape}px;
+			}
+			.stamp_src { 
+				width:{$settings.stamp_width|default:'30'|escape}mm; 
+				height:{$settings.stamp_height|default:'30'|escape}mm;
+				left: {$settings.stamp_x|default:'1'|escape}px; 
+				bottom: {$settings.stamp_y|default:'-10'|escape}px;
+			}
+		</style>
+		<script type="text/javascript" src="{$wa_url}wa-content/js/jquery/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-ui/jquery-ui.custom.min.js"></script>
+	</head>
+	<body{if ($settings.SPEED_PRINT)} onload="window.print();"{/if}/>
+		<div class="invoice_menu no_print">
+			<span class="button green" onclick="window.print();">[`PRINT`]</span>
+			<a href="?action=plugins#/{$plugin_id}" class="translate" style="float: right;" target="_blank">[`Settnings plugin`]</a>
+		</div>
+		<div class="{if ($settings.PRINT_FORMAT) && $count < 22}book{else}landscape{/if}">
+			<div class="rotate tables">
+				<table cellpadding="0" cellspacing="0" border="0" width="100%">
+					<tr>
+						<td class="microfont">
+							<div class="rightAlign">Унифицированная форма № Торг-12<br/>Утверждена Постановлением Госкомстата России от 25.12.1998 г. за №132</div>
+						</td>
+					</tr>
+				</table>
+				<table cellpadding="0" cellspacing="0" border="0" width="100%">
+					<tr>
+						<td valign="top" width="90%">
+							<table cellpadding="0" cellspacing="0" border="0" width="100%" class="mainTable">
+								<tr>
+									<td class="underlined edit_text leftAlign" contenteditable="true">
+										{if $COMPANY_NAME|escape}{$COMPANY_NAME|escape}{/if}
+										{if $COMPANY_INN},&nbsp;ИНН: {$COMPANY_INN|escape}{/if}
+										{if $COMPANY_ADDRESS},&nbsp;{$COMPANY_ADDRESS|escape}{/if}
+										{if $COMPANY_PHONE}тел.: {$COMPANY_PHONE|escape}{/if}
+										{if $COMPANY_ADDRESS_EMAIL},&nbsp;{$COMPANY_ADDRESS_EMAIL|escape}{/if}
+										{if $COMPANY_DOP2},&nbsp;{$COMPANY_DOP2|escape}{/if}
+									</td>
+								</tr>
+								<tr>
+									<td class="underlined edit_text leftAlign" contenteditable="true">
+										{if $COMPANY_BANK_NUMBER}р/счет: {$COMPANY_BANK_NUMBER|escape}{/if}
+										{if $COMPANY_BANK_NAME},&nbsp;в банке: {$COMPANY_BANK_NAME|escape}{/if}
+										{if $COMPANY_KORR},&nbsp;кор/счет: {$COMPANY_KORR|escape}{/if}
+										{if $COMPANY_KPP},&nbsp;КПП: {$COMPANY_KPP|escape}{/if}
+										{if $COMPANY_BIK},&nbsp;БИК: {$COMPANY_BIK|escape}{/if}
+										{if $COMPANY_DOP3},&nbsp;{$COMPANY_DOP3|escape}{/if}
+									</td>
+								</tr>
+								<tr>
+									<td class="smallfont comment" align="center" style="line-height: 0.5;">грузоотправитель, адрес, номер телефона, банковские реквизиты</td>
+								</tr>
+								<tr>
+									<td class="underlined edit_text leftAlign" style="height: 9px;" contenteditable="true">
+										{if $COMPANY_DOP1}{$COMPANY_DOP1|escape}{/if}
+									</td>
+								</tr>
+								<tr>
+									<td class="smallfont comment" style="line-height: 0.5;" align="center">структурное подразделение</td>
+								</tr>
+							</table>
+							<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin: 0 0 4px 0;">
+								<tr>
+									<td class="smallfont name_cell">Грузополучатель</td>										
+									<td width="100%" class="smallfont underlined min_height edit_text" contenteditable="true">
+										{if !$settings.copy_contact_fields}
+											{$company = $order->contact_company}
+											{$company = ifempty($company,$order.contact_name)}
+											{$company|escape}
+											{if $order.shipping_address.street}
+												{if $order.shipping_address.region_name},&nbsp;{$order.shipping_address.region_name|escape}{/if}					
+												{if $order.shipping_address.city},&nbsp;{$order.shipping_address.city|escape}{/if}
+												{if $order.shipping_address.zip},&nbsp;{$order.shipping_address.zip|escape}{/if}
+												{if $order.shipping_address.street},&nbsp;{$order.shipping_address.street|escape}{/if}
+											{else}								
+												{if $order.billing_address.region_name},&nbsp;{$order.billing_address.region_name|escape}{/if}
+												{if $order.billing_address.city},&nbsp;{$order.billing_address.city|escape}{/if}
+												{if $order.billing_address.zip},&nbsp;{$order.billing_address.zip|escape}{/if}
+												{if $order.billing_address.street},&nbsp;{$order.billing_address.street|escape}{/if}
+											{/if}
+										{else}
+											{$buyer.company|escape} 
+											{$buyer.address|escape}
+											{$buyer.inn|escape} 
+											{$buyer.kpp|escape}
+											{$buyer.bik|escape} 
+											{$buyer.rs|escape} 
+											{$buyer.bank|escape} 
+											{$buyer.ks|escape}
+										{/if}
+										{if $buyer.phone},&nbsp;{$buyer.phone|escape}{/if}
+										{$buyer.BUYER_DOP1|escape} 
+										{$buyer.BUYER_DOP2|escape}
+									</td>
+								</tr>
+								<tr>
+									<td class="smallfont name_cell">Поставщик</td>
+									<td width="100%" class="smallfont underlined edit_text min_height" contenteditable="true">
+										{if $COMPANY_NAME|escape}{$COMPANY_NAME|escape}{/if}
+										{if $COMPANY_INN},&nbsp;ИНН: {$COMPANY_INN|escape}{/if}
+										{if $COMPANY_ADDRESS},&nbsp;{$COMPANY_ADDRESS|escape}{/if}
+										{if $COMPANY_PHONE}тел.: {$COMPANY_PHONE|escape}{/if}
+										{if $COMPANY_ADDRESS_EMAIL},&nbsp;{$COMPANY_ADDRESS_EMAIL|escape}{/if}
+										{if $COMPANY_BANK_NUMBER},&nbsp;р/счет: {$COMPANY_BANK_NUMBER|escape}{/if}
+										{if $COMPANY_BANK_NAME},&nbsp;в банке: {$COMPANY_BANK_NAME|escape}{/if}
+										{if $COMPANY_KORR},&nbsp;кор/счет: {$COMPANY_KORR|escape}{/if}
+										{if $COMPANY_KPP},&nbsp;КПП: {$COMPANY_KPP|escape}{/if}
+										{if $COMPANY_BIK},&nbsp;БИК: {$COMPANY_BIK|escape}{/if}
+										{if $COMPANY_DOP1},&nbsp;{$COMPANY_DOP1|escape}{/if}
+										{if $COMPANY_DOP2},&nbsp;{$COMPANY_DOP2|escape}{/if}
+									</td>
+								</tr>
+								<tr>
+									<td class="smallfont name_cell">Плательщик</td>
+									<td width="100%" class="smallfont underlined edit_text min_height" contenteditable="true">
+										{$buyer.company|escape} 
+										{$buyer.address|escape}
+										{$buyer.inn|escape} 
+										{$buyer.kpp|escape}
+										{$buyer.bik|escape} 
+										{$buyer.rs|escape} 
+										{$buyer.bank|escape} 
+										{$buyer.ks|escape}
+										{if $buyer.phone},&nbsp;{$buyer.phone|escape}{/if}
+										{$buyer.BUYER_DOP3|escape} 
+										{$buyer.BUYER_DOP4|escape}
+									</td>
+								</tr>
+								<tr>
+									<td class="smallfont name_cell">Основание</td>
+									<td width="100%" class="smallfont underlined edit_text min_height" contenteditable="true">По заказу {$order.id_str|default:'###'} от {if $order.datetime}{$order.datetime|date_format:'d.m.Y'}{else}'%datetime%{/if} г.</td>
+								</tr>
+							</table>
+							<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin: 0 0 4px 0;">
+								<tr>
+									<td align="center">
+										<table cellpadding="0" cellspacing="0" border="0" class="namelabels">
+											<tr>
+												<td rowspan="2" valign="bottom">ТОВАРНАЯ НАКЛАДНАЯ&nbsp;</td>
+												<td class="smallfont b_top b_left b_right" align="center">Номер<br>документа</td>
+												<td class="smallfont b_top b_right" align="center">Дата<br>составления </td>
+											</tr>
+											<tr>
+												<td class="smallfont b_top b_left b_bottom b_right boldborders edit_text" align="center" contenteditable="true">{$order.id_str|default:"###"}</td>
+												<td class="smallfont b_top b_left b_bottom b_right boldborders edit_text" align="center" contenteditable="true">{$date_form|date_format:'d.m.Y'}</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td valign="top" align="right">
+							<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td colspan="2" class="smallfont">&nbsp;</td>
+									<td class="item_cell b_left b_bottom b_top b_right smallfont" align="center">Код</td>
+								</tr>
+								<tr>
+									<td class="smallfont name_cell nowrap" colspan="2" align="right">Форма по ОКУД</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" contenteditable="true" align="center">0330212</td>
+								</tr>
+								<tr>
+									<td class="smallfont name_cell nowrap" colspan="2" align="right">по ОКПО</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" contenteditable="true" align="center">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="smallfont name_cell nowrap" colspan="2" align="right">по ОКПО</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" contenteditable="true" align="center">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="smallfont name_cell nowrap" colspan="2" align="right">по ОКПО</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" contenteditable="true" align="center">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="smallfont name_cell nowrap" colspan="2" align="right">по ОКПО</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" contenteditable="true" align="center">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="smallfont">&nbsp;</td>
+									<td class="smallfont name_cell b_bottom nowrap" align="right">по ОКПО</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" contenteditable="true" align="center">&nbsp;</td>
+								</tr>
+								<tr>
+									<td rowspan="2">&nbsp;</td>
+									<td class="name_cell item_cell b_left b_bottom smallfont">номер</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" align="center" contenteditable="true">{if $settings.LEFT_DATA}{$order.id_str|default:"&nbsp;"}{/if}</td>
+								</tr>
+								<tr>
+									<td class="name_cell item_cell b_left b_bottom smallfont">дата</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" align="center" contenteditable="true">{if $settings.LEFT_DATA}{$date_form|date_format:'d.m.Y'}{/if}</td>
+								</tr>
+								<tr>
+									<td class="smallfont name_cell nowrap" rowspan="2" valign="top" align="right">Транспортная<br/>накладная</td>
+									<td class="name_cell item_cell b_left b_bottom smallfont">номер</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" contenteditable="true">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="name_cell item_cell b_left b_bottom smallfont">дата</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" contenteditable="true">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="smallfont name_cell nowrap" colspan="2" align="right">Вид операции</td>
+									<td class="item_cell b_left b_bottom b_right smallfont edit_text" contenteditable="true" align="center">&nbsp;</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable">
+					<thead>
+						<tr>
+							<th rowspan="2" class="nowrap">№<br>п/п</th>
+							<th colspan="2">Товар</th>
+							<th colspan="2">Ед. изм.</th>
+							<th rowspan="2">Вид<br>упа-<br>ков-<br>ки</th>
+							<th colspan="2">Кол-во</th>
+							<th rowspan="2">Масса<br>брутто</th>
+							<th rowspan="2">Кол-во<br>(масса<br>нетто)</th>
+							<th rowspan="2">Цена, руб.<br>коп.</th>
+							<th rowspan="2">Сумма без<br>учета НДС<br>руб. коп.</th>
+							<th colspan="2">НДС</th>
+							<th rowspan="2">Сумма с<br>учетом НДС<br>руб. коп.</th>
+						</tr>
+						<tr>
+							<th>наименование, характеристика,<br>сорт, артикул товара</th>
+							<th>Код</th>
+							<th>Наиме-<br>нование</th>
+							<th>код<br>по<br>ОКЕИ</th>
+							<th>в од-<br>ном<br>месте</th>
+							<th>мест<br>штук</th>
+							<th>ставка<br>%</th>
+							<th>сумма руб.<br>коп.</th>
+						</tr>
+						<tr>
+							{section name=th loop=15}										
+							<th>{$smarty.section.th.iteration}</th>
+							{/section}
+						</tr>
+					</thead>
+					<tbody>
+					{$item_quantity = 0}
+					{$total_totals=0.0}
+					{$total_tax=0.0}
+					{$total_taxs=0.0}
+					{$total_amount=0.0}	
+					{$total_amounts=0.0}
+					{foreach $items as $id => $item}
+					{if $item.tax_included}
+						{$total_taxs=$total_taxs+$item.tax}
+					{/if}
+					{$total_amounts=$total_amounts+$item.total}
+					{$total_totals=$total_totals+$item.total}
+					{if $item.tax_included}
+						{$total_tax=$total_tax+$item.tax}
+					{/if}
+					{$total_amount=$total_amount+$item.total}
+					{$item_quantity = $item_quantity + ($item.quantity)}
+					{if ($item.type == 'product')}					
+						<tr>
+							<td class="b_left b_bottom centerAlign">{$id+1}</td>
+							<td class="b_left b_bottom leftAlign edit_text" contenteditable="true">{$item.name|default:"&nbsp;"}</td>
+							<td class="b_left b_bottom nowrap edit_text" contenteditable="true">{if $item.sku && $settings.SKU}{$item.sku}{/if}</td>
+							<td class="b_left b_bottom centerAlign">шт.</td>
+							<td class="b_left b_bottom centerAlign">796</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom rightAlign">&nbsp;</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom rightAlign nowrap centerAlign edit_text" contenteditable="true">{$item.quantity|string_format:"%0.2f"}</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{$item.price|wa_format_amount:$order.currency:'%2'}</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{if $item.tax_included && empty($settings.NDS)}{($item.total-$item.tax)|default:0|wa_format_amount:$order.currency:'%2'}{else}{$item.total|default:0|wa_format_amount:$order.currency:'%2'}{/if}</td>
+							<td class="b_left b_bottom nowrap centerAlign edit_text" contenteditable="true">{if empty($settings.NDS)}{$item.tax_percent|string_format:"%d"}{else}<span style="font-size: 5pt;">Без НДС</span>{/if}</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{if empty($settings.NDS)}{$item.tax|default:0|wa_format_amount:$order.currency:'%2'}{else}0,00{/if}</td>
+							<td class="b_left b_bottom b_right rightAlign nowrap edit_text" contenteditable="true">{$item.total|wa_format_amount:$order.currency:'%2'}</td>
+						</tr>
+					{else if ($item.type == 'service') && $settings.services}
+						<tr>
+							<td class="b_left b_bottom centerAlign">{$id+1}</td>
+							<td class="b_left b_bottom leftAlign edit_text" contenteditable="true">{$item.name|default:"&nbsp;"}</td>
+							<td class="b_left b_bottom nowrap edit_text" contenteditable="true">{if $item.sku && $settings.SKU}{$item.sku}{/if}</td>
+							<td class="b_left b_bottom centerAlign">шт.</td>
+							<td class="b_left b_bottom centerAlign">796</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom rightAlign">&nbsp;</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom rightAlign nowrap centerAlign edit_text" contenteditable="true">{$item.quantity|string_format:"%0.2f"}</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{$item.price|wa_format_amount:$order.currency:'%2'}</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{if $item.tax_included && empty($settings.NDS)}{($item.total-$item.tax)|default:0|wa_format_amount:$order.currency:'%2'}{else}{$item.total|default:0|wa_format_amount:$order.currency:'%2'}{/if}</td>
+							<td class="b_left b_bottom nowrap centerAlign edit_text" contenteditable="true">{if empty($settings.NDS)}{$item.tax_percent|string_format:"%d"}{else}<span style="font-size: 5pt;">Без НДС</span>{/if}</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{if empty($settings.NDS)}{$item.tax|default:0|wa_format_amount:$order.currency:'%2'}{else}0,00{/if}</td>
+							<td class="b_left b_bottom b_right rightAlign nowrap edit_text" contenteditable="true">{$item.total|wa_format_amount:$order.currency:'%2'}</td>
+						</tr>
+					{/if}					
+					{/foreach}
+					{if ($order.shipping > 0) && ($settings.SHIPPING == 1)}
+						<tr>
+							<td class="b_left b_bottom centerAlign">{$id+2}</td>
+							<td class="b_left b_bottom leftAlign edit_text" contenteditable="true">Доставка ({$order.shipping_name|escape})</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom centerAlign">шт.</td>
+							<td class="b_left b_bottom centerAlign">796</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom rightAlign">&nbsp;</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom rightAlign nowrap centerAlign edit_text" contenteditable="true">{"1"|string_format:"%0.2f"}</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{$order.shipping|wa_format_amount:$order.currency:'%2'}</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{$order.shipping|wa_format_amount:$order.currency:'%2'}</td>
+							<td class="b_left b_bottom nowrap centerAlign edit_text" contenteditable="true">{if empty($settings.NDS)}{0|string_format:"%d"}{else}<span style="font-size: 5pt;">Без НДС</span>{/if}</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{0|wa_format_amount:$order.currency:'%2'}</td>
+							<td class="b_left b_bottom b_right rightAlign nowrap edit_text" contenteditable="true">{$order.shipping|wa_format_amount:$order.currency:'%2'}</td>
+						</tr>
+					{/if}									
+					</tbody>
+					<tfoot>
+						{$total_quantity = $order.total_quantity}		
+						<tr>
+							<td colspan="7" align="right" class="rightAlign">Итого</td>
+							<td class="centerAlign b_left b_bottom">X</td>
+							<td class="centerAlign b_left b_bottom">X</td>
+							<td class="b_left b_bottom rightAlign nowrap centerAlign edit_text" contenteditable="true">{if ($order.shipping > 0) && ($settings.SHIPPING == 1)}{($item_quantity + 1)|string_format:"%0.2f"}{else}{$item_quantity|string_format:"%0.2f"}{/if}</td>
+							<td class="centerAlign b_left b_bottom">X</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">
+								{if ($order.shipping > 0) && ($settings.SHIPPING == 1)}
+									{if empty($settings.NDS)}
+										{(($total_totals + $order.shipping)-$total_tax)|wa_format_amount:$order.currency:'%2'}
+									{else}
+										{($total_totals + $order.shipping)|wa_format_amount:$order.currency:'%2'}
+									{/if}
+								{else}
+									{if empty($settings.NDS)}
+										{($total_totals-$total_tax)|wa_format_amount:$order.currency:'%2'}
+									{else}
+										{$total_totals|wa_format_amount:$order.currency:'%2'}
+									{/if}
+								{/if}
+							</td>
+							<td class="centerAlign b_left b_bottom">X</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{if empty($settings.NDS)}{$total_tax|wa_format_amount:$order.currency:'%2'}{else}0,00{/if}</td>
+							<td class="b_left b_bottom b_right rightAlign nowrap edit_text" contenteditable="true">{if ($order.shipping > 0) && ($settings.SHIPPING == 1)}{($total_amount + $order.shipping)|wa_format_amount:$order.currency:'%2'}{else}{$total_amount|wa_format_amount:$order.currency:'%2'}{/if}</td>
+						</tr>
+						<tr class="totals">
+							<td colspan="7" align="right" class="rightAlign normalFont">&nbsp;</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom">&nbsp;</td>
+							<td class="b_left b_bottom rightAlign nowrap centerAlign edit_text" contenteditable="true">{if ($order.shipping > 0) && ($settings.SHIPPING == 1)}{($total_quantity + 1)|string_format:"%0.2f"}{else}{$total_quantity|string_format:"%0.2f"}{/if}</td>
+							<td class="centerAlign b_left b_bottom normalFont">X</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">
+								{if ($order.shipping > 0) && ($settings.SHIPPING == 1)}
+									{if empty($settings.NDS)}
+										{(($total_totals + $order.shipping)-$total_tax)|wa_format_amount:$order.currency:'%2'}
+									{else}
+										{($total_totals + $order.shipping)|wa_format_amount:$order.currency:'%2'}
+									{/if}
+								{else}
+									{if empty($settings.NDS)}
+										{($total_totals-$total_tax)|wa_format_amount:$order.currency:'%2'}
+									{else}
+										{$total_totals|wa_format_amount:$order.currency:'%2'}
+									{/if}
+								{/if}
+							</td>
+							<td class="centerAlign b_left b_bottom normalFont">X</td>
+							<td class="b_left b_bottom rightAlign nowrap edit_text" contenteditable="true">{if empty($settings.NDS)}{$total_taxs|wa_format_amount:$order.currency:'%2'}{else}0,00{/if}</td>
+							<td class="b_left b_bottom b_right rightAlign nowrap edit_text" contenteditable="true">{if ($order.shipping > 0) && ($settings.SHIPPING == 1)}{($total_amounts + $order.shipping)|wa_format_amount:$order.currency:'%2'}{else}{$total_amounts|wa_format_amount:$order.currency:'%2'}{/if}</td>
+						</tr>
+						<!------------------------------------------------------------------------------------------------------------->
+						<tr>
+							<td colspan="15">
+								<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable">
+									<tr>
+										<td class="rightAlign nowrap">Товарная накладная имеет приложение на</td>
+										<td style="width: 40%" class="underlined edit_text font_weight_bold leftAlign" contenteditable="true">&nbsp;</td>
+										<td class="nowrap">и содержит</td>
+										<td style="width: 40%" class="underlined"><span class="edit_text font_weight_bold" contenteditable="true">{if ($order.shipping > 0) && ($settings.SHIPPING == 1)}{waCurrency::getIntInWords($count + 1)}{else}{waCurrency::getIntInWords($count)}{/if}</span></td>
+										<td class="nowrap">порядковых номеров записей</td>
+									</tr>
+									<tr>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td class="smallfont comment">прописью</td>
+										<td>&nbsp;</td>
+									</tr>
+								</table>
+								<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable">
+									<tr>
+										<td style="width: 20mm" class="rightAlign nowrap">Всего мест</td>
+										<td style="width: 80mm" class="underlined edit_text font_weight_bold leftAlign" contenteditable="true">&nbsp;</td>
+										<td>&nbsp;</td>
+										<td class="rightAlign nowrap">Масса груза (нетто)</td>
+										<td style="width: 60mm" class="underlined edit_text font_weight_bold" contenteditable="true">&nbsp;</td>
+										<td class="b_top b_left b_bottom b_right edit_text font_weight_bold boldborders" style="width: 20mm;" contenteditable="true">&nbsp;</td>
+										<td class="leftAlign" style="width: 5mm">кг</td>
+									</tr>
+									<tr>
+										<td>&nbsp;</td>
+										<td class="comment">прописью</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td class="comment">прописью</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<td style="width: 20mm" class="rightAlign nowrap">Приложение (паспорта, сертификаты, и т.п.)</td>
+										<td style="width: 80mm" class="underlined nowrap edit_text font_weight_bold leftAlign" contenteditable="true">&nbsp;</td>
+										<td class="leftAlign nowrap">листах</td>
+										<td class="rightAlign nowrap">Масса груза (брутто)</td>
+										<td style="width: 60mm" class="underlined edit_text font_weight_bold" contenteditable="true">&nbsp;</td>
+										<td class="b_top b_left b_bottom b_right edit_text font_weight_bold boldborders" style="width: 20mm;" contenteditable="true">&nbsp;</td>
+										<td class="leftAlign" style="width: 5mm">кг</td>
+									</tr>
+									<tr>
+										<td>&nbsp;</td>
+										<td class="comment">прописью</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td class="comment">прописью</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+								</table>
+								<table border=0 cellpadding=0 cellspacing=0 width="100%">
+									<tr>
+										<td width="50%" style="border-right: 1px solid;padding-right: 8px;">
+											<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable" style="margin: 0 0 5px 0">
+												<tr>
+													<td class="leftAlign" style="width: 130px;">Всего отпущено на сумму</td>
+													<td class="underlined leftAlign edit_text font_weight_bold" contenteditable="true">
+														{if ($order.shipping > 0) && ($settings.SHIPPING == 1)}
+															{waCurrency::format('%.W{n0} %.2{f0}', ($total_amount + $order.shipping), $order.currency, 'ru_RU')}
+														{else}
+															{waCurrency::format('%.W{n0} %.2{f0}', $total_amount, $order.currency, 'ru_RU')}
+														{/if}, {if ($total_taxs > 0) && empty($settings.NDS)}в т.ч. НДС{else}без НДС{/if}
+													</td>
+												</tr>
+												<tr>
+													<td colspan="2" class="underlined leftAlign edit_text font_weight_bold" style="padding: 5px 0 0 0;" contenteditable="true">&nbsp;</td>
+												</tr>
+											</table>
+											<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable">
+												<tr>
+													<td class="leftAlign nowrap">Отпуск разрешил</td>
+													<td class="centerAlign underlined edit_text font_weight_bold" style="width: 25%" contenteditable="true">Директор</td>
+													<td>&nbsp;</td>
+													<td class="centerAlign underlined edit_text font_weight_bold" style="width: 25%" contenteditable="true">&nbsp;</td>
+													<td>&nbsp;</td>
+													<td class="centerAlign underlined edit_text font_weight_bold" style="font-weight: 700;" contenteditable="true">{$COMPANY_BOSS|escape}</td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td class="comment">должность</td>
+													<td>&nbsp;</td>
+													<td class="comment">подпись</td>
+													<td>&nbsp;</td>
+													<td class="comment nowrap">расшифровка подписи</td>
+												</tr>
+												<tr>
+													<td class="leftAlign">&nbsp;</td>
+													<td class="centerAlign underlined edit_text font_weight_bold" contenteditable="true">Гл. Бухгалтер</td>
+													<td>&nbsp;</td>
+													<td class="centerAlign underlined edit_text font_weight_bold" contenteditable="true">
+														&nbsp;
+														{if !empty($settings.faximile_src)}
+														<div class="draggable"><img class="faximile_src" src="{$settings.faximile_src}" /></div>
+														{/if}
+													</td>
+													<td>&nbsp;</td>
+													<td class="centerAlign underlined edit_text font_weight_bold" style="font-weight: 700;" contenteditable="true">{$COMPANY_BUH|escape}</td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td class="comment">должность</td>
+													<td>&nbsp;</td>
+													<td class="comment">подпись</td>
+													<td>&nbsp;</td>
+													<td class="comment nowrap">расшифровка подписи</td>
+												</tr>
+                                              	<tr>
+													<td class="leftAlign nowrap">Отпуск груза произвел</td>
+													<td class="centerAlign underlined edit_text font_weight_bold" style="width: 25%" contenteditable="true">&nbsp;</td>
+													<td>&nbsp;</td>
+													<td class="centerAlign underlined edit_text font_weight_bold" style="width: 25%" contenteditable="true">&nbsp;</td>
+													<td>&nbsp;</td>
+													<td class="centerAlign underlined edit_text font_weight_bold" style="font-weight: 700;" contenteditable="true">{$COMPANY_BOSS|escape}</td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td class="comment">должность</td>
+													<td>&nbsp;</td>
+													<td class="comment">подпись</td>
+													<td>&nbsp;</td>
+													<td class="comment nowrap">расшифровка подписи</td>
+												</tr>
+                                              
+                                              
+											</table>
+											<table border="0" cellpadding=0 cellspacing=0 class="mainTable">
+												<tr>
+													<td width="90">
+														М.П.
+														{if !empty($settings.stamp_src)}
+														<div class="draggable"><img class="stamp_src" src="{$settings.stamp_src}" /></div>
+														{/if}
+													</td>
+													<td style="padding-left:100px;">
+														<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable">
+															<tr>
+																<td>"</td>
+																<td class="underlined edit_text font_weight_bold centerAlign vert_align_bottom" style="width: 10px" contenteditable="true">{if $settings.DATE_SIGNATURE}{$date_form|date_format:'d'}{else}&nbsp;{/if}</td>
+																<td>"</td>
+																<td>&nbsp;</td>
+																<td class="underlined edit_text font_weight_bold centerAlign vert_align_bottom" style="width: 100px" contenteditable="true">{if $settings.DATE_SIGNATURE}{_ws(date('F', wa_date('U', $date_form)))}{else}&nbsp;{/if}</td>
+																<td>&nbsp;</td>
+																<td>"</td>
+																{if empty($settings.DATE_SIGNATURE)}
+																<td class="underlined vert_align_bottom">20</td>
+																{/if}
+																<td class="underlined edit_text font_weight_bold centerAlign vert_align_bottom" style="width: 20px" contenteditable="true">{if $settings.DATE_SIGNATURE}{$date_form|date_format:'Y'}{else}&nbsp;{/if}</td>
+																<td class="underlined vert_align_bottom">г.</td>
+																<td>"</td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+											</table>
+										</td>
+										<td>&nbsp;</td>
+										<td width="50%" valign="top">
+											<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable">
+												<tr>
+													<td class="leftAlign nowrap">По доверенности №</td>
+													<td class="underlined edit_text font_weight_bold leftAlign" style="width: 85%" contenteditable="true">&nbsp;</td>
+												</tr>
+												<tr>
+													<td class="separator">&nbsp;</td>
+													<td class="separator">&nbsp;</td>
+												</tr>
+											</table>
+											<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable">
+												<tr>
+													<td class="leftAlign">Выданной</td>
+													<td class="underlined edit_text font_weight_bold leftAlign" style="width: 90%" contenteditable="true">&nbsp;</td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td class="comment nowrap">кем, кому (организация, должность, фамилия, и.о.)</td>
+												</tr>
+											</table>
+											<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable">
+												<tr>
+													<td class="leftAlign nowrap">Груз принял</td>
+													<td class="underlined edit_text font_weight_bold leftAlign" style="width: 90%" contenteditable="true">&nbsp;</td>
+												</tr>
+											</table>
+											<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable">
+												<tr>
+													<td class="separator">&nbsp;</td>
+													<td class="separator">&nbsp;</td>
+												</tr>
+												<tr>
+													<td align="left" class="nowrap">Груз получил грузополучатель</td>
+													<td class="underlined edit_text font_weight_bold leftAlign" style="width: 90%" contenteditable="true">&nbsp;</td>
+												</tr>
+											</table>
+											<table border="0" cellpadding=0 cellspacing=0 class="mainTable">
+												<tr>
+													<td width="90">М.П.</td>
+													<td style="padding-left:100px;">
+														<table width="100%" border="0" cellpadding=0 cellspacing=0 class="mainTable">
+															<tr>
+																<td>"</td>
+																<td class="underlined edit_text font_weight_bold centerAlign vert_align_bottom" style="width: 10px" contenteditable="true">{if $settings.DATE_SIGNATURE}{$date_form|date_format:'d'}{else}&nbsp;{/if}</td>
+																<td>"</td>
+																<td>&nbsp;</td>
+																<td class="underlined edit_text font_weight_bold centerAlign vert_align_bottom" style="width: 100px" contenteditable="true">{if $settings.DATE_SIGNATURE}{_ws(date('F', wa_date('U', $date_form)))}{else}&nbsp;{/if}</td>
+																<td>&nbsp;</td>
+																<td>"</td>
+																{if empty($settings.DATE_SIGNATURE)}
+																<td class="underlined vert_align_bottom">20</td>
+																{/if}
+																<td class="underlined edit_text font_weight_bold centerAlign vert_align_bottom" style="width: 20px" contenteditable="true">{if $settings.DATE_SIGNATURE}{$date_form|date_format:'Y'}{else}&nbsp;{/if}</td>
+																<td class="underlined vert_align_bottom">г.</td>
+																<td>"</td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				$( ".draggable" ).draggable();
+			});
+		</script>
+	</body>
+</html>

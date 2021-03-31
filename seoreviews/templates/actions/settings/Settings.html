@@ -1,0 +1,719 @@
+<h1>Настройки</h1>
+<div class="fields form">
+    <form action="?module=plugins&id=seoreviews&action=save" method="post" id="plugins-settings-form">
+        {$wa->csrf()}
+        <ul class="tabs">
+            <li class="selected"><a href="#"  data-tab="tab-all">Общие настройки</a></li>
+            <li ><a href="#" data-tab="tab-helper">Конструктор хелпера</a></li>
+            <li ><a href="#" data-tab="tab-documentation">Документация</a></li>
+            <li ><a href="#" data-tab="tab-templates">Шаблоны</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="block double-padded" id="tab-all">
+                <div class="field tabs">
+                    Все настройки плагина предназначены для вывода отзывов "по умолчанию" в категории в хуке,<br> а также при использовании хелпера без опций  <strong>{literal}{shopSeoreviewsPlugin::getReviewsHtml()}{/literal} </strong>.
+                    <br><br>Для вывода отзывов с произвольмыми настройками, ознакомьтесь со вкладкой настроек "<a href="#" data-tab="tab-documentation">Документация</a>" и воспользуйтесь <a href="#" data-tab="tab-helper">Конструктором хелпера</a>!
+                </div>
+                <div class="field-group">
+                    <h3>Основные настройки</h3>
+                    <div class="field">
+                        <div class="name">
+                            Плагин включен
+                        </div>
+                        <div class="value">
+                            <input type="hidden" name="shop_seoreviews[status]" value="0">
+                            <input type="checkbox" name="shop_seoreviews[status]" value="1"{if isset($settings.status) && $settings.status} checked{/if}>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Блок отзывов в данных категории
+                        </div>
+                        <div class="value">
+                            <input type="hidden" name="shop_seoreviews[frontend_category]" value="0">
+                            <input type="checkbox" name="shop_seoreviews[frontend_category]" value="1" {if isset($settings.frontend_category) && $settings.frontend_category} checked {/if}><br>
+                            <p class="hint">При включенном состоянии будет задействован хук "frontend_category", будет показан блок отзывов перед списком продуктов, сверху.</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Блок отзывов в продукте
+                        </div>
+                        <div class="value">
+                            <input type="hidden" name="shop_seoreviews[frontend_product]" value="0">
+                            <input type="checkbox"  class="seoreviews-frontend-product" name="shop_seoreviews[frontend_product]" value="1" {if isset($settings.frontend_product) && $settings.frontend_product} checked {/if}><br>
+                            <p class="hint">При включенном состоянии будет задействован хук "frontend_product", будет показан блок отзывов в основной информации продукта.</p>
+                            <div class="seoreviews-frontend-product-block" {if isset($settings.frontend_product) && $settings.frontend_product}{else} style="display:none;"{/if}>
+                               <p>Правило подбора отзывов
+                                <select name="shop_seoreviews[frontend_product_search_type]">
+                                <option value="category" {if ((isset($settings.frontend_product_search_type) && $settings.frontend_product_search_type=='category') || !isset($settings.frontend_product_search_type))}  selected{/if}>Показывать отзывы категории продукта</option>
+                                <option value="type" {if (isset($settings.frontend_product_search_type) && $settings.frontend_product_search_type=='type')}  selected{/if}>Показывать отзывы типа продукта</option>
+                                </select>
+                               </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Блок отзывов в поиске
+                        </div>
+                        <div class="value">
+                            <input type="hidden" name="shop_seoreviews[frontend_search]" value="0">
+                            <input type="checkbox"  name="shop_seoreviews[frontend_search]" value="1" {if isset($settings.frontend_search) && $settings.frontend_search} checked {/if}><br>
+                            <p class="hint">При включенном состоянии будет задействован хук "frontend_search", будет показан блок отзывов п поиске перед списком продуктов.</p>
+                        </div>
+
+                     </div>
+                    <div class="field tabs">
+                        <p>Либо используйте вывод в нужном вам месте через хелпер {literal}<strong>{shopSeoreviewsPlugin::getReviewsHtml()}</strong> {/literal}
+                        <br>Для вывода отзывов с произвольными настройками воспользуйтесь <a href="#" data-tab="tab-helper">Конструктором хелпера</a>.
+                        </p>
+                     </div>
+                <div class="field">
+                    <div class="name">Заголовок блока</div>
+                    <div class="value">
+                        <input type="text" name="shop_seoreviews[header]" value="{if isset($settings.header) && strlen($settings.header)>0}{htmlspecialchars($settings.header)}{else}Отзывы покупателей{/if}" >
+                    </div>
+                </div>
+                     <div class="field">
+                            <div class="name">
+                                Сколько отзывов показывать
+                            </div>
+                            <div class="value">
+                                <input type="text" name="shop_seoreviews[limit]" value="{if isset($settings.limit) && $settings.limit>0}{htmlspecialchars($settings.limit)}{else}10{/if}" >
+                            </div>
+                     </div>
+                     <div class="field">
+                            <div class="name">
+                                Минимальное количество отзывов для показа
+                            </div>
+                            <div class="value">
+                                <input type="text" name="shop_seoreviews[min_view_reviews]" value="{if isset($settings.min_view_reviews) && $settings.min_view_reviews>0}{htmlspecialchars($settings.min_view_reviews)}{else}2{/if}" >
+                                <p class="hint">Введите минимальное количество отзывов, при котором блок будет отображаться, если количество отзывов окажется меньше, блок с отзывами не будет показан</p>
+                            </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                           Прокрутка мышью в слайдере
+                        </div>
+                        <div class="value">
+                            <input type="hidden" name="shop_seoreviews[mousewheel]" value="0">
+                            <input type="checkbox" name="shop_seoreviews[mousewheel]" value="1"{if isset($settings.mousewheel) && $settings.mousewheel} checked{/if}>
+                            <p class="hint">Прокрутка отзывов в слайдере при помощи колеса мыши.</p>
+                        </div>
+                    </div>
+                <div class="field">
+                    <div class="name">
+                        Обрезать заголовок отзыва до
+                    </div>
+                    <div class="value">
+                        <input type="text" name="shop_seoreviews[review_title_width]" value="{if isset($settings.review_title_width) && $settings.review_title_width>0}{htmlspecialchars($settings.review_title_width)}{else}50{/if}" >
+                        <p class="hint">Введите количество символов до которого будет обрезан  заголовок отзыва.</p>
+                    </div>
+                </div>
+                    <div class="field">
+                        <div class="name">
+                            Обрезать текст отзыва до
+                        </div>
+                        <div class="value">
+                            <input type="text" name="shop_seoreviews[review_text_width]" value="{if isset($settings.review_text_width) && $settings.review_text_width>0}{htmlspecialchars($settings.review_text_width)}{else}180{/if}" >
+                            <p class="hint">Введите количество символов до которого будет обрезан текст отзыва</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <h3>Настройки поиска отзывов</h3>
+                    <div class="field">
+                        <div class="name">
+                            Тип поиска отзывов
+                        </div>
+                        <div class="value">
+                            <select name="shop_seoreviews[search_type]">
+                                {foreach shopSeoreviewsPlugin::getSearchTypes() as $k => $v}
+                                <option value="{$k}" {if ((isset($settings.search_type) && $settings.search_type==$k) ||(!isset($settings.search_type) && $k=='all'))}  selected{/if}>{htmlspecialchars($v)}</option>
+                                {/foreach}
+                            </select>
+                            <p class="hint"></p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Минимальный рейтинг отзыва
+                        </div>
+                        <div class="value">
+                            <input type="text" name="shop_seoreviews[min_rate]" value="{if isset($settings.min_rate)}{htmlspecialchars($settings.min_rate)}{/if}">
+                            <p class="hint">Введите число от 1 до 5 включительно, чтобы ограничить поиск по минимальной оценке отзыва или оставьте пустым, тогда не будет ограничения по минимальной оценке при поиске.</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Максимальный рейтинг отзыва
+                        </div>
+                        <div class="value">
+                            <input type="text" name="shop_seoreviews[max_rate]" value="{if isset($settings.max_rate)}{htmlspecialchars($settings.max_rate)}{/if}" >
+                            <p><span class="hint">Введите число от 1 до 5 включительно, чтобы ограничить поиск по максимальной оценке отзыва или оставьте пустым, тогда не будет ограничения по максимальной оценке при поиске.</span>
+                                <br>Важно, максимальная оценка должна быть больше или равна минимальной, если та установлена.</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Минимальная длина отзыва
+                        </div>
+                        <div class="value">
+                            <input type="text" name="shop_seoreviews[min_chars]" value="{if isset($settings.min_chars)}{htmlspecialchars($settings.min_chars)}{else}{/if}" >
+                            <p class="hint">Введите число минимального количества символов в отзыве, чтобы ограничить поиск по минимальной длине текста отзыва или оставьте пустым, тогда длина не будет учитываться при поиске.</p>
+                        </div>
+
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Сортировка отзывов
+                        </div>
+                        <div class="value">
+                            <select name="shop_seoreviews[sort]">
+                                {foreach shopSeoreviewsPlugin::getSearchSorts() as $k => $v}
+                                <option value="{$k}" {if ((isset($settings.sort) && $settings.sort==$k) ||(!isset($settings.sort) && $k=='all'))}  selected{/if}>{$v}</option>
+                                {/foreach}
+                            </select>
+                            <p class="hint"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="block double-padded " style="display: none;" id="tab-helper">
+                <div class="field-group seoreviews-constructor">
+                    <h3>Конструктор хелпера</h3>
+                    <div class="field">
+                        <div class="name">
+                            Шаблон показа
+                        </div>
+                        <div class="value">
+                            <select name="template">
+                                <option value="horizontal">Горизонтальный (используется сверху и снизу)</option>
+                                <option value="vertical">Вертикальный (используется в боковых колонках)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">Использование слайдера</div>
+                        <div class="value"> <select name="slider">
+                            <option value="1">Да</option>
+                            <option value="0">нет</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Прокрутка мышью
+                        </div>
+                        <div class="value">
+                            <select name="mousewheel">
+                                <option value="1">Да</option>
+                                <option value="0">нет</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">Заголовок блока</div>
+                        <div class="value"><input name="header" value=""></div>
+                    </div>
+                    <div class="field">
+                        <div class="name">Сколько отзывов показать</div>
+                        <div class="value"><input name="limit" value="10"></div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name">Минимальное количество найденных отзывов для показа блока</div>
+                        <div class="value"><input name="min_view_reviews" value="2"></div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Обрезать заголовок отзыва до
+                        </div>
+                        <div class="value">
+                            <input type="text" name="review_title_width" value="" >
+                            <p class="hint">Введите количество символов до которого будет обрезан  заголовок отзыва.</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Обрезать текст отзыва до
+                        </div>
+                        <div class="value">
+                            <input type="text" name="review_text_width" value="" >
+                            <p class="hint">Введите количество символов до которого будет обрезан текст отзыва</p>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name">
+                            Тип поиска отзывов
+                        </div>
+                        <div class="value">
+                            <select name="search_type">
+                                {foreach shopSeoreviewsPlugin::getSearchTypes() as $k => $v}
+                                <option value="{$k}">{$v}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Минимальный рейтинг отзыва
+                        </div>
+                        <div class="value">
+                            <input type="text" name="min_rate" value="">
+                            <br><span class="hint">Введите число от 1 до 5 включительно, чтобы ограничить поиск по минимальной оценке отзыва или оставьте пустым, тогда не будет ограничения по минимальной оценке при поиске.</span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Максимальный рейтинг отзыва
+                        </div>
+                        <div class="value">
+                            <input type="text" name="max_rate" value="">
+                            <br><span class="hint">Введите число от 1 до 5 включительно, чтобы ограничить поиск по максимальной оценке отзыва или оставьте пустым, тогда не будет ограничения по максимальной оценке при поиске.</span>
+                                <br>Важно, максимальная оценка должна быть больше или равна минимальной, если та установлена.</span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Минимальная длина отзыва
+                        </div>
+                        <div class="value">
+                            <input type="text" name="min_chars" value="">
+                            <br> <span class="hint">Введите число минимального количества символов в отзыве, чтобы ограничить поиск по минимальной длине текста отзыва или оставьте пустым, тогда длина не будет учитываться при поиске.</span>
+                        </div>
+
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Сортировка отзывов
+                        </div>
+                        <div class="value">
+                            <select name="sort">
+                                {foreach shopSeoreviewsPlugin::getSearchSorts() as $k => $v}
+                                <option value="{$k}">{$v}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Исключать при поиске продукты, чьи отзывы были показаны ранее на странице
+                        </div>
+                        <div class="value">
+                            <select name="exclude_products">
+                                <option value="">Нет</option>
+                                <option value="1">Да</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field block double-padded seoreview-constructor-helper" ></div>
+                    <div class="field seoreview-const">
+                        <div class="name">
+
+                        </div>
+                        <div class="value">
+                          <button class="button blue seoreview-constructor-generate">Создать</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="block double-padded " style="display: none;" id="tab-documentation">
+                {literal}
+                <h3> Методы вывода</h3>
+                <div class="field-group">
+                    <div class="field">
+                        <div class="name">
+                          Вывод отзывов в шаблон
+                        </div>
+                        <div class="value">
+                          <p><strong>{shopSeoreviewsPlugin::getReviewsHtml()}</strong>   - Показывает блок отзывов, используя для выборки настройки плагина</p>
+                          <p><strong>{shopSeoreviewsPlugin::getReviewsHtml($options)}</strong> - Показывает блок отзывов c пользовательскими опциями</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Получение массива отзывов
+                        </div>
+                        <div class="value">
+                            <p><strong>{shopSeoreviewsPlugin::getReviews()}</strong> - Отдает массив отзывов, используя для выборки настройки плагина</p>
+                            <p><strong>{shopSeoreviewsPlugin::getReviewsHtml($options)}</strong> - Отдает массив отзывов c пользовательскими опциями</p>
+                        </div>
+                    </div>
+                </div>
+                <h3>Пользовательские опции</h3>
+                <div class="field-group">
+                    <p>Переменная <strong>$options</strong> является массивом ключ => значение.</p>
+                    <h4>Доступные переменнные для шаблона</h4>
+                    <div class="field">
+                        <div class="name">
+                            <strong>template</strong>
+                            <br><br><span class="hint">'template' => 'horizontal'</span>
+                        </div>
+                        <div class="value">
+                            <p><strong>horizontal</strong>   - Показывает блок отзывов, используя шаблон plugin.seoreviews.horizontal.html
+                            <br>Данный шаблон рекомендуется использовать сверху или снизу</p>
+                            <p><strong>vertical</strong> -  Показывает блок отзывов, используя шаблон plugin.seoreviews.vertical.html
+                                <br>Данный шаблон рекомендуется использовать в боковых колонках дизайна, слева или справа</p>
+                            <p>Также есть возможность добавлять свои шаблоны в тему дизайна, для добавления шаблона достаточно создать файл в теме дизайна по правилу:
+                            <br> plugin.seoreviews.<strong>key</strong>.html , где key - латиницей
+                            <br>Пример: создали файл с названием plugin.seoreviews.<strong>my_template</strong>.html , соответственно названием будет <strong>my_template</strong>
+                            <br>Пример добавления опции вызова такого шаблона: {$options = ['template' => '<strong>my_template</strong>']}</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>slider</strong>
+                            <br><br><span class="hint">'slider' => 1</span>
+                        </div>
+                        <div class="value">
+                            <p>Устанавливает опцию использования слайдера, по умолчанию слайдер включен и параметр имеет значение 1.
+                                <br>Если задать параметру значение 0, то слайдер не будет задействован</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>min_view_reviews</strong>
+                            <br><br><span class="hint">'min_view_reviews' => 2</span>
+                        </div>
+                        <div class="value">
+                            <p>Минимальное количество отзывов для показа, если в не будет найдено установленное минимальное количество отзывов, то блок с отзывами не будет показан вовсе.
+                            <br>Данныя опция удобна для горизонтального блока, т.к. если найдется всего один отзыв , он будет дублироваться при использовании сладера или находиться слева оставляя много пустого пространства,
+                                из-за чего блок будет некрасиво смотреться, рекомендуется установить значение для горизонтального не меньше 2.</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>mousewheel</strong>
+                            <br><br><span class="hint">'mousewheel' => 1</span>
+                        </div>
+                        <div class="value">
+                            <p>Включает или отключает прокрутку отзывов колесом мыши в слайдере.</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>review_title_width</strong>
+                            <br><br><span class="hint">'review_title_width' => 50</span>
+                        </div>
+                        <div class="value">
+                            <p>Количество символов до которого будет обрезан  заголовок отзыва.</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>review_text_width</strong>
+                            <br><br><span class="hint">'review_text_width' => 180</span>
+                        </div>
+                        <div class="value">
+                            <p>Количество символов до которого будет обрезан текст отзыва.</p>
+                        </div>
+                    </div>
+
+                    <h4>Доступные переменнные для отзывов</h4>
+                    <div class="field">
+                        <div class="name">
+                            <strong>limit</strong>
+                            <br><br><span class="hint">'limit' => 10</span>
+                        </div>
+                        <div class="value">
+                            <p>Устанавливает лимит количества отзывов в блоке, принимает положительное число</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>search_type</strong>
+                            <br><br><span class="hint">'search_type' => 'all'</span>
+                        </div>
+                        <div class="value">
+                            <p>Устанавливает тип поиска отзывов и имеет следующие значения:
+                                <br><strong>all</strong> - Поиск среди всех продуктов категории и подкатегории,
+                                    если блок будет показан в продукте или на странице поиска, тип будет изменен на <strong>page</strong>.
+                                <br><strong>category</strong> - Поиск среди всех продуктов категории не включая продукты подкатегории.
+                                <br><strong>page</strong> - Поиск будет осуществляться среди показанных продуктов на странице, такой тип лучше использовать для страниц продукта или для страницы поиска.
+                                <br><strong>custom</strong> - Поиск отзывов среди переданных в доп. параметре <strong>products</strong> продуктов или массива id продуктов, Также возможен поиск отзывов среди продуктов одного типа или нескольких, данные типовв необходимо передать в переменной <strong>types</strong>.
+                            </p>
+                            <p>
+                                <strong>Примеры для типа custom: </strong>
+                                <br>Поиск среди продуктов {$options = ['search_type' => 'custom', 'products' => [12,34,14,345,735,774,38]  ]} или так {$options = ['search_type' => 'custom', 'products' => $products  ]}
+                                <br>Поиск среди типов продуктов {$options = ['search_type' => 'custom', 'types' => [1,3,5,9]  ]}
+                                или так {$options = ['search_type' => 'custom', 'types' => '9'  ]}
+                                или в продукте так  {$options = ['search_type' => 'custom', 'types' => $product.type_id  ]}
+                            </p>
+                        </div>
+                     </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>min_rate</strong>
+                            <br><br><span class="hint">'min_rate' => 1</span>
+                        </div>
+                        <div class="value">
+                            <p>Устанавливает минимальный рейтинг отзывов при поиске</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>max_rate</strong>
+                            <br><br><span class="hint">'max_rate' => 5</span>
+                        </div>
+                        <div class="value">
+                            <p>Устанавливает  максимальный рейтинг отзывов при поиске</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>min_chars</strong>
+                            <br><br><span class="hint">'min_chars' => ''</span>
+                        </div>
+                        <div class="value">
+                            <p>Устанавливает фильтрацию по минимальной длине отзыва при поиске</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>sort</strong>
+                            <br><br><span class="hint">'sort' => 'desc'</span>
+                        </div>
+                        <div class="value">
+                            <p>Устанавливает сортировку поиска отзывов, имеет следующие варианты:
+                                <br><strong>desc</strong> - Самые последние отзывы (новые) сначала по дате.
+                                <br><strong>asc</strong> -  Самые первые отзывы (старые)  сначала по дате.
+                                <br><strong>max_reviews</strong> - Первыми показывать отзывы продуктов с наибольшим количеством отзывов
+                                <br><strong>best_reviews</strong> -  Первыми показывать отзывы продуктов с лучшим рейтингом и наибольшим количеством отзывов (отзывы топовых продуктов).
+                            </p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            <strong>exclude_products</strong>
+                            <br><br><span class="hint">'exclude_products' => 0</span>
+                        </div>
+                        <div class="value">
+                            <p>Если передан параметр со значением 1, то при отборе отзывов будут исключены продукты,
+                                отзывы которых уже были показаны на странице.
+                            <br>Данная опция исключает дублирование товаров, при использовании нескольких блоков вывода отзывов на странице.</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                      <p><strong>Пример вывода блока отзывов с пользовательскими настройками, название переменной можно менять:</strong>
+    <pre>{$seoreviews_options = [
+        'template' => 'vertical',
+        'slider' => 0,
+        'limit' => 10,
+        'search_type' => 'page',
+        'min_rate' => 3,
+        'sort' => 'best_reviews'
+    ]}</pre>
+                        {shopSeoreviewsPlugin::getReviewsHtml(<strong>$seoreviews_options</strong>)}
+                      </p>
+                    <p>
+                        <strong>В данном примере установлены пользовательские настройки:</strong>
+                        <br>1. template - шаблон плагина вертикальный (plugin.seoreviews.vertical.html в теме дизайна)
+                        <br>2. slider - отключение слайдера, по умолчанию слайдер включен
+                        <br>3. limit - Сколько отзывов показать
+                        <br>4. search_type - Тип поиска отзывов, в данном случае выбран тип поиска среди продуктов на странице
+                        <br>5. min_rate - минимальная оценка отзыва, будут показаны только отзывы с оценкой 3 и больше
+                        <br>6. sort - Первыми показывать отзывы продуктов с лучшим рейтингом и наибольшим количеством отзывов
+                    </p>
+                 </div>
+                </div>
+                {/literal}
+             </div>
+
+            <div class="block double-padded " style="display: none;" id="tab-templates">
+                <div class="field-group">
+                    <h3>Шаблоны</h3>
+
+                    <div class="field">
+                        <div class="name">
+                            Какие шаблоны использовать
+                        </div>
+                        <div class="value">
+                            <p>
+                                <select name="shop_seoreviews[template_type]" id="seoreviews-template_type">
+                                    <option value="plugin" {if isset($settings.template_type) && $settings.template_type=="plugin"} selected {/if}>Шаблоны плагина</option>
+                                    <option value="theme" {if (isset($settings.template_type) && $settings.template_type=="theme") || !isset($settings.template_type)} selected {/if}>Шаблоны темы (Рекомендуется)</option>
+                                </select>
+                            </p>
+                            <p>При использовании шаблонов темы дизайна, вы можете создавать свои шаблоны и использовать их для показа отзывов, подробнее читайте в документации, переменная <strong>template</strong>.</p>
+
+                    </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">
+                            Выберите витрину
+                        </div>
+                        <div class="value">
+                            <p>
+                                <select id="seoreviews-storefronts">
+                                    {foreach shopSeoreviewsPluginStorefronts::getStorefronts() as $storefront_name}
+                                    <option value="{shopSeoreviewsPluginStorefronts::getStorefrontCode($storefront_name)}">{$storefront_name}</option>
+                                    {/foreach}
+                                </select>
+                            </p>
+                            <div>
+                                {$theme_templates = shopSeoreviewsPluginTemplates::getThemeTemplates()}
+                                {$first_storefront = false}
+                                {foreach shopSeoreviewsPluginStorefronts::getStorefronts() as $storefront_name}
+                                <div class="seoreviews-storefront" id="{shopSeoreviewsPluginStorefronts::getStorefrontCode($storefront_name)}" {if $first_storefront} style="display: none;" {/if}>
+                                    {$first_storefront = true}
+                                    {$storefront = shopSeoreviewsPluginStorefronts::getStorefront($storefront_name)}
+                                    {$themes = $storefront->getThemes()}
+                                    {$create_files = false}
+                                    <h3>Витрина {$storefront_name}</h3>
+                                    {if !empty($themes)}
+                                    {foreach $themes as $key => $theme}
+                                    {if $theme}
+                                    <div class="seoreviews-storefront-theme" style="margin-top: 10px;">
+                                        <h4>{$theme->getName()}</h4>
+                                        {foreach $theme_templates as $t_key => $filename}
+                                        {if shopSeoreviewsPluginTemplates::getThemeTemplatePath($filename, $theme)}
+                                        <p>
+                                            <i class="icon16 yes"></i> {$filename} найден!
+                                            <a href="?action=storefronts#/design/theme={$theme->id}&file={$filename}" target="_blank">Редактировать</a>
+                                        </p>
+                                        {else}
+                                        {$create_files = true}
+                                        <p class="seoreviews-file-exists" style="display: none;"><i class="icon16 yes"></i> {$filename} найден!
+                                            <a href="?action=storefronts#/design/theme={$theme->id}&file={$filename}" target="_blank">Редактировать</a>
+                                        </p>
+                                        <p class="seoreviews-file-not-exists"><i class="icon16 no"></i> {$filename} не существует! </p>
+                                        {/if}
+                                        {/foreach}
+                                    </div>
+                                    {/if}
+                                    {/foreach}
+                                    {if $create_files}
+                                    <div class="block double-padded seoreviews-templates-notice" style="border: 1px #c00 solid; width: 400px;">
+                                        <p style="font-weight: bold;">Внимание! Установлено использование шаблонов из тем дизайна витрины, файлы шаблонов не найдены!</p>
+                                        <a href="?plugin=seoreviews&action=createFiles&storefront={$storefront}" class="seoreviews-create-templates button red">Создать файлы в темах витрины</a>
+                                    </div>
+                                    {/if}
+                                    {else}
+                                    <p>Для данной витрины невозможны настройки в темах дизайна</p>
+                                    {/if}
+                                </div>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+            </div></div>
+        </div>
+        <div class="field">
+            <div class="value submit">
+                <input type="submit" class="button green" value="[s`Save`]">
+                <span id="plugins-settings-status" style="display:none"></span>
+            </div>
+        </div>
+    </form>
+</div>
+{literal}
+<script type="text/javascript">
+    $('#seoreviews-storefronts').change(function () {
+        $('.seoreviews-storefront').hide();
+        $('#'+$(this).val()).show();
+    });
+    $('.seoreviews-frontend-product').click(function () {
+        if($(this).prop('checked')) {
+            $('.seoreviews-frontend-product-block').show();
+        } else {
+            $('.seoreviews-frontend-product-block').hide();
+        }
+
+    });
+    $(document).off('click','#plugins-settings-form .tabs a').on('click','#plugins-settings-form .tabs a',    function () {
+        var tab = $(this).data('tab');
+        $('#plugins-settings-form .tabs').children('li').removeClass('selected');
+        $('#plugins-settings-form .tabs').find('a').each(function () {
+                    if(tab == $(this).data('tab')) {
+                        $(this).closest('li').addClass('selected');
+                    }
+        });
+        $(this).closest('li').addClass('selected');
+        $('#plugins-settings-form .tab-content').children('.block').hide();
+
+        $('#'+tab).show();
+        return false;
+    });
+    $(document).off('click','.seoreviews-create-templates').on('click','.seoreviews-create-templates', function () {
+        var self = $(this);
+        $.get(self.attr('href'), function(response) {
+            if(response.status == 'ok') {
+
+                self.closest('.seoreviews-storefront').find('.seoreviews-file-not-exists').hide();
+                self.closest('.seoreviews-storefront').find('.seoreviews-file-exists').show();
+                self.closest('.seoreviews-templates-notice').remove();
+
+            } else {
+                alert(response.errors);
+            }
+        });
+        return false;
+    });
+    $("#plugins-settings-form").submit(function () {
+        var f = $(this);
+        var action = f.attr('action');
+        var msg = '';
+
+        $.ajax({
+            url: action,
+            data: f.serialize(),
+            dataType: "json",
+            type: "post",
+            success: function(response) {
+
+                if(!response.data.error) {
+                    msg = '<i style="vertical-align:middle" class="icon16 yes"></i>' + response.data.message;
+                } else {
+                    msg = '<i style="vertical-align:middle" class="icon16 cross"></i>' + response.data.error_msg;
+                }
+
+            },
+            error: function(jqXHR, errorText, errorThrown) {
+                if(console){
+                    console.log(jqXHR, errorText, errorThrown);
+                }
+            },
+            complete: function() {
+                var status =  $('#plugins-settings-status');
+                status.html(msg);
+                status.show();
+                setTimeout(function(){
+                    status.hide(1500);
+                    status.empty();
+                }, 3000);
+            }
+        });
+        return false;
+    });
+    $('.seoreview-constructor-generate').click(function () {
+    //seoreview-constructor-helper
+        //seoreviews-constructor
+         var options = {};
+        $('.seoreviews-constructor').find('select, input ').each(function () {
+            var name = $(this).attr('name');
+            var val = $(this).val().trim();
+            if(val!=''){
+                options[name] = val;
+            }
+        });
+        var html = "{$seoreviews_options = [<br>";
+        var flag = false;
+        for(var k in options) {
+            if(flag){
+               html += ",<br>&nbsp;&nbsp;&nbsp;&nbsp;'"+k+"' => '"+options[k]+"'";
+            } else {
+                flag = true;
+                html += "&nbsp;&nbsp;&nbsp;&nbsp;'"+k+"' => '"+options[k]+"'";
+            }
+        }
+        html +="<br>]}<br>{shopSeoreviewsPlugin::getReviewsHtml($seoreviews_options)}";
+        $('.seoreview-constructor-helper').html(html);
+        return false;
+    });
+</script>
+{/literal}
+

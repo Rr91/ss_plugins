@@ -1,0 +1,276 @@
+{if !waRequest::isXMLHttpRequest() && waRequest::method() != 'post'}{literal}
+<style type="text/css">
+    .reviews .review ul.menu-v li a { display: inline; padding: 0;}
+    .reviews .review ul.reviews-branch li .reviews-branch li {border-bottom: 0}
+    .reviews .review img.userpic { margin-right: 5px}
+    .reviews .images {
+        clear: left;
+    }
+    .reviews .images .image {
+        vertical-align: middle;
+        text-align: center;
+        display: inline-block;
+        width: 200px;
+    }
+    .reviews .images .image img {
+        max-width: 100%;
+        max-height: 200px;
+    }
+    .reviews-stats td {
+        border: none;
+        padding: 3px 10px;
+    }
+    .reviews-stats td div.bar {
+        width: 200px;
+        height: 13px;
+        background: #eee;
+    }
+    .reviews-stats td div.bar div {
+        height: 13px;
+        background: #f7c854;
+    }
+    .reviews .total-rating {
+        margin: 0 10px;
+        font-size: 150%;
+    }
+</style>
+{/literal}{/if}
+<div class="reviews">
+
+    {if !empty($reviews_settings.stats)}
+        {$ratings = shopReviewsPlugin::getRatings()}
+        {if $ratings.count}
+            <p>
+                Средняя оценка:
+                <b class="total-rating">{str_replace(',', '.', round($ratings.rating, 1))}</b>
+                {$wa->shop->ratingHtml($ratings.rating)}
+            </p>
+            <table class="reviews-stats">
+                {foreach  $ratings.ratings as $rating => $count}
+                <tr>
+                    <td class="min-width hint">{$count}</td>
+                    <td>
+                        <div class="bar">
+                            <div style="width:{str_replace(',', '.', 100 * $count/$ratings.count)}%;"></div>
+                        </div>
+                    </td>
+                    <td>{$wa->shop->ratingHtml($rating)}</td>
+                </tr>
+                {/foreach}
+            </table>
+        {/if}
+    {/if}
+
+    <a name="reviewheader"></a>
+    <!-- add review form -->
+    <h4 class="write-review">
+        <a href="#" class="inline-link"><b><i>{_w('Write a review')}</i></b></a>
+    </h4>
+
+    <div class="review-form" id="review-form" style="float:left; width: 100%;{if $reviews_count > 0}display:none;{/if}">
+        <form id="review-add-form" method="post" enctype="multipart/form-data">
+            <div class="review-form-fields">
+                {if !$wa->user()->isAuth() && $require_authorization}
+                <p class="review-field">{sprintf(_w('To add a review please <a href="%s">sign up</a> or <a href="%s">login</a>'), $wa->signupUrl(), $wa->loginUrl())}</p>
+                {else}
+                {if $wa->user()->isAuth()}
+                <p class="review-field"><label>{_w('Your name')}</label>
+                    <strong><img src="{$wa->user()->getPhoto(20)}" class="userpic" alt="">{$wa->user('name')}</strong>
+                    <a href="?logout">{_w('log out')}</a>
+                </p>
+                {else}
+                <div class="provider-fields">
+                    <p class="review-field">
+                        <label>{_w('Your name')}</label>
+                        <input {if !empty($errors.name)}class="error"{/if} type="text" name="name" id="review-name" value="{$wa->post('name', '')|escape}">
+                        {if !empty($errors.name)}<em class="errormsg">{$errors.name}</em>{/if}
+                    </p>
+                    <p class="review-field">
+                        <label>[`Email`]</label>
+                        <input {if !empty($errors.email)}class="error"{/if} type="text" name="email" id="review-email" value="{$wa->post('email', '')|escape}">
+                        {if !empty($errors.email)}<em class="errormsg">{$errors.email}</em>{/if}
+                    </p>
+                    {if !empty($reviews_settings.enable_photo_upload)}
+                    <p class="review-field">
+                        <label>[`User's photo`]</label>
+                        <input type="file" name="image" accept="image/gif,image/jpeg,image/png">
+                    </p>
+                    {/if}
+                </div>
+                {/if}
+                {if !empty($enable_rating)}
+                <p class="review-field">
+                    <label>[`Rating`]</label>
+                    <a href="#" class="no-underline rate" data-rate="0" id="reviews-rate">
+                        {$wa->shop->ratingHtml(0, 16, true)}
+                    </a>
+                    <a href="javascript:void(0);" class="inline-link rate-clear" id="clear-reviews-rate" style="display: none;">
+                        {_w('clear')}
+                    </a>
+                    <input name="rating" type="hidden" value="0">
+                </p>
+                {/if}
+
+                <p class="review-field">
+                    <label for="review-text">{_w('Review')}</label>
+                    <textarea id="review-text" name="text" rows="10" cols="45" required></textarea>
+                </p>
+
+                {if !empty($reviews_settings.enable_photos_upload)}
+                <p class="review-field">
+                    <label for="review-text">[`Photos`]</label>
+                    <input class="review-images-input" type="file" name="images[]" accept="image/gif,image/jpeg,image/png" multiple>
+                    <span class="hint">Можно выбрать несколько файлов удерживая кнопку CTRL</span>
+                </p>
+                {/if}
+
+                <div class="review-submit">
+                    {if $require_captcha && !$wa->user()->isAuth()}
+                    {$wa->captcha([], ifset($errors.captcha))}
+                    {/if}
+                    <input type="submit" class="save" value="{_w('Add review')}">
+                    <span class="review-add-form-status ajax-status" style="display: none;">
+                        <i class="icon16 loading"><!--icon --></i>
+                    </span>
+                </div>
+                {/if}
+            </div>
+        </form>
+    </div>
+
+    <ul class="{if $wa->param('theme') != 'default'}menu-v{/if} with-icons reviews-branch">
+        {foreach $reviews as $review}
+        <li>
+            <div class="review" itemprop="review" itemscope itemtype="http://schema.org/Review">
+                {if $review.contact_id && $review.contact_photo}
+                <img width="50" src="{waContact::getPhotoUrl($review.contact_id, $review.contact_photo, 50)}" class="userpic" alt="" align="left">
+                {elseif $review.image}
+                <img width="50" src="{$wa_url}wa-data/public/shop/reviews/{$review.id}{$review.image}" class="userpic" alt="" align="left">
+                {elseif !empty($reviews_settings.empty_photo)}
+                <img width="50" src="{$wa_url}wa-content/img/userpic50.jpg" class="userpic" alt="" align="left">
+                {/if}
+                <div class="summary">
+                        <span class="username" itemprop="author">
+                            <b>{$review.name}</b>
+                        </span>
+                    <meta itemprop="datePublished" content="{$review.datetime|date_format:'Y-m-d'}">
+                    <span class="date" title="{$review.datetime|wa_datetime}">{$review.datetime|wa_datetime:"humandatetime"}</span>
+                    {if !empty($enable_rating) && !empty($review.rating)}
+                    &nbsp;
+                    <span itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                            <meta itemprop="worstRating" content = "1">
+                            <meta itemprop="ratingValue" content="{$review.rating}">
+                            <meta itemprop="bestRating" content = "5">
+                            {$wa->shop->ratingHtml($review.rating)}
+                        </span>
+                    {/if}
+                </div>
+                {if $review.text}
+                <p itemprop="description">{$review.text}</p>
+                {/if}
+                {if !empty($review.images)}
+                <div class="images">
+                    {foreach $review.images as $_img}
+                    <div class="image">
+                        <img alt="" src="{$wa_url}wa-data/public/shop/reviews/{$review.id}_{$_img}">
+                    </div>
+                    {/foreach}
+                </div>
+                {/if}
+                {if $review.response}
+                <br clear="left">
+                <ul class="{if $wa->param('theme') != 'default'}menu-v{/if} with-icons reviews-branch">
+                    <li>
+                        <div class="review">
+                            <div class="summary">
+                                    <span class="username">
+                                        {if !empty($enable_response_info) && !empty($review.response_contact)}
+                                        <b>{$review.response_contact.firstname}</b>
+                                        {else}
+                                        <b>[`Response`]</b>
+                                        {/if}
+                                    </span>
+                                {if !empty($enable_response_info) && !empty($review.response_datetime)}
+                                <span class="date" title="{$review.response_datetime|wa_datetime}">{$review.response_datetime|wa_datetime:"humandatetime"}</span>
+                                {/if}
+                            </div>
+                            <p>{$review.response}</p>
+                        </div>
+                    </li>
+                </ul>
+                {/if}
+            </div>
+        </li>
+        {/foreach}
+    </ul>
+    {wa_pagination total=$pages_count attrs=['class' => "menu-h"] url="{$wa->getUrl('/frontend/reviews')}"}
+</div>
+{if !empty($enable_rating)}
+<script type="text/javascript">
+    $(function () {
+        $.getScript("{$wa_app_static_url}js/rate.widget.js", function () {
+            $('#reviews-rate').rateWidget({
+                onUpdate: function(rate) {
+                    $('#review-add-form input[name="rating"]').val(rate);
+                }
+            });
+        });
+    });
+</script>
+{/if}
+{if !waRequest::isXMLHttpRequest() && waRequest::method() != 'post'}
+<script type="text/javascript">
+    $(function () {
+        $(".reviews").on('click', ".write-review a", function () {
+            $("#review-form").show();
+            $("#review-form input:first").focus();
+            return false;
+        });
+        $(".reviews").on('submit', "#review-add-form", function () {
+            $(".review-add-form-status").show();
+            var f = function (response) {
+                $(".review-add-form-status").hide();
+                if (response.status == 'ok') {
+                    var tmp = $('<div></div>').append(response.data);
+                    $(".reviews").html(tmp.find('.reviews').html());
+                    {if !empty($enable_rating)}$('#reviews-rate').rateWidget({ onUpdate: function(rate) { $('#review-add-form input[name="rating"]').val(rate);}});{/if}
+                } else if (response.status == 'fail') {
+                    $(".reviews em.errormsg").remove();
+                    $(".reviews .error").removeClass('error');
+                    for (var k in response.errors) {
+                        if (k == 'captcha') {
+                            var el = $(".wa-captcha-input");
+                        } else {
+                            var el = $("#review-" + k);
+                        }
+                        el.addClass('error');
+                        if (!el.next().is('em.errormsg')) {
+                            $('<em class="errormsg"></em>').insertAfter(el);
+                        }
+                        el.next().html(response.errors[k]);
+                    }
+                }
+            };
+            if ($(this).find('input:file').length) {
+                if (!$('#reviews-add-iframe').length) {
+                    $('<iframe name="reviews-add-iframe" id="reviews-add-iframe" style="display: none"></iframe>').insertAfter($(this));
+                }
+                $(this).attr('target', 'reviews-add-iframe');
+                $("#reviews-add-iframe").one('load', function () {
+                    try {
+                        var data = $(this).contents().find('body').text();
+                        var response = $.parseJSON(data);
+                    } catch (e) {
+                        return;
+                    }
+                    f(response);
+                });
+                return true;
+            } else {
+                $.post("?", $(this).serialize(), f, "json");
+            }
+            return false;
+        });
+    });
+</script>
+{/if}

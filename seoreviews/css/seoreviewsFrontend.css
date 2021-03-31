@@ -1,0 +1,96 @@
+.seoreviews-clear-both {
+    clear: both;
+}
+.seoreviews-horizontal {}
+.seoreviews-horizontal ul {
+    display: block;
+    padding-left: 0;
+    font-size: 0;
+}
+.seoreviews-horizontal .seoreviews-review {
+    display: inline-block;
+    width: 32.3%;
+    margin-left: 0;
+    box-sizing: border-box;
+    vertical-align: top;
+    padding:10px;
+    height: 100%;
+}
+.seoreviews-horizontal  .seoreviews-slider  .seoreviews-review {
+    display: block;
+    width: auto;
+}
+.seoreviews-photo {
+    display: inline-block;
+    vertical-align: top;
+    height: auto;
+    max-width: 96px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+.seoreviews-data {
+    display: inline-block;
+    width: 62%;
+    vertical-align: top;
+}
+.seoreviews-data-review-title {
+    font-weight: bold;
+}
+.seoreviews-data-name {
+    background: url(../img/review-green.png) left 1px no-repeat;
+    padding-left: 20px;
+}
+.seoreviews-data-name.grey {
+    background: url(../img/review-grey.png) left 1px no-repeat;
+}
+.seoreviews-data-name.black {
+    background: url(../img/review-black.png) left 1px no-repeat;
+}
+.seoreviews-data-name.green {
+    background: url(../img/review-green.png) left 1px no-repeat;
+}
+
+.seoreviews-data-name.red {
+    background: url(../img/review-red.png) left 1px no-repeat;
+}
+.seoreviews-data-rate {
+    float: left;
+}
+.seoreviews-data-datetime {
+    font-size: 11px;
+    color: #ddd;
+}
+.seoreviews-data-product-name {}
+.seoreviews-vertical {
+    max-width: 450px;
+}
+
+.seoreviews-vertical .seoreviews-review {
+      padding-bottom: 15px;
+  }
+
+
+.seoreviews-review i.icon10 {
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    text-indent: -9999px;
+    text-decoration: none !important;
+    background: url("../img/icons.png") no-repeat;
+    background-size: 210px 160px /* 50% of the original size for auto @2x optimization */;
+}
+.seoreviews-review i.icon10 {
+    text-decoration: none !important;
+    vertical-align: top;
+    margin: 0.2em 0.1em 0 0;
+}
+.seoreviews-review .icon10.star,
+.seoreviews-review .icon10.star-full {
+    background-position: 0 -100px;
+}
+.seoreviews-review .icon10.star-half {
+    background-position: -10px -100px;
+}
+.seoreviews-review .icon10.star-empty {
+    background-position: -20px -100px;
+}

@@ -1,0 +1,190 @@
+<script type="text/javascript" src="{$wa_app_static_url}js/rate.widget.js"></script>
+{literal}
+<style>
+    #ui-datepicker-div { z-index: 999 !important;}
+    .s-reviews .profile .details { margin-left: 0; min-height: 20px}
+    .s-reviews .profile .details .image { margin-right: 5px}
+    .s-reviews ul.menu-v.with-icons i.icon10 { margin-top: 5px}
+    .plugin-reviews span.hint h5 {
+        display: inline-block;
+    }
+    .plugin-reviews span.rate i.icon16 {
+        margin: 0.3em 0.1em 0;
+    }
+
+    .s-reviews .images .image {
+        vertical-align: middle;
+        text-align: center;
+        display: inline-block;
+        width: 200px;
+    }
+    .s-reviews .images .image img {
+        max-width: 100%;
+        max-height: 200px;
+    }
+</style>
+{/literal}
+<div class="block double-padded">
+    <h1>{_w('Reviews')}</h1>
+    <div class="s-reviews plugin-reviews">
+        <ul class="menu-v with-icons">
+            {foreach $reviews as $id => $review}
+            <li data-id="{$review.id}"{if $review.contact_id} data-contact="{$review.contact_id}"{/if}>
+                <div class="s-review">
+                    <div class="profile{if $review.contact_id || $review.image} image20px{/if}">
+                        <div class="details">
+                            <span class="hint">
+                                {if $review.image}
+                                <img class="image" width="20" src="{$wa_url}wa-data/public/shop/reviews/{$review.id}{$review.image}" alt="">
+                                {elseif $review.contact_id}
+                                <img class="image" width="20" src="{$wa->user()->getPhoto(20)}" alt="">
+                                {else}
+                                <img class="image" width="20" style="display: none">
+                                {/if}
+                                <!-- author -->
+                                {if $review.contact_id}
+                                    <a href="#/id/{$review.contact_id}" class="bold name">{$review.name|escape}</a>
+                                {else}
+                                    <strong class="name">{$review.name|escape}</strong>
+                                    {if $review.email}{$review.email|escape}{/if}
+                                {/if}
+                                <!-- datetime -->
+                                <span class="datetime">{$review.datetime|wa_datetime:"humandatetime"}</span>
+                                <h5>
+                                    <span class="hint rate" data-rating="{$review.rating}">
+                                        {$wa->shop->ratingHtml($review.rating, 10, true)}
+                                    </span>
+                                </h5>
+                                {if $review.ip}
+                                    <span class="ip">{long2ip($review.ip)}</span>
+                                {/if}
+                            </span>
+                            {if !$review.status}<a href="#" class="small s-review-approve" >[`approve`]</a>{/if}
+                            <a href="#" class="small s-review-delete" >{_w('delete')}</a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text" data-date="{$review.datetime|wa_date}" data-time="{$review.datetime|wa_datetime:'fulltime'}">
+                            <p class="s-review-text">
+                                <span{if !$review.status} class="highlighted"{/if}>{$review.text|escape|nl2br}</span>
+                                <a style="margin-left:0;" href="#" class="small s-review-edit" ><i class="icon10 edit"></i></a>
+                            </p>
+                        </div>
+
+                        <div class="images">
+                            {if !empty($review.images)}
+                            {foreach $review.images as $_img}
+                            <div class="image">
+                                <img alt="" src="{$wa_url}wa-data/public/shop/reviews/{$review.id}_{$_img}">
+                            </div>
+                            {/foreach}
+                            {/if}
+                        </div>
+
+                        {if $review.response}
+                            <div class="response" style="margin-left: 10px; padding-left: 10px; border-left: 1px solid #ccc" data-date="{$review.response_datetime|wa_date}" data-time="{$review.response_datetime|wa_datetime:'fulltime'}">
+                                <span class="hint">
+                                    <strong class="name">{if $review.response_contact}{$review.response_contact.name|escape}{/if}</strong>
+                                    <span class="datetime">{$review.response_datetime|wa_datetime:"humandatetime"}</span>
+                                </span>
+                                <p class="s-review-text">
+                                    <span>{$review.response|nl2br}</span>
+                                    <a style="margin-left:0;" href="#" class="small s-review-edit" ><i class="icon10 edit"></i></a>
+                                </p>
+                            </div>
+                        {else}
+                        <a href="#" class="s-review-reply small inline-link"><b><i>{_w('reply')}</i></b></a>
+                        {/if}
+                    </div>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+
+        <form id="s-review-add-form" method="post" style="display: none">
+            <p>
+                <span class="gray">Дата</span>
+                <input name="response_date" type="text" style="width: 65px; min-width: 65px" class="date" value="">
+                <input name="response_date2" type="hidden" id="s-review-response-add-date">
+                <span class="gray">Время</span>
+                <input name="response_time" type="text" style="width: 65px; min-width: 65px" class="time" value="">
+            </p>
+            <p>
+                <textarea name="response"></textarea>
+            </p>
+            <input type="submit" class="save" value="{_w('Add comment')}">
+            <span class="s-review-add-form-status s-ajax-status" style="display: none;">
+              <i class="s-ajax-status-loading icon16 loading"><!--icon --></i>
+            </span>
+        </form>
+
+        <form id="s-review-edit-form" method="post" style="display: none" enctype="multipart/form-data" target="review-iframe">
+            {$wa->csrf()}
+            <p>
+                <span class="gray">Дата</span>
+                <input name="date" type="text" style="width: 65px; min-width: 65px" class="date" value="">
+                <input type="hidden" id="s-review-edit-date" name="date2">
+                <span class="gray">Время</span>
+                <input name="time" type="text" style="width: 65px; min-width: 65px" class="time" value="">
+            </p>
+            <p>
+                <span class="gray" style="padding-right: 4px">Имя</span>
+                <input name="name" type="text" class="name long" value="">
+            </p>
+            {if !empty($settings.enable_photo_upload)}
+            <p class="photo">
+                <span class="gray">Аватар</span> <input type="file" name="image">
+            </p>
+            {/if}
+            {if !empty($settings.enable_photos_upload)}
+            <p class="images">
+                <span class="gray">Фотографии</span> <input type="file" name="images[]" multiple>
+            </p>
+            {/if}
+            <p>
+                <span class="gray" style="padding-right: 4px">Оценка</span>
+                <span class="rate">{$wa->shop->ratingHtml(0, 16, true)}</span>
+                <input name="rating" type="hidden" value="">
+            </p>
+            <p>
+                <textarea style="height: 100px; min-height: 100px; width: 75%; margin-top: 0;" name="text"></textarea>
+            </p>
+            <input type="submit" class="save" value="{_w('Save')}">
+            <span class="s-review-edit-form-status s-ajax-status" style="display: none;">
+              <i class="s-ajax-status-loading icon16 loading"><!--icon --></i>
+            </span>
+            <iframe name="review-iframe" id="review-iframe" style="display: none"></iframe>
+        </form>
+
+        <form id="s-review-response-edit-form" method="post" style="margin: 10px 0 0 20px; display: none">
+            <p>
+                <span class="gray">Дата</span>
+                <input name="response_date" type="text" style="width: 65px; min-width: 65px" class="date" value="">
+                <input name="response_date2" type="hidden" id="s-review-response-edit-date">
+                <span class="gray">Время</span>
+                <input name="response_time" type="text" style="width: 65px; min-width: 65px" class="time" value="">
+            </p>
+            <p>
+                <textarea style="height: 100px; min-height: 100px; width: 75%; margin-top: 0;" name="response"></textarea>
+            </p>
+            <input type="submit" class="save" value="{_w('Save')}">
+            <span class="s-review-response-edit-form-status s-ajax-status" style="display: none;">
+              <i class="s-ajax-status-loading icon16 loading"><!--icon --></i>
+            </span>
+        </form>
+
+        {if $pages_count > 1}
+        <br>
+            <ul class="menu-h">
+                {for $i = 0; $i < $pages_count; $i++}
+                    <li {if $page == $i+1} class="selected"{/if}>
+                        <a href="#/reviews/{$i+1}/">{$i+1}</a>
+                    </li>
+                {/for}
+            </ul>
+        {/if}
+    </div>
+</div>
+<script>
+    $.wa.locale['Are you sure?'] = "[`Are you sure?`]";
+</script>

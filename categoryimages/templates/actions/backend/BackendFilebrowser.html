@@ -1,0 +1,74 @@
+{if $categories}
+<div class="content blank catim-filebrowser">
+    <div class="block double-padded">
+        <div class="catim-first-header-line">
+            <img class="catim-cat-title-img" src="{$wa_url}wa-apps/shop/plugins/categoryimages/img/filebrowser_ico.png" alt="filebrowser-ico">
+            <div class="catim-cat-title">[`Categories images`]</div>
+            <a href="{$wa_backend_url}shop?action=plugins#/categoryimages/" class="catim-settings-link">[`Settings`]</a>
+        </div>
+
+        <div class="catim-second-header-line">
+            <div class="catim-search-box-wrapper">
+                <input type="text" class="catim-search-box" placeholder="[`Еnter the category name`]">
+                <div class="catim-search-box-magnifier-wrapper">
+                    <div class="catim-search-box-magnifier">
+                        &#9906;
+                    </div>
+                    <i class="icon16 loading catim-search-box-loading"></i>
+                </div>
+            </div>
+            <button class="catim-show-all-btn">[`Show all`]</button>
+            <button class="catim-mass-del-btn">[`Remove all`]</button>
+            <label class='ios-switch-mass-box catim-tooltip' title="[`Change default output for all`]">
+                <input class='ios-switch-mass green' type='checkbox'>
+                <div><div></div></div>
+            </label>
+        </div>
+
+        <ul id="catim-categories-first-list" class="catim-categories-list">
+            {foreach $categories as $cat}
+            <li class="catim-list-category">
+                <div class="catim-folder-box {$cat.catClass}"><!--
+                  --><div class="catim-folder-pic-place">
+                        <img class="catim-cat-pic {$cat.catClass}" {$cat.featherlight} src="{$cat.picPath}" alt=""/>
+                        <i class="icon16 loading catim-filebrowser-loading"></i>
+                    </div><!--
+                 --><div class="catim-folder-title-place">
+                        <span class="catim-cat-folder-title {$cat.arrow}" data-cat-id="{$cat.id}">{$cat.name}</span>
+                    </div><!--
+                 --><div class="catim-folder-buttons-block">
+                        <input class='catim-folder-btn-file {$cat.catClass}' data-cat-id="{$cat.id}" type='file' id='category-image-{$cat.id}' />
+                        <label for='category-image-{$cat.id}' class='catim-folder-btn-file-label {$cat.catClass}'>
+                            [`Add`]
+                        </label>
+                        <button class="catim-folder-del-btn {$cat.catClass}" data-cat-id="{$cat.id}">[`Remove`]</button>
+                        <label class='ios-switch-box {$cat.catClass} catim-tooltip' title="[`Default output`]">
+                            <input data-cat-id="{$cat.id}" {$cat.checked} class='ios-switch green' type='checkbox'>
+                            <div><div></div></div>
+                        </label>
+                    </div>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+</div>
+
+<input id="hidden-didnt-match-text" type="hidden" value="[`This request did not match`]">
+<input id="hidden-show-all-hide-btn-text" type="hidden" value="[`Hide`]">
+<input id="hidden-show-all-btn-text" type="hidden" value="[`Show all`]">
+<input id="hidden-del-btn-text" type="hidden" value="[`Remove`]">
+<input id="hidden-or-text" type="hidden" value="[`or`]">
+<input id="hidden-cancel-btn-text" type="hidden" value="[`Cancel`]">
+<input id="hidden-del-msg" type="hidden" value="[`Are you sure?`]">
+<input id="url-prefix" type="hidden" value="{$wa_url}">
+<input id="backend-url-prefix" type="hidden" value="{$wa_backend_url}">
+
+
+{else}
+    <div class="content blank">
+        <div class="block double-padded">
+            <p class="hint align-center">Вы еще не создали ни одной категории товаров</p>
+        </div>
+    </div>
+{/if}

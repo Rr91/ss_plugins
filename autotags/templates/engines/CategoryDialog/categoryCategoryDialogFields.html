@@ -1,0 +1,181 @@
+{include file="./include.standartCategoryMetaTagsFields.html"}
+
+<div class="field-group" style="margin-top: 40px;">
+    <div class="field description">
+        <div class="name">
+            Описание
+        </div>
+        <div class="value">
+            <i class="icon16 loading"></i>
+            <div class="s-editor-core-wrapper wa-editor-core-wrapper" style="display:none;">
+                <ul class="wa-editor-wysiwyg-html-toggle s-wysiwyg-html-toggle">
+                    <li class="selected"><a class="wysiwyg" href="#">[s`WYSIWYG`]</a></li>
+                    <li><a class="html" href="#">HTML</a></li>
+                </ul>
+                <div>
+                    <textarea style="display:none" placeholder="{$placeholders.description|default:''|escape}" name="autotags_category[{$type}][fields][description]">{$meta_tags.fields.description|default:''|escape}</textarea>
+                    <div class="ace">
+                        <div id="wa-ace-editor-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{literal}
+    <div class="field">
+        <div class="value">
+            <div class="block half-padded">
+                <ul class="menu-h with-icons">
+                    <li><a class="inline-link helper-link" href="#"><i class="icon16 script"></i><b><i>Шпаргалка</i></b><i class="icon10 darr-tiny"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="value help-content">
+            <div class="block s-cheatsheet">
+                <div class="fields">
+                    <div class="field">
+                        <div class="name bold">
+                            {$category}
+                        </div>
+                        <div class="value no-shift">
+                            Массив с информацией о категории
+                        </div>
+                    </div>
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$category.name}
+                        </div>
+                        <div class="value no-shift">
+                            Название категории
+                        </div>
+                    </div>
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$category.autotags_seo_name}
+                        </div>
+                        <div class="value no-shift">
+                            SEO название категории
+                        </div>
+                    </div>
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$category.description|strip_tags}
+                        </div>
+                        <div class="value no-shift">
+                            Описание категории
+                        </div>
+                    </div>
+
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$category.params}
+                        </div>
+                        <div class="value no-shift">
+                            Массив с параметрами категории
+                        </div>
+                    </div>
+
+
+
+                    <div class="field">
+                        <div class="name bold">
+                            {$page_number}
+                        </div>
+                        <div class="value no-shift">
+                            Номер страницы
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name bold">
+                            {$parent_category_name}
+                        </div>
+                        <div class="value no-shift">
+                            Название родительской категории
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name bold">
+                            {$root_category_name}
+                        </div>
+                        <div class="value no-shift">
+                            Название корневой категории
+                        </div>
+                    </div>
+
+
+                    <div class="field">
+                        <div class="name bold">
+                            {implode(', ', $parent_category_names)}
+                        </div>
+                        <div class="value no-shift">
+                            Путь до категории. Имена родительских категорий, через запятую
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name bold">
+                            {$parent_categories}
+                        </div>
+                        <div class="value no-shift">
+                            Массив родительских категорий
+                        </div>
+                    </div>
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$parent_categories[0]}
+                        </div>
+                        <div class="value no-shift">
+                            Массив родительской категории(родитель 1-го уровня)
+                        </div>
+                    </div>
+                    <div class="field s-sub-field">
+                        <div style="padding-left: 32px;" class="name">
+                            {$parent_categories[0].name}
+                        </div>
+                        <div class="value no-shift">
+                            Название родительской категории
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name bold">
+                            {shop_currency($min_price)}
+                        </div>
+                        <div class="value no-shift">
+                            Минимальная цена товара в категории
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name bold">
+                            {shop_currency($max_price)}
+                        </div>
+                        <div class="value no-shift">
+                            Максимальная цена товара в категории
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name bold">
+                            {$wa->shop->settings('name')}
+                        </div>
+                        <div class="value no-shift">
+                            Название магазина
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name bold">
+                            {$wa->shop->settings('phone')}
+                        </div>
+                        <div class="value no-shift">
+                            Телефон магазина
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+        </div>
+    </div>
+{/literal}

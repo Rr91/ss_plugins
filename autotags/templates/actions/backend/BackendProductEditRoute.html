@@ -1,0 +1,22 @@
+<div class="field-group" style="margin-top: 40px;">
+    <div class="field description">
+        <div class="name">
+            Описание
+        </div>
+        <div class="value">
+            <i class="icon16 loading"></i>
+            <div class="s-editor-core-wrapper wa-editor-core-wrapper" style="display:none;">
+                <ul class="wa-editor-wysiwyg-html-toggle s-wysiwyg-html-toggle">
+                    <li class="selected"><a class="wysiwyg" href="#">[s`WYSIWYG`]</a></li>
+                    <li><a class="html" href="#">HTML</a></li>
+                </ul>
+                <div>
+                    <textarea style="display:none" placeholder="" name="autotags_product[description]">{$autotags_product.description|default:''|escape}</textarea>
+                    <div class="ace">
+                        <div id="wa-ace-editor-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

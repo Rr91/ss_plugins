@@ -1,0 +1,45 @@
+<script type="text/template" id="FileAdd">
+    <div class="dialog-background"></div>
+    <div class="dialog-window">
+        <div class="dialog-content">
+            <div class="dialog-content-indent">
+                <h2>Загрузить новый файл</h2>
+                <form enctype="multipart/form-data">
+                    <div class="errormsg hidden processing-suppliers"><i class="icon10 no"></i> <span></span></div>
+                    <div class="block fields form">
+                        <div class="field-group">
+                            <div class="field">
+                                <div class="name">Поставщик</div>
+                                <div class="value">
+                                    <select name="supplier_id">
+                                        <option value="0">Выберите поставщика</option>
+                                        <% _.each(models, function(model) { %>
+                                            <option value="<%- model.id %>"><%- model.attributes.name %></option>
+                                        <% }); %>
+                                    </select>
+                                    <p class="hint">Поставщик, за которым будет закреплен файл</p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">Файл</div>
+                                <div class="value">
+                                    <input type="file" name="file">
+                                    <p class="hint">Поддерживаемые форматы: xls, xlsx, csv</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="dialog-buttons">
+            <div class="progressbar-field float-right mr40"></div>
+            <div class="dialog-buttons-gradient">
+                <div>
+                    <a href="#/processingsuppliers/files/" class="button green add">Добавить</a> или
+                    <a href="#/processingsuppliers/files/" class="cancel">отменить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

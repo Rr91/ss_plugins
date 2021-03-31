@@ -1,0 +1,277 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Categoryimages\n"
+"POT-Creation-Date: 2013-10-29 14:13+0400\n"
+"PO-Revision-Date: 2017-03-28 18:42+0300\n"
+"Last-Translator: Виктор\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"Language: ru\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+msgid "Category images"
+msgstr "Изображения для категорий"
+
+msgid "Categories images"
+msgstr "Изображения категорий"
+
+msgid "Set images for categoryes"
+msgstr "Загрузка и вывод изображений для категорий"
+
+msgid "Image"
+msgstr "Изображение"
+
+msgid "Default output"
+msgstr "Стандартный вывод"
+
+msgid "Auto resize"
+msgstr "Авто уменьшение"
+
+msgid "Height"
+msgstr "Высота"
+
+msgid "Width"
+msgstr "Ширина"
+
+msgid "To display an image manually in the template file"
+msgstr "Для вывода изображения вручную в файле шаблоне"
+
+msgid "paste"
+msgstr "вставьте"
+
+msgid "where"
+msgstr "где"
+
+msgid "category identifier"
+msgstr "идентификатор категории"
+
+msgid "Suppresses the display category image in the standard location"
+msgstr "Отключение вывода изображения категории в стандартном месте"
+
+msgid "The order of use"
+msgstr "Порядок использования"
+
+msgid "Enable auto resize"
+msgstr "Включить авто уменьшение"
+
+msgid "Specify height and width scaling"
+msgstr "Задать высоту и ширину масштабирования"
+
+msgid ""
+"After saving the changes, downloadable images will decrease the given values​​, preserving the aspect ratio"
+msgstr ""
+"После сохранения изменений, загружаемые картинки будут уменьшаться по заданным значениям, сохраняя пропорции"
+
+msgid ""
+"When specifying the new height or width changes will apply only to newly downloaded pictures - downloaded "
+"before changes will remain the same"
+msgstr ""
+"При задании новых значений высоты или ширины изменения будут применяться только к вновь загруженным "
+"картинкам - загруженные до изменений останутся прежними"
+
+msgid "When loading a smaller pictures, auto resize is not applied"
+msgstr "При загрузке картинки меньшего размера, авто уменьшение не применяется"
+
+msgid "If you need to check for pictures in category, use code"
+msgstr "Если необходимо проверить наличие картинки у категории, используйте код"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:14
+msgid "Enabled"
+msgstr "Включен"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:61
+msgid "Save"
+msgstr "Сохранить"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:63
+msgid "Saved"
+msgstr "Сохранено"
+
+#: /wa-apps/shop/plugins/categoryimages/lib/config/plugin.php:5
+msgid "Set images for categories"
+msgstr "Загрузка и вывод изображений для категорий"
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:49
+msgid "Remove the image"
+msgstr "Удалить фотографию"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:7
+msgid "Categories"
+msgstr "Категории"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:8
+msgid "Еnter the category name"
+msgstr "Введите название категории"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:33
+msgid "Add"
+msgstr "Добавить"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:35
+msgid "Delete"
+msgstr "Удалить"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:44
+msgid "Main image auto resize"
+msgstr "Авто уменьшение основного изображения"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:106
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:141
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:176
+msgid "Recreate"
+msgstr "Пересоздать"
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:70
+msgid "Remove"
+msgstr "Удалить"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:9
+msgid "Remove all images"
+msgstr "Удалить все изображения"
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:58
+msgid "Choose a file"
+msgstr "Выберите файл"
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:59
+msgid "or drag it here"
+msgstr "или перетащите его сюда"
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:169
+msgid "Category images manager"
+msgstr "Менеджер изображений категорий"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:77
+msgid "Big thumbnail"
+msgstr "Большой эскиз"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:112
+msgid "Middle thumbnail"
+msgstr "Средний эскиз"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:147
+msgid "Little thumbnail"
+msgstr "Маленький эскиз"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:14
+msgid "To display a big thumbnail, paste this code in a template"
+msgstr "Для вывода большого эскиза, вставьте этот код в шаблон"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:21
+msgid "To display a middle thumbnail, paste this code in a template"
+msgstr "Для вывода среднего эскиза, вставьте этот код в шаблон"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:28
+msgid "To display a little thumbnail, paste this code in a template"
+msgstr "Для вывода маленького эскиза, вставьте этот код в шаблон"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:35
+msgid "To display a main image manually, paste this code in a template"
+msgstr "Для вывода основного изображения вручную, вставьте этот код в шаблон"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:54
+msgid "Note that"
+msgstr "Обратите внимание, что"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:58
+msgid "Settings"
+msgstr "Настройки"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:39
+msgid "Standard out"
+msgstr "Стандартный вывод"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:6
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:56
+msgid "Open images manager"
+msgstr "Перейти в менеджер изображений"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:13
+msgid "Change default output for all"
+msgstr "Изменить стандартный вывод для всех"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:13
+msgid "Remove all"
+msgstr "Удалить все"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:61
+msgid "or"
+msgstr "или"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:62
+msgid "Cancel"
+msgstr "Отменить"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:63
+msgid "Are you sure?"
+msgstr "Вы уверены что хотите удалить все изображения?"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:12
+msgid "Enable plugin"
+msgstr "Включить плагин"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:13
+msgid "Enable main image auto resize"
+msgstr "Включить авто уменьшение основного изображения"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:17
+msgid "After saving the changes, uploaded images will decrease the given values​​, preserving the aspect ratio"
+msgstr ""
+"После сохранения изменений, загружаемые картинки будут уменьшаться по заданным значениям, сохраняя пропорции"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:25
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:64
+msgid "Show all"
+msgstr "Раскрыть все"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:62
+msgid "This request did not match"
+msgstr "По данному запросу ничего не найдено"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:63
+msgid "Clear"
+msgstr "Очистить"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:114
+msgid "Main image"
+msgstr "Основное изображение"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:58
+msgid "Hide"
+msgstr "Скрыть"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:70
+msgid "If you want to add images to categories in an array that returns the $wa->shop->categories function."
+msgstr ""
+"Если вы хотите добавить изображения к категориям в массиве который возвращает функция $wa->shop->categories."
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:71
+msgid "You can use this function:"
+msgstr "Вы можете воспользоваться данной функцией:"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:77
+msgid "Options:"
+msgstr "Параметры:"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:78
+msgid "- array of categories"
+msgstr "- массив категорий"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:79
+msgid "- type of value to add to the array, 'image' for img tag or 'url' for url"
+msgstr "- тип значения добавляемого в массив, 'image' для тега img или 'url' для url изображения"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:80
+msgid "- type of picture, thumbs or original. Can be 'little', 'middle' or 'big'. And '' for original"
+msgstr ""
+"- тип изображения, эскиз или оригинал. Может принимать значения 'little', 'middle', 'big' для эскизов. И '' "
+"для оригинального."
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:81
+msgid "- an additional css class for the img tag"
+msgstr "- дополнительный класс для тега img"

@@ -1,0 +1,309 @@
+<link rel="stylesheet" href="{$wa_url}wa-apps/shop/plugins/categoryimages/css/settings_style.css">
+<link rel="stylesheet" href="{$wa_url}wa-apps/shop/plugins/categoryimages/css/vendors/prism/prism.css">
+<link rel="stylesheet" href="{$wa_url}wa-apps/shop/plugins/categoryimages/css/vendors/selectric/selectric.css">
+
+<h1 class="main-title">[`Category images`]</h1>
+<div class='goto-manager-btn'>
+    <a href="{$wa_backend_url}shop/?action=products#/categoryimages/">[`Open images manager`]</a>
+</div>
+<p>ver. 2.0.5</p>
+
+<h2 class="slide-title" data-slide-tab-id="1">$marty</h2>
+<div  class="slide-tab slide-tab-1">
+    <ul class="smarty-cmd-list">
+        <li>
+            {literal}
+                [`To display a main image manually, paste this code in a template`]:
+                <br>
+                <pre><code class="language-markup">
+                    &lt;img src=&quot;{shopCategoryImagesPlugin::getCategoryImageUrl($category.id)}&quot;&gt;
+                </code></pre>
+            {/literal}
+        </li>
+        <li>
+            {literal}
+                [`To display a big thumbnail, paste this code in a template`]:
+                <br>
+                <pre><code class="language-markup">
+                    &lt;img src=&quot;{shopCategoryImagesPlugin::getCategoryBigThumbUrl($category.id)}&quot;&gt;
+                </code></pre>
+            {/literal}
+        </li>
+        <li>
+            {literal}
+                [`To display a middle thumbnail, paste this code in a template`]:
+                <br>
+                <pre><code class="language-markup language-smarty">
+                    &lt;img src=&quot;{shopCategoryImagesPlugin::getCategoryMiddleThumbUrl($category.id)}&quot;&gt;
+                </code></pre>
+            {/literal}
+        </li>
+        <li>
+            {literal}
+                [`To display a little thumbnail, paste this code in a template`]:
+                <br>
+                <pre><code class="language-markup">
+                    &lt;img src=&quot;{shopCategoryImagesPlugin::getCategoryLittleThumbUrl($category.id)}&quot;&gt;
+                </code></pre>
+            {/literal}
+        </li>
+        <li>
+            {literal}
+                [`If you need to check for pictures in category, use code`].
+                <br>
+                [`Note that`] $category.id - [`category identifier`]:
+                <pre><code class="language-markup">
+                    {$categoryImageUrl = shopCategoryImagesPlugin::getCategoryImageUrl($category.id)}
+                    <br>
+                    {if $categoryImageUrl !== false}
+                    <br>&emsp;&emsp;&lt;img src=&quot;{$categoryImageUrl}&quot;&gt;
+                    {/if}
+                </code></pre>
+            {/literal}
+        </li>
+        <li>
+            {literal}
+            [`If you want to add images to categories in an array that returns the $wa->shop->categories function.`]
+            <br>
+            [`You can use this function:`]
+            <br>
+                <pre><code class="language-markup">
+                    {$categories = shopCategoryImagesPlugin::addImagesToCategories($array, $type, $picType, $imgClass)}
+                </code></pre>
+            <br>
+            [`Options:`]
+            <br>
+            $array [`- array of categories`]
+            <br>
+            $type [`- type of value to add to the array, 'image' for img tag or 'url' for url`]
+            <br>
+            $picType [`- type of picture, thumbs or original. Can be 'little', 'middle' or 'big'. And '' for original`]
+            <br>
+            $imgClass [`- an additional css class for the img tag`]
+            {/literal}
+        </li>
+    </ul>
+</div>
+
+<h2 class="slide-title open-tab" data-slide-tab-id="2">[`Settings`]</h2>
+<div class="slide-tab slide-tab-2 open-tab">
+    <div class="fields form">
+        <form action="?module=plugins&id=categoryimages&action=save" method="post" id="plugins-settings-form">
+            {$wa->csrf()}
+            <div class="fields-group">
+                <div class="field">
+                    <div class="name">
+                        [`Enabled`]
+                    </div>
+                    <div class="value">
+                        <label class="ios-switch-box">
+                            <input type="hidden" name="shop_categoryimages[enabled]" value="0">
+                            <input class="ios-switch green" type="checkbox" {if $enabled}checked{/if} name="shop_categoryimages[enabled]">
+                            <div><div></div></div>
+                        </label>
+
+                    </div>
+                </div>
+            </div>
+            <div class="fields-group">
+                <div class="field">
+                    <div class="name">
+                        [`Default output`]
+                    </div>
+                    <div class="value">
+                        <label class="ios-switch-box">
+                            <input type="hidden" name="shop_categoryimages[output]" value="0">
+                            <input id="shop-categoryimages-output" class="ios-switch green" type="checkbox" {if $output}checked{/if} name="shop_categoryimages[output]">
+                            <div><div></div></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="fields-group" class="shop-categoryimages-stand-out">
+                <div class="field">
+                    <div class="name">
+                        Выводить в стандартном месте:
+                    </div>
+                    <div class="value">
+                        <select class="categoryimages-select-output-img" name="shop_categoryimages[outputImg]">
+                            <option value="origin" {if empty($outputImg) || $standOutPlace == 'origin'} selected {/if}>
+                                [`Main image`]
+                            </option>
+                            <option value="big" {if !empty($outputImg) && $outputImg == 'big'} selected {/if}>
+                                [`Big thumbnail`]
+                            </option>
+                            <option value="middle" {if !empty($outputImg) && $outputImg == 'middle'} selected {/if}>
+                                [`Middle thumbnail`]
+                            </option>
+                            <option value="little" {if !empty($outputImg) && $outputImg == 'little'} selected {/if}>
+                                [`Little thumbnail`]
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="fields-group">
+                <div class="field">
+                    <div class="name">
+                        [`Main image auto resize`]
+                    </div>
+                    <div class="value">
+                        <label class="ios-switch-box">
+                            <input type="hidden" name="shop_categoryimages[resize]" value="0">
+                            <input id="shop-categoryimages-resize" class="ios-switch green" type="checkbox" {if $resize}checked{/if} name="shop_categoryimages[resize]">
+                            <div><div></div></div>
+
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="fields-group" class="shop-categoryimages-size" {if !$resize} style="display: none;"{/if}>
+                <div class="field">
+                    <div class="name">
+                        [`Height`]
+                    </div>
+                    <div class="value">
+                        <input type="text" name="shop_categoryimages[height]" value="{if empty($height)}100{else}{$height}{/if}">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name">
+                        [`Width`]
+                    </div>
+                    <div class="value">
+                        <input type="text" name="shop_categoryimages[width]" value="{if empty($width)}100{else}{$width}{/if}">
+                    </div>
+                </div>
+            </div>
+            <div class="fields-group">
+                <div class="field">
+                    <div class="name">
+                        [`Big thumbnail`]
+                    </div>
+                    <div class="value">
+                        <label class="ios-switch-box">
+                            <input type="hidden" name="shop_categoryimages[resize_big]" value="0">
+                            <input id="shop-categoryimages-resize_big" class="ios-switch green" type="checkbox" {if $resize_big}checked{/if} name="shop_categoryimages[resize_big]">
+                            <div><div></div></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="fields-group" class="shop-categoryimages-size" {if !$resize_big} style="display: none;"{/if}>
+                <div class="field">
+                    <div class="name">
+                        [`Height`]
+                    </div>
+                    <div class="value">
+                        <input type="text" name="shop_categoryimages[height_big]" value="{if empty($height_big)}100{else}{$height_big}{/if}">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name">
+                        [`Width`]
+                    </div>
+                    <div class="value">
+                        <input type="text" name="shop_categoryimages[width_big]" value="{if empty($width_big)}100{else}{$width_big}{/if}">
+                    </div>
+                </div>
+                <div class="field recreate">
+                    <div class="recreateBtn" data-recreate-pic-type="big">[`Recreate`]</div>
+                    <div class="recreate-execution-timer">
+                        <i class="icon16"></i>
+                        <div class="recreate-percentage"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="fields-group">
+                <div class="field">
+                    <div class="name">
+                        [`Middle thumbnail`]
+                    </div>
+                    <div class="value">
+                        <label class="ios-switch-box">
+                            <input type="hidden" name="shop_categoryimages[resize_middle]" value="0">
+                            <input id="shop-categoryimages-resize_middle" class="ios-switch green" type="checkbox" {if $resize_middle}checked{/if} name="shop_categoryimages[resize_middle]">
+                            <div><div></div></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="fields-group" class="shop-categoryimages-size" {if !$resize_middle} style="display: none;"{/if}>
+                <div class="field">
+                    <div class="name">
+                        [`Height`]
+                    </div>
+                    <div class="value">
+                        <input type="text" name="shop_categoryimages[height_middle]" value="{if empty($height_middle)}100{else}{$height_middle}{/if}">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name">
+                        [`Width`]
+                    </div>
+                    <div class="value">
+                        <input type="text" name="shop_categoryimages[width_middle]" value="{if empty($width_middle)}100{else}{$width_middle}{/if}">
+                    </div>
+                </div>
+                <div class="field recreate">
+                    <div class="recreateBtn" data-recreate-pic-type="middle">[`Recreate`]</div>
+                    <div class="recreate-execution-timer">
+                        <i class="icon16 loading"></i>
+                        <div class="recreate-percentage"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="fields-group">
+                <div class="field">
+                    <div class="name">
+                        [`Little thumbnail`]
+                    </div>
+                    <div class="value">
+                        <label class="ios-switch-box">
+                            <input type="hidden" name="shop_categoryimages[resize_little]" value="0">
+                            <input id="shop-categoryimages-resize_little" class="ios-switch green" type="checkbox" {if $resize_little}checked{/if} name="shop_categoryimages[resize_little]">
+                            <div><div></div></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="fields-group" class="shop-categoryimages-size" {if !$resize_little} style="display: none;"{/if}>
+                <div class="field">
+                    <div class="name">
+                        [`Height`]
+                    </div>
+                    <div class="value">
+                        <input type="text" name="shop_categoryimages[height_little]" value="{if empty($height_little)}100{else}{$height_little}{/if}">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name">
+                        [`Width`]
+                    </div>
+                    <div class="value">
+                        <input type="text" name="shop_categoryimages[width_little]" value="{if empty($width_little)}100{else}{$width_little}{/if}">
+                    </div>
+                </div>
+                <div class="field recreate">
+                    <div class="recreateBtn" data-recreate-pic-type="little">[`Recreate`]</div>
+                    <div class="recreate-execution-timer">
+                        <i class="icon16 loading"></i>
+                        <div class="recreate-percentage"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="field submit">
+                <input type="submit" class="sub-button" value="[`Save`]">
+                <span id="plugins-settings-form-status" style="display:none">
+                    <i style="vertical-align:middle" class="icon16 yes"></i> [`Saved`]
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<input id="backend-url-prefix" type="hidden" val="{$wa_backend_url}">
+
+<script src="{$wa_url}wa-apps/shop/plugins/categoryimages/js/vendors/prism/prism.js" type='text/javascript'></script>
+<script src="{$wa_url}wa-apps/shop/plugins/categoryimages/js/vendors/selectric/selectric.js" type="text/javascript"></script>
+<script src="{$wa_url}wa-apps/shop/plugins/categoryimages/js/settings_script.js" type="text/javascript"></script>

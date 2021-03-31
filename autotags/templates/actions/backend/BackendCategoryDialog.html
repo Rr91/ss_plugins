@@ -1,0 +1,40 @@
+<style>
+    .help-content{
+        display: none;
+    }
+</style>
+
+<div class="field">
+    <div class="name bold">
+        {$plugin_name}
+    </div>
+    <div class="value">
+        <input type="hidden" name="category_id" value="{$category.id}" />
+        <select name="route_hash" id="route-selector">
+            <option value="0">Общие шаблоны для всех поселений</option>
+            {foreach $route_hashs as $route_url => $route_hash}
+                <option value="{$route_hash}">{$route_url}</option>
+            {/foreach}
+        </select>
+
+    </div>
+    <div class="route-container value">
+
+    </div>
+</div>
+<script type="text/javascript" src="{$wa_url}wa-content/js/ace/ace.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/elrte/elrte.min.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/elrte/elrte-wa.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/elrte/i18n/elrte.ru.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.elrte.ace.js"></script>
+<link type="text/css" rel="stylesheet" href="{$wa_url}wa-content/js/redactor/redactor.css">
+<script src="{$wa_url}wa-content/js/redactor/redactor.min.js"></script>
+<script src="{$wa_url}wa-content/js/redactor/ru.js"></script>
+<script src="{$wa_url}wa-content/js/jquery-wa/editor.js?v{$wa->version()}"></script>
+
+<script type="text/javascript" src="{$wa_app_static_url}plugins/autotags/js/category_dialog.js?{$wa->version()}"></script>
+<script type="text/javascript">
+    var wa_app = '{$wa_url}';
+    var wa_url = '{$wa_url}';
+    $.autotags_category_dialog.init();
+</script>

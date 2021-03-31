@@ -1,0 +1,285 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: shop/plugins/categoryimages\n"
+"POT-Creation-Date: 2015-06-22 11:27+0300\n"
+"PO-Revision-Date: \n"
+"Last-Translator: shop/plugins/categoryimages\n"
+"Language-Team: shop/plugins/categoryimages\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: .\n"
+"Language: en_US\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:1
+#: /wa-apps/shop/plugins/categoryimages/lib/config/plugin.php:4
+msgid "Category images"
+msgstr ""
+
+msgid "Categories images"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:2
+msgid "The order of use"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:4
+msgid "Enable auto resize"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:5
+msgid "Specify height and width scaling"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:7
+msgid "After saving the changes, downloadable images will decrease the given values​​, preserving the aspect ratio"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:7
+msgid "When specifying the new height or width changes will apply only to newly downloaded pictures - downloaded before changes will remain the same"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:7
+msgid "When loading a smaller pictures, auto resize is not applied"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:14
+msgid "Enabled"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:24
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:26
+msgid "Default output"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:34
+msgid "Auto resize"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:44
+msgid "Height"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:52
+msgid "Width"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:61
+msgid "Save"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:63
+msgid "Saved"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/config/plugin.php:5
+msgid "Set images for categories"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:49
+msgid "Remove the image"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:25
+msgid "Image"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:34
+msgid "To display an image manually in the template file"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:36
+msgid "paste"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:38
+msgid "where"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:40
+msgid "category identifier"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:42
+msgid "Suppresses the display category image in the standard location"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:44
+msgid "If you need to check for pictures in category, use code"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:7
+msgid "Categories"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:8
+msgid "Еnter the category name"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:33
+msgid "Add"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:35
+msgid "Delete"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:44
+msgid "Main image auto resize"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:106
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:141
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:176
+msgid "Recreate"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:70
+msgid "Remove"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:9
+msgid "Remove all images"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:58
+msgid "Choose a file"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:59
+msgid "or drag it here"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:169
+msgid "Category images manager"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:77
+msgid "Big thumbnail"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:112
+msgid "Middle thumbnail"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:147
+msgid "Little thumbnail"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:14
+msgid "To display a big thumbnail, paste this code in a template"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:21
+msgid "To display a middle thumbnail, paste this code in a template"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:28
+msgid "To display a little thumbnail, paste this code in a template"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:35
+msgid "To display a main image manually, paste this code in a template"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:54
+msgid "Note that"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:58
+msgid "Settings"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:39
+msgid "Standard out"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:6
+#: /wa-apps/shop/plugins/categoryimages/lib/shopCategoryimages.plugin.php:56
+msgid "Open images manager"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:13
+msgid "Change default output for all"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:13
+msgid "Remove all"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:61
+msgid "or"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:62
+msgid "Cancel"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:63
+msgid "Are you sure?"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:12
+msgid "Enable plugin"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:13
+msgid "Enable main image auto resize"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:17
+msgid "After saving the changes, uploaded images will decrease the given values​​, preserving the aspect ratio"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:25
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:64
+msgid "Show all"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:62
+msgid "This request did not match"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:63
+msgid "Clear"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:114
+msgid "Main image"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/backend/BackendFilebrowser.html:58
+msgid "Hide"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:70
+msgid "If you want to add images to categories in an array that returns the $wa->shop->categories function."
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:71
+msgid "You can use this function:"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:77
+msgid "Options:"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:78
+msgid "- array of categories"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:79
+msgid "- type of value to add to the array, 'image' for img tag or 'url' for url"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:80
+msgid "- type of picture, thumbs or original. Can be 'little', 'middle' or 'big'. And '' for original"
+msgstr ""
+
+#: /wa-apps/shop/plugins/categoryimages/templates/actions/settings/Settings.html:81
+msgid "- an additional css class for the img tag"
+msgstr ""

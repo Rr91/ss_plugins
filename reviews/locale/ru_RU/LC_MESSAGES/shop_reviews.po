@@ -1,0 +1,148 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: shop/plugins/reviews\n"
+"POT-Creation-Date: 2013-07-30 03:30+0400\n"
+"PO-Revision-Date: \n"
+"Last-Translator:  shop/plugins/reviews\n"
+"Language-Team:  shop/plugins/reviews\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((((n%10)==1)&&((n%100)!=11))?(0):(((((n%10)>=2)&&((n%10)<=4))&&(((n%100)<10)||((n%100)>=20)))?(1):2));\n"
+"X-Poedit-Language: ru_RU\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: /wa-apps/shop/plugins/reviews/templates/frontendReviews.html:27
+msgid "Email"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/lib/config/plugin.php:4
+msgid "Reviews"
+msgstr "Отзывы"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:28
+msgid "Protect review form with CAPTCHA"
+msgstr "Защитить форму добавления отзыва с помощью капчи (CAPTCHA)"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:45
+msgid "Frontend nav template (frontend_nav)"
+msgstr "Шаблон вывода на витрине в блоке навигации (frontend_nav)"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:54
+msgid "Frontend reviews template"
+msgstr "Шаблон вывода на витрине на странице отзывы"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:66
+msgid "Saved"
+msgstr "Сохранено"
+
+#: /wa-apps/shop/plugins/reviews/lib/config/plugin.php:5
+msgid "The plugin adds Reviews section to your storefront"
+msgstr "Плагин добавляет раздел Отзывы на витрине магазина"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/backend/Backend.html:22
+msgid "approve"
+msgstr "одобрить"
+
+#: /wa-apps/shop/plugins/reviews/js/reviews.js:37
+msgid "Are you sure?"
+msgstr "Вы уверены?"
+
+#: /wa-apps/shop/plugins/reviews/templates/frontendReviews.html:70
+msgid "Response"
+msgstr "Ответ"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:22
+msgid "Enable premodereation"
+msgstr "Включить премодерацию"
+
+msgid "Only authorized users can post reviews"
+msgstr "Отзывы могут оставлять только зарегистрированные пользователи"
+
+msgid "Hook"
+msgstr "Хук"
+
+msgid "What hook to use?"
+msgstr "Какой хук использовать?"
+
+msgid "Don't use hook (manual)"
+msgstr "Не использовать хуки (вывод вручную)"
+
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:18
+msgid "Manage reviews (moderation, the ability to respond)"
+msgstr "Управление (модерация, возможность ответить)"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:29
+msgid "When changing, make sure that the new address not used by other pages (for example, static pages or other plugins)"
+msgstr "При изменении убедитесь, что по новому адресу у вас нет никаких других страниц (например, статических страниц или других плагинов)"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:63
+msgid "Records per page"
+msgstr "Отзывов на странице"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:82
+msgid "By default, the same as the title"
+msgstr "По умолчанию совпадает с заголовком"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:101
+msgid "User photos"
+msgstr "Аватар пользователей"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:105
+msgid "Allow users to upload their photos (only for guests, authorized users can upload a photo in your prpfile)"
+msgstr "Разрешить пользователям загружать аватар (только для гостей, т.к. авторизованные пользователи могут загрузить фото в личном кабинете)"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:111
+msgid "Show default photo, if the user has no photo."
+msgstr "Показывать фото \"заглушку\", если у пользователя нет фото."
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:152
+msgid "Save"
+msgstr "Сохранить"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:70
+msgid "Notification email"
+msgstr "Email для уведомлений"
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:75
+msgid "Email to send notification about new reviews."
+msgstr "Укажите email, на который будут приходить уведомления о новых отзывах"
+
+#: /wa-apps/shop/plugins/reviews/lib/actions/shopReviewsPluginFrontendReviews.action.php:127
+msgid "The new review has been written in your store:"
+msgstr "Новый отзыв в вашем магазине:"
+
+#: /wa-apps/shop/plugins/reviews/lib/actions/shopReviewsPluginFrontendReviews.action.php:125
+msgid "New review"
+msgstr "Новый отзыв"
+
+msgid "Rating"
+msgstr "Оценка"
+
+msgid "Enable rating (stars)"
+msgstr "Разершить покупателям ставить оценку (звезды от 0 до 5)"
+
+msgid "Display author and time of responses"
+msgstr "Показывать имя администратора (автора ответа) и время ответа на отзыв"
+
+msgid "Photos"
+msgstr "Фотографии"
+
+msgid "User's photo"
+msgstr "Аватар"
+
+msgid "Allow users to upload photos in a review"
+msgstr "Разрешить пользователям загружать фотографии в отзыв"
+
+msgid "Select priority"
+msgstr "Выберите приоритет страницы отзывов в файле sitemap.xml"
+
+msgid "Don't include in sitemap.xml"
+msgstr "Не показывать в sitemap.xml"
+
+msgid "To add the page number use the following code: [ - page %page%]"
+msgstr "Чтобы добавить номер страницы (начиная со второй страницы) в мета-теги используйте выражение <b>[ - страница %page%]</b>"

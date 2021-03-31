@@ -1,0 +1,177 @@
+<h1>Обработка прайс-листов поставщиков</h1>
+<div class="fields form">
+    <form action="?module=plugins&id=processingsuppliers&action=save" method="post" id="plugins-settings-form">
+        {$wa->csrf()}
+
+        <div class="field-group">
+            <h2>Общие настройки</h2>
+            <div class="field">
+                <div class="name">Разделитель (для формата CSV)</div>
+                <div class="value">
+                    <input class="bold short" name="shop_processingsuppliers[delimiter]" value="{if isset($settings.delimiter)}{$settings.delimiter}{/if}" placeholder=";">
+                    <p class="hint">Разделитель значений колонок</p>
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">Кол-во подгружаемых строк в таблице выгрузки</div>
+                <div class="value">
+                    <input class="bold short" name="shop_processingsuppliers[file_data_table_limit]" value="{if isset($settings.file_data_table_limit)}{$settings.file_data_table_limit}{/if}" placeholder="50">
+                    <p class="hint">Чем больше значение данного параметра, тем медленнее будет происходить подгрузка новых строк</p>
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">Кол-во обрабатываемых товаров за итерацию</div>
+                <div class="value">
+                    <input class="bold short" name="shop_processingsuppliers[limit]" value="{if isset($settings.limit)}{$settings.limit}{/if}" placeholder="500">
+                    <p class="hint">
+                        Влияет на скорость <a href="{$backendUrl}shop/?action=importexport#/processingsuppliers/">загрузки</a> файлов
+                        <br>
+                        <span class="underline bold">Внимание!</span> Чем больше значение данного параметра, тем быстрее будет происходить загрузка прайс-листа и его обработка, однако количество потребляемой оперативной памяти сервера увеличится
+                    </p>
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">Имя или номер листа</div>
+                <div class="value">
+                    <input class="bold" name="shop_processingsuppliers[sheet]" value="{if isset($settings.sheet)}{$settings.sheet}{/if}" placeholder="Лист1">
+                    <p class="hint">
+                        С какого листа будет считываться информация
+                        <br>
+                        <span class="underline bold">Внимание!</span> Если лист с таким именем будет не найден, то по умолчанию выберется первый лист
+                    </p>
+                </div>
+            </div> 
+        </div>
+        <div class="field-group">
+            <h2>Добавление товаров</h2>
+            <div class="field">
+                <div class="name">Добавлять ли новые товары</div>
+                <div class="value">
+                    Да <input type="radio" name="shop_processingsuppliers[add_new]" value="1" {if !empty($settings.add_new)}checked{/if}>
+                    Нет <input type="radio" name="shop_processingsuppliers[add_new]" value="0" {if empty($settings.add_new)}checked{/if}>
+                    <p class="hint">При отмеченном значении товары будут добавлятся в категорию указанную ниже</p>
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">ID категории для новых товаров</div>
+                <div class="value">
+                    <input class="bold short" name="shop_processingsuppliers[category_new]" value="{if isset($settings.category_new)}{$settings.category_new}{/if}" placeholder="0">
+                    <p class="hint">
+                        Укажите id категории в которую будут добавлятся новые товары
+                        <br>
+                        <span class="underline bold">Внимание!</span> Если не заполнять значение, то новые товары попадут в корень сайта
+                    </p>
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">Email для отчета</div>
+                <div class="value">
+                    <input class="bold" name="shop_processingsuppliers[report_email]" value="{if isset($settings.report_email)}{$settings.report_email}{/if}" placeholder="example@domain.ru">
+                    <p class="hint">
+                        Укажите email на него будет отправен отчет о добавлении новых товаров
+                        <br>
+                        <span class="underline bold">Внимание!</span> Если не заполнять значение, то отчет не будет собран
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="field-group">
+            <h2>Настройки цен</h2>
+            <div class="field">
+                <div class="name">Обновлять цену если она меньше цены на сайте</div>
+                <div class="value">
+                    Да <input type="radio" name="shop_processingsuppliers[update_greater_price]" value="1" {if !empty($settings.update_greater_price)}checked{/if}>
+                    Нет <input type="radio" name="shop_processingsuppliers[update_greater_price]" value="0" {if empty($settings.update_greater_price)}checked{/if}>
+                    <p class="hint">
+                        <span class="underline bold">Внимание!</span> При сравнении цен учитываются наценки на артикулы (вариации)
+                    </p>
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">Валюта прайс-листа</div>
+                <div class="value">
+                    <select name="shop_processingsuppliers[currency]">
+                        {foreach $currencies as $currency}
+                            {if !empty($settings.currency)}
+                                <option value="{$currency.code}" {if $settings.currency == $currency.code}selected{/if}>{$currency.title}</option>
+                            {else}
+                                <option value="{$currency.code}">{$currency.title}</option>
+                            {/if}
+                        {/foreach}
+                    </select>
+                    <p class="hint">Добавить валюту можно в <a href="{$backendUrl}shop/?action=settings#/currencies/">настройках</a> магазина</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <h2>Настройки наценок</h2>
+            <div class="field">
+                <div class="name">Добавлять наценку</div>
+                <div class="value">
+                    Да <input type="radio" name="shop_processingsuppliers[add_markup]" value="1" {if !empty($settings.add_markup)}checked{/if}>
+                    Нет <input type="radio" name="shop_processingsuppliers[add_markup]" value="0" {if empty($settings.add_markup)}checked{/if}>
+                    <p class="hint">Добавление наценок на цены артикулов (вариаций)</p>
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">Тип наценки</div>
+                <div class="value">
+                    <select name="shop_processingsuppliers[markup_type]">
+                        {if empty($settings.markup_type)}
+                            <option value="1">Абсолютная</option>
+                            <option value="2">Процентная</option>
+                        {else}
+                            <option value="1" {if $settings.markup_type == 1}selected{/if}>Абсолютная</option>
+                            <option value="2" {if $settings.markup_type == 2}selected{/if}>Процентная</option>
+                        {/if}
+                    </select>
+                    <p class="hint"></p>
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">Величина наценки</div>
+                <div class="value">
+                    <input class="bold short" name="shop_processingsuppliers[markup]" value="{if isset($settings.markup)}{$settings.markup}{/if}" placeholder="100%">
+                    <p class="hint"><span class="underline bold">Внимание!</span> Указывайте целое значение, вся дробная часть будет отброшена</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <h2>Настройки остатков</h2>
+            <div class="field">
+                <div class="name">Изменять доступность артикулов (вариаций)</div>
+                <div class="value">
+                    Да <input type="radio" name="shop_processingsuppliers[update_sku_availability]" value="1" {if !empty($settings.update_sku_availability)}checked{/if}>
+                    Нет <input type="radio" name="shop_processingsuppliers[update_sku_availability]" value="0" {if empty($settings.update_sku_availability)}checked{/if}>
+                    <p class="hint">Артикулы (вариации) с нулевыми остатками будут недоступны для покупки</p>
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">Изменять видимость товаров</div>
+                <div class="value">
+                    Да <input type="radio" name="shop_processingsuppliers[update_product_visibility]" value="1" {if !empty($settings.update_product_visibility)}checked{/if}>
+                    Нет <input type="radio" name="shop_processingsuppliers[update_product_visibility]" value="0" {if empty($settings.update_product_visibility)}checked{/if}>
+                    <p class="hint">Товары со всеми недоступными артикулами (вариациями) будут скрыты с сайта</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="value submit">
+                <input type="submit" class="button green" value="[s`Save`]">
+                <span id="plugins-settings-form-status" style="display: none"></span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    .field-group {
+        border-bottom: 1px solid #AAA;
+    }
+    .field-group h2 {
+        margin-bottom: 15px;
+    }
+</style>

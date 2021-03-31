@@ -1,0 +1,87 @@
+{if !empty($reviews) && count($reviews) >= $min_view_reviews}
+{$block_id = rand(111111, 9999999)}
+<div class="seoreviews-vertical">
+    {if $header && !empty($header)}<h3>{$header}</h3>{/if}
+    <div class="seoreviews-reviews {if $slider}seoreviews-slider owl-carousel owl-theme{/if}" id="seoreviews-{$block_id}">
+    {foreach $reviews as $review}
+            <div class="seoreviews-review">
+                <div class="seoreviews-photo">
+                    <a href="{$wa->shop->productUrl($review.product)}" target="_blank">
+                        {$wa->shop->productImgHtml($review.product, '96', [ 'alt' => $review.product.name|escape ])}
+                    </a>
+                </div>
+                <div class="seoreviews-data">
+                    <div class="seoreviews-data-name">{$review.author.name|escape}</div>
+                    <div class="seoreviews-data-rate"> {$wa->shop->ratingHtml($review.rate)}</div>
+                    <div class="seoreviews-data-datetime">{$review.datetime|wa_datetime:"humandatetime"}</div>
+                    <div class="seoreviews-data-product-name">
+                        <a href="{$wa->shop->productUrl($review.product)}" target="_blank">{$review.product.name|escape|truncate:65}</a>
+                    </div>
+                </div>
+                <div class="seoreviews-clear-both"></div>
+                <div class="seoreviews-data-review-title">{$review.title|escape|truncate:$review_title_width}</div>
+                <div class="seoreviews-data-review-text">{$review.text|escape|truncate:$review_text_width}
+                    {if mb_strlen($review.text)>$review_text_width}
+                    <a href="{$wa->shop->productUrl($review.product, 'reviews')}">
+                        Еще
+                    </a>
+                    {/if}
+                </div>
+            </div>
+            {/foreach}
+    </div>
+</div>
+
+    {$lang = substr($wa->locale(), 0, 2)}
+    {$slider_buttons = '[ "Prev", "Next" ]'}
+    {if $lang=='ru'}
+        {$slider_buttons = '[ "Назад", "Вперед" ]'}
+    {/if}
+    {if $slider}
+    <script>
+        $(document).ready(function(){
+            var owl = $('#seoreviews-{$block_id}');
+            owl.owlCarousel({
+                loop:true,
+                margin: 10,
+                autoplay: true,
+                autoplayHoverPause:true,
+                autoplayTimeout: 5000,
+
+                dots: true,
+                smartSpeed: 1600,
+                items: 1,
+                nav: true,
+                navText: {$slider_buttons},
+                responsiveClass: true,
+                responsive:{
+                    0:{
+                        items:1,
+                        nav:true
+                    },
+                    600:{
+                        items:1,
+                        nav:true
+                    },
+                    1000:{
+                        items:1,
+                        nav:true
+                    }
+                }
+
+            });
+            {if $mousewheel}
+            owl.on('mousewheel', '.owl-stage', function (e) {
+                if (e.deltaY> 0 ) {
+                    owl.trigger('next.owl');
+                } else {
+                    owl.trigger('prev.owl');
+                }
+                e.preventDefault();
+            });
+            {/if}
+        });
+    </script>
+    {/if}
+
+{/if}

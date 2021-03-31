@@ -1,0 +1,889 @@
+<link type="text/css" rel="stylesheet" href="{$wa_url}wa-content/js/redactor/redactor.css">
+<script src="{$wa_url}wa-content/js/redactor/redactor.min.js"></script>
+{$lang = substr($wa->locale(), 0, 2)}{if $lang != 'en'}<script src="{$wa_url}wa-content/js/redactor/{$lang}.js"></script>{/if}
+<style type="text/css">
+.fields.form ul.tabs,
+.fields.form ul.tabs_companys{
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style: none;
+    height: 32px;
+    border-bottom: 1px solid #999;
+    border-left: 1px solid #999;
+    width: 99%;
+}
+.fields.form ul.tabs li,
+.fields.form ul.tabs_companys li{
+    float: left;
+    margin: 0;
+    padding: 0;
+    height: 32px;
+    line-height: 32px;
+    border: 1px solid #999;
+    border-left: none;
+    margin-bottom: -1px;
+    background: #e0e0e0;
+    overflow: hidden;
+    position: relative;
+}
+.fields.form ul.tabs li a,
+.fields.form ul.tabs_companys li a {
+    text-decoration: none;
+    color: #000;
+    display: block;
+    font-size: 1em;
+    padding: 0 7px;
+    border: 1px solid #fff;
+    outline: none;
+}
+.fields.form ul.tabs li a:hover, .fields.form ul.tabs_companys li a:hover {
+    background: #ccc;
+}    
+.fields.form ul.tabs li.active, ul.tabs li.active a:hover,
+.fields.form ul.tabs_companys li.active, ul.tabs_companys li.active a:hover  {
+    background: #fff;
+    border-bottom: 1px solid #fff;
+}
+.fields.form .tab_container,
+.fields.form .tab_container_companys {
+    border: 1px solid #999;
+    border-top: none;
+    clear: both;
+    float: left; 
+    width: 99%;
+    -moz-border-radius-bottomright: 5px;
+    -khtml-border-radius-bottomright: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -khtml-border-radius-bottomleft: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+}
+.fields.form .tab_content,
+.fields.form .tab_content_companys {
+    padding: 20px;
+}
+/*----------------------------------------------------------------*/
+.CodeMirror-scroll { height: 1000px; }
+/*----------------------------------------------------------------*/
+.field .value input[type="text"] { width: 95% !important; }
+.note { color: red; width: 400px; background: yellow; padding: 5px; }
+#{$plugin_shop}-image-faximile_1 img,
+#{$plugin_shop}-image-faximile_2 img,
+#{$plugin_shop}-image-stamp_1 img,
+#{$plugin_shop}-image-stamp_2 img { max-width: 90px; }
+#{$plugin_shop}-image-faximile_1,
+#{$plugin_shop}-image-faximile_2,
+#{$plugin_shop}-image-stamp_1,
+#{$plugin_shop}-image-stamp_2 { text-align: center; }
+.tab_content, .tab_content_companys{ min-height: 350px; }
+.shop-image { height: 150px; }
+.img_parameter { text-align: center; padding: 0px 10px; font-size: 12px; }
+.img_print { width: 30px; }
+.img_print.browsers { width: 50px; }
+.img_print.rotate {
+	-moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+</style>
+<!---------TOP MENU------------>
+<table style="width: 100%;margin: 0;">
+	<tr>
+		<td style="width: 60%;">
+			<h1>{$plugin_name}</h1>
+		</td>
+		<td style="width: 15%;font-size: 0.8em;">
+			<a href="{$lang = substr($wa->locale(), 0, 2)}{if $lang != 'en'}http://wa-master.ru/{else}mailto:support@wa-master.ru{/if}" style="float: right;" id="support" target="_blank">
+				<i class="icon16 exclamation" style="margin: -4px 3px 0 0;"></i>
+				[`Technical support`]
+			</a>
+		</td>
+		<td style="width: 10%;text-align: right;">
+			<h1>
+				<span class="hint">ver. {$plugin_ver|string_format:"%0.2f"}</span>
+			</h1>
+		</td>
+	</tr>
+</table>
+<!---------TOP MENU------------>
+  <div class="fields form" style="width: 100%;">
+    <form action="?module=plugins&id={$plugin_id}&action=save" enctype="multipart/form-data" id="plugins-settings-form" method="post" name="plugins-settings-form" target="plugins-settings-iframe">
+      {$wa->csrf()}	
+	  <!--====================================================================-->
+      <ul class="tabs">
+        <li class="active"><a href="#company">[`COMPANY`]</a></li>
+        <li class=""><a href="#buyer">[`BUYER`]</a></li>
+        <li class=""><a href="#settings">[`SETTINGS`]</a></li>
+        <li class=""><a href="#template">[`TEMPLATE`] {if $template.change_tpl}<i class="icon16 exclamation" title="[`Warning!! The default template has been changed.`]" style="margin: 6px 0 0 0;"></i>{/if}</a></li>
+		<li class=""><a href="#css">[`USER CSS`]</a></li>
+      </ul>
+	  <!--====================================================================-->
+<div class="tab_container">
+	<div id="company" class="tab_content">
+	
+		 <!--====================================================================-->
+		  <ul class="tabs_companys">
+			<li class="active"><a href="#company1">[`COMPANY`] 1</a></li>
+			<li class=""><a href="#company2">[`COMPANY`] 2</a></li>
+		  </ul>
+		  <!--====================================================================-->
+		<div class="tab_container_companys" style="margin-bottom: 25px;">
+			<div id="company1" class="tab_content_companys">
+				
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Company name`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_NAME_1]" value="{$settings.COMPANY_NAME_1|escape}" placeholder="" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`The head of the organization`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_BOSS_1]" value="{$settings.COMPANY_BOSS_1|escape}" placeholder="" />
+					</div>
+				</div>		
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Accountant of the organization`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_BUH_1]" value="{$settings.COMPANY_BUH_1|escape}" placeholder="" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Address`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_ADDRESS_1]" value="{$settings.COMPANY_ADDRESS_1|escape}" placeholder="" />
+					</div>
+				</div>		
+				<div class="field">
+					<div class="value" style="margin-left: 0;border-bottom:2px solid #ccc;"><h2>[`DETAILS`]</h2></div>
+				</div>
+				
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Name of the Bank`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_BANK_NAME_1]" value="{$settings.COMPANY_BANK_NAME_1|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Bank account number`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_BANK_NUMBER_1]" value="{$settings.COMPANY_BANK_NUMBER_1|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`INN`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_INN_1]" value="{$settings.COMPANY_INN_1|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`KPP`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_KPP_1]" value="{$settings.COMPANY_KPP_1|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Correspondent number`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_KORR_1]" value="{$settings.COMPANY_KORR_1|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`BIK`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_BIK_1]" value="{$settings.COMPANY_BIK_1|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>		
+				<div class="field">
+					<div class="name">[`Additional field 1`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_DOP1_1]" value="{$settings.COMPANY_DOP1_1|escape}" placeholder="" />
+						<span class="hint">[`Appears in`] 1й строке шаки и строке поставщик</span>
+					</div>
+				</div>
+				<div class="field">
+					<div class="name">[`Additional field 2`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_DOP2_1]" value="{$settings.COMPANY_DOP2_1|escape}" placeholder="" />
+						<span class="hint">[`Appears in`] 2й строке шаки и строке поставщик</span>
+					</div>
+				</div>
+				<div class="field">
+					<div class="name">[`Structural unit`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_DOP3_1]" value="{$settings.COMPANY_DOP3_1|escape}" placeholder="" />
+						<span class="hint">[`Appears in`] строке [`Structural unit`]</span>
+					</div>
+				</div>		
+				<div class="field">
+					<div class="value" style="margin-left: 0;border-bottom:2px solid #ccc;"><h2>[`CONTACT INFORMATION`]</h2></div>
+				</div>		
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Phone number`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_PHONE_1]" value="{$settings.COMPANY_PHONE_1|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Em@il address`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_ADDRESS_EMAIL_1]" value="{$settings.COMPANY_ADDRESS_EMAIL_1|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				
+				
+				
+				<div class="field" style="border-bottom:2px solid #ccc;">
+					<div class="hint" style="padding: 10px 0 0;text-align: center;">[`You can drag a seal, stamp facsimile and in any place.`]<br/>
+						<span style="color: red;">[`Attention! pictures of press and facsimilie should have a transparent background!`]</span>
+					</div>
+				</div>
+				<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;margin-bottom:25px;">
+					<tbody>
+						<tr>
+							<td style="width: 50%;padding: 0 10px 10px 0;border-bottom: 1px solid #ccc; #ccc;border-right: 1px solid #ccc;">
+								<div class="field" id="sa-img">
+									<div class="name" style="text-align: center;width: 100%;">[`Faximile`]</div>
+									<div class="value" style="margin:0;">
+										<div id="{$plugin_shop}-image-faximile_1" class="shop-image" data-image="faximile_1_image=1">
+											{if !empty($settings.faximile_1_src)}
+												<img src="{$settings.faximile_1_src}"><br>
+												<a href="javascript:void(0);" class="faximile_1 {$plugin_shop}-delete-faximile_1-link" title="[`Delete`]"><i class="icon16 delete"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+												<a href="{$settings.faximile_1_src}" target="_blank" class="faximile_1" title="[`open the original image`]"><i class="icon16 search"></i></a>
+												<input type="hidden" name="{$plugin_shop}[delete_faximile_1_image]" value="0">
+											{else}
+												<img src="{$plugin_path}img/noimage.jpg">
+											{/if}
+										</div>
+										<div id="{$plugin_shop}-image-faximile_1" style="width: 100%;">
+											<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+												<tbody>
+													<tr>
+														<td>
+															<div class="img_parameter">
+																<span>[`size`]</span>
+																<br>
+																[`W`]&nbsp;>&nbsp;<input type="number" name="{$plugin_shop}[faximile_1_width]" style="width: 45px;" value="{$settings.faximile_1_width|escape}" />[`mm`]<br>
+																[`H`] &nbsp;>&nbsp;<input type="number" name="{$plugin_shop}[faximile_1_height]" style="width: 45px;" value="{$settings.faximile_1_height|escape}" />[`mm`]
+															</div>
+														</td>
+														<td>
+															<div class="img_parameter">
+																<span>[`position`]</span>
+																<br>
+																X&nbsp;>&nbsp; <input type="number" name="{$plugin_shop}[faximile_1_x]" style="width: 45px;" value="{$settings.faximile_1_x|escape}" />px<br>
+																Y&nbsp;>&nbsp; <input type="number" name="{$plugin_shop}[faximile_1_y]" style="width: 45px;" value="{$settings.faximile_1_y|escape}" />px
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>		
+											<input type="file" name="{$plugin_shop}[faximile_1_image]" class="custom file" value="" />					
+										</div>
+									</div>
+								</div>
+							</td>
+							<td style="width: 50%;padding: 0 10px 10px 0;border-bottom: 1px solid #ccc; #ccc;border-right: 1px solid #ccc;">
+								<div class="field" id="sa-img">
+									<div class="name" style="text-align: center;width: 100%;">[`Stamp`]</div>
+									<div class="value" style="margin:0;">
+										<div id="{$plugin_shop}-image-stamp_1" class="shop-image" data-image="stamp_1_image=1">
+											{if !empty($settings.stamp_1_src)}
+												<img src="{$settings.stamp_1_src}"><br>
+												<a href="javascript:void(0);" class="stamp_1 {$plugin_shop}-delete-stamp_1-link" title="[`Delete`]"><i class="icon16 delete"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+												<a href="{$settings.stamp_1_src}" target="_blank" class="stamp_1" title="[`open the original image`]"><i class="icon16 search"></i></a>
+												<input type="hidden" name="{$plugin_shop}[delete_stamp_1_image]" value="0">
+											{else}
+												<img src="{$plugin_path}img/noimage.jpg">
+											{/if}
+										</div>
+										<div id="{$plugin_shop}-image-stamp_1" style="width: 100%;">
+											<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+												<tbody>
+													<tr>
+														<td>
+															<div class="img_parameter">
+																<span>[`size`]</span>
+																<br>
+																[`W`]&nbsp;>&nbsp;<input type="number" name="{$plugin_shop}[stamp_1_width]" style="width: 45px;" value="{$settings.stamp_1_width|escape}" />[`mm`]<br>
+																[`H`] &nbsp;>&nbsp;<input type="number" name="{$plugin_shop}[stamp_1_height]" style="width: 45px;" value="{$settings.stamp_1_height|escape}" />[`mm`]
+															</div>
+														</td>
+														<td>
+															<div class="img_parameter">
+																<span>[`position`]</span>
+																<br>
+																X&nbsp;>&nbsp; <input type="number" name="{$plugin_shop}[stamp_1_x]" style="width: 45px;" value="{$settings.stamp_1_x|escape}" />px<br>
+																Y&nbsp;>&nbsp; <input type="number" name="{$plugin_shop}[stamp_1_y]" style="width: 45px;" value="{$settings.stamp_1_y|escape}" />px
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>		
+											<input type="file" name="{$plugin_shop}[stamp_1_image]" class="custom file" value="" />					
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div id="company2" class="tab_content_companys">
+				
+				
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Company name`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_NAME_2]" value="{$settings.COMPANY_NAME_2|escape}" placeholder="" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`The head of the organization`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_BOSS_2]" value="{$settings.COMPANY_BOSS_2|escape}" placeholder="" />
+					</div>
+				</div>		
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Accountant of the organization`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_BUH_2]" value="{$settings.COMPANY_BUH_2|escape}" placeholder="" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Address`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_ADDRESS_2]" value="{$settings.COMPANY_ADDRESS_2|escape}" placeholder="" />
+					</div>
+				</div>		
+				<div class="field">
+					<div class="value" style="margin-left: 0;border-bottom:2px solid #ccc;"><h2>[`DETAILS`]</h2></div>
+				</div>
+				
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Name of the Bank`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_BANK_NAME_2]" value="{$settings.COMPANY_BANK_NAME_2|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Bank account number`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_BANK_NUMBER_2]" value="{$settings.COMPANY_BANK_NUMBER_2|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`INN`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_INN_2]" value="{$settings.COMPANY_INN_2|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`KPP`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_KPP_2]" value="{$settings.COMPANY_KPP_2|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>	
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Correspondent number`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_KORR_2]" value="{$settings.COMPANY_KORR_2|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`BIK`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_BIK_2]" value="{$settings.COMPANY_BIK_2|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>		
+				<div class="field">
+					<div class="name">[`Additional field 1`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_DOP1_2]" value="{$settings.COMPANY_DOP1_2|escape}" placeholder="" />
+						<span class="hint">[`Appears in`] 1й строке шаки и строке поставщик</span>
+					</div>
+				</div>
+				<div class="field">
+					<div class="name">[`Additional field 2`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_DOP2_2]" value="{$settings.COMPANY_DOP2_2|escape}" placeholder="" />
+						<span class="hint">[`Appears in`] 2й строке шаки и строке поставщик</span>
+					</div>
+				</div>
+				<div class="field">
+					<div class="name">[`Structural unit`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_DOP3_2]" value="{$settings.COMPANY_DOP3_2|escape}" placeholder="" />
+						<span class="hint">[`Appears in`] строке [`Structural unit`]</span>
+					</div>
+				</div>		
+				<div class="field">
+					<div class="value" style="margin-left: 0;border-bottom:2px solid #ccc;"><h2>[`CONTACT INFORMATION`]</h2></div>
+				</div>		
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Phone number`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_PHONE_2]" value="{$settings.COMPANY_PHONE_2|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				<div class="field" style="margin-bottom:10px; padding-bottom:10px;">
+					<div class="name">[`Em@il address`]</div>
+					<div class="value">
+						<input type="text" name="{$plugin_shop}[COMPANY_ADDRESS_EMAIL_2]" value="{$settings.COMPANY_ADDRESS_EMAIL_2|escape}" placeholder="" style="width: 300px !important;" />
+					</div>
+				</div>
+				
+				<div class="field" style="border-bottom:2px solid #ccc;">
+					<div class="hint" style="padding: 10px 0 0;text-align: center;">[`You can drag a seal, stamp facsimile and in any place.`]<br/>
+						<span style="color: red;">[`Attention! pictures of press and facsimilie should have a transparent background!`]</span>
+					</div>
+				</div>
+				<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;margin-bottom:25px;">
+					<tbody>
+						<tr>
+							<td style="width: 50%;padding: 0 10px 10px 0;border-bottom: 1px solid #ccc; #ccc;border-right: 1px solid #ccc;">
+								<div class="field" id="sa-img">
+									<div class="name" style="text-align: center;width: 100%;">[`Faximile`]</div>
+									<div class="value" style="margin:0;">
+										<div id="{$plugin_shop}-image-faximile_2" class="shop-image" data-image="faximile_2_image=1">
+											{if !empty($settings.faximile_2_src)}
+												<img src="{$settings.faximile_2_src}"><br>
+												<a href="javascript:void(0);" class="faximile_2 {$plugin_shop}-delete-faximile_2-link" title="[`Delete`]"><i class="icon16 delete"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+												<a href="{$settings.faximile_2_src}" target="_blank" class="faximile_2" title="[`open the original image`]"><i class="icon16 search"></i></a>
+												<input type="hidden" name="{$plugin_shop}[delete_faximile_2_image]" value="0">
+											{else}
+												<img src="{$plugin_path}img/noimage.jpg">
+											{/if}
+										</div>
+										<div id="{$plugin_shop}-image-faximile_2" style="width: 100%;">
+											<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+												<tbody>
+													<tr>
+														<td>
+															<div class="img_parameter">
+																<span>[`size`]</span>
+																<br>
+																[`W`]&nbsp;>&nbsp;<input type="number" name="{$plugin_shop}[faximile_2_width]" style="width: 45px;" value="{$settings.faximile_2_width|escape}" />[`mm`]<br>
+																[`H`] &nbsp;>&nbsp;<input type="number" name="{$plugin_shop}[faximile_2_height]" style="width: 45px;" value="{$settings.faximile_2_height|escape}" />[`mm`]
+															</div>
+														</td>
+														<td>
+															<div class="img_parameter">
+																<span>[`position`]</span>
+																<br>
+																X&nbsp;>&nbsp; <input type="number" name="{$plugin_shop}[faximile_2_x]" style="width: 45px;" value="{$settings.faximile_2_x|escape}" />px<br>
+																Y&nbsp;>&nbsp; <input type="number" name="{$plugin_shop}[faximile_2_y]" style="width: 45px;" value="{$settings.faximile_2_y|escape}" />px
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>		
+											<input type="file" name="{$plugin_shop}[faximile_2_image]" class="custom file" value="" />					
+										</div>
+									</div>
+								</div>
+							</td>
+							<td style="width: 50%;padding: 0 10px 10px 0;border-bottom: 1px solid #ccc; #ccc;border-right: 1px solid #ccc;">
+								<div class="field" id="sa-img">
+									<div class="name" style="text-align: center;width: 100%;">[`Stamp`]</div>
+									<div class="value" style="margin:0;">
+										<div id="{$plugin_shop}-image-stamp_2" class="shop-image" data-image="stamp_2_image=1">
+											{if !empty($settings.stamp_2_src)}
+												<img src="{$settings.stamp_2_src}"><br>
+												<a href="javascript:void(0);" class="stamp_2 {$plugin_shop}-delete-stamp_2-link" title="[`Delete`]"><i class="icon16 delete"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+												<a href="{$settings.stamp_2_src}" target="_blank" class="stamp_2" title="[`open the original image`]"><i class="icon16 search"></i></a>
+												<input type="hidden" name="{$plugin_shop}[delete_stamp_2_image]" value="0">
+											{else}
+												<img src="{$plugin_path}img/noimage.jpg">
+											{/if}
+										</div>
+										<div id="{$plugin_shop}-image-stamp_2" style="width: 100%;"> 
+											<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+												<tbody>
+													<tr>
+														<td>
+															<div class="img_parameter">
+																<span>[`size`]</span>
+																<br>
+																[`W`]&nbsp;>&nbsp;<input type="number" name="{$plugin_shop}[stamp_2_width]" style="width: 45px;" value="{$settings.stamp_2_width|escape}" />[`mm`]<br>
+																[`H`] &nbsp;>&nbsp;<input type="number" name="{$plugin_shop}[stamp_2_height]" style="width: 45px;" value="{$settings.stamp_2_height|escape}" />[`mm`]
+															</div>
+														</td>
+														<td>
+															<div class="img_parameter">
+																<span>[`position`]</span>
+																<br>
+																X&nbsp;>&nbsp; <input type="number" name="{$plugin_shop}[stamp_2_x]" style="width: 45px;" value="{$settings.stamp_2_x|escape}" />px<br>
+																Y&nbsp;>&nbsp; <input type="number" name="{$plugin_shop}[stamp_2_y]" style="width: 45px;" value="{$settings.stamp_2_y|escape}" />px
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>		
+											<input type="file" name="{$plugin_shop}[stamp_2_image]" class="custom file" value="" />					
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+		
+			</div>
+		</div>
+	
+	</div>
+	  <!--====================================================================-->
+	<div id="buyer" class="tab_content">			
+		
+		<div class="field">
+			<div class="name">Данные грузополучателя равны данным плательщика</div>
+			<div class="value no-shift s-ibutton-checkbox">
+				<input type="hidden" name="{$plugin_shop}[copy_contact_fields]" value="0">
+				<ul class="menu-h">
+					<li><span class="gray" id="status-disabled">[`off`]</span></li>
+					<li><input {if $settings.copy_contact_fields}checked{/if} type="checkbox" id="status-status" name="{$plugin_shop}[copy_contact_fields]" value="1"></li>
+					<li><span id="status-enabled">[`on`]</span>
+				</ul>
+			</div>
+		</div>
+		
+		
+		<h3 class="field" style="border-bottom: 2px solid #bbb;">
+			<div><label><input type="radio" name="{$plugin_shop}[type_buyer]" value="person" onclick="changeType(this)"{if $settings.type_buyer == 'person'} checked{/if}> Персона</label></div>
+			<div><label><input type="radio" name="{$plugin_shop}[type_buyer]" value="company" onclick="changeType(this)"{if $settings.type_buyer == 'company'} checked{/if}> Компания/Контрагент</label></div>
+		</h3>
+		<div id="type_buyer">
+			<div id="type_buyer_load">
+				{$contacts_fields}
+			</div>
+		</div>
+		<script>
+			function changeType(b){
+				$('#type_buyer').load('{$wa->currentUrl()}&type_buyer='+b.value+' #type_buyer_load');
+			}
+		</script>		
+	</div>
+<!--==================================================================-->
+	<div id="settings" class="tab_content">	
+		<div class="field">
+			<div class="name">[`The title of the document`]</div>
+			<div class="value">
+				<input type="text" name="{$plugin_shop}[TITLE_PAGE]" value="{$settings.TITLE_PAGE|escape}" placeholder="" style="width: 200px !important;" />
+			</div>
+		</div>
+		<div class="field">
+			<div class="name">[`Button name`]</div>
+			<div class="value">
+				<input type="text" name="{$plugin_shop}[BUTTON_NAME]" value="{$settings.BUTTON_NAME|escape}" placeholder="" style="width: 200px !important;" />
+			</div>
+		</div>
+		<div class="field">
+			<div class="name">[`Button position`]</div>
+			<div class="value">
+				<select name="{$plugin_shop}[BUTTON_POSITION]">
+					<option value="0" {if $settings.BUTTON_POSITION=="0"}selected{/if}>[`left`] [`link`] [`only massive printing`]</option>
+					<option value="1" {if $settings.BUTTON_POSITION=="1"}selected{/if}>[`right`] [`button`]</option>
+					<option value="2" {if $settings.BUTTON_POSITION=="2"}selected{/if}>[`right`] [`block`]</option>
+					<option value="3" {if $settings.BUTTON_POSITION=="3"}selected{/if}>[`right`] [`button`] [`only massive printing`]</option>
+					<option value="4" {if $settings.BUTTON_POSITION=="4"}selected{/if}>[`right`] [`link`] [`only massive printing`]</option>					
+					<option value="5" {if $settings.BUTTON_POSITION=="5"}selected{/if}>[`right`] [`button`] [`only current`]</option>
+					<option value="6" {if $settings.BUTTON_POSITION=="6"}selected{/if}>[`right`] [`link`] [`only current`]</option>
+				</select>
+				<span class="hint">[`The button layout of the plugin in the backend (in order)`]</span>
+			</div>
+		</div>
+		<div class="field" style="margin-bottom:10px; padding-bottom:10px;border-bottom: 2px solid #ccc;">
+			<div class="name">[`Default order status`]</div>
+			<div class="value">
+				<select name="{$plugin_shop}[DEFAULT_ORDER_STATUS]">
+					<option value="all" {if $settings.DEFAULT_ORDER_STATUS=="all"}selected{/if}>[`All statuses`]</option>					
+					{foreach $state_names as $id => $state}
+					<option value="{$id}"{if $settings.DEFAULT_ORDER_STATUS == $id}selected{/if}>{$state}</option>
+					{/foreach}	
+				</select>
+				<span class="hint">[`In the popup window, select orders`]</span>
+				<br/>
+				<input type="text" name="{$plugin_shop}[limit]" value="{$settings.limit|escape}" style="min-width: 30px;width: 30px !important;text-align: center;" />
+				<span class="hint"> [`Number of displayed orders`]</span>
+			</div>
+		</div>	
+		<div class="field">
+			<div class="name">[`Date`]</div>
+			<div class="value">
+				<select class="DATE_FORM" name="{$plugin_shop}[DATE_FORM]">
+					<option value="0" {if $settings.DATE_FORM==0}selected{/if}>[`print date`]</option>
+					<option value="1" {if $settings.DATE_FORM==1}selected{/if}>[`order date`]</option>
+					<option value="2" {if $settings.DATE_FORM==2}selected{/if}>[`payment date`]</option>
+				</select>
+				<span class="DATE_FORM_DEF"{if $settings.DATE_FORM!=2} style="display:none;"{/if}>[` - if the date of payment no show`]</span>
+				<select class="DATE_FORM_DEF" name="{$plugin_shop}[DATE_FORM_DEF]"{if $settings.DATE_FORM!=2} style="display:none;"{/if}>
+					<option value="0" {if $settings.DATE_FORM_DEF==0}selected{/if}>[`print date`]</option>
+					<option value="1" {if $settings.DATE_FORM_DEF==1}selected{/if}>[`order date`]</option>
+				</select>
+			</div>
+		</div>		
+		<div class="field">
+			<div class="name">[`Date in signature`]</div>
+			<div class="value no-shift s-ibutton-checkbox">
+				<input type="hidden" name="{$plugin_shop}[DATE_SIGNATURE]" value="0">
+				<ul class="menu-h">
+					<li><span class="gray" id="status-disabled">[`off`]</span></li>
+					<li><input {if $settings.DATE_SIGNATURE}checked{/if} type="checkbox" id="status-status" name="{$plugin_shop}[DATE_SIGNATURE]" value="1"></li>
+					<li><span id="status-enabled">[`on`]</span>
+				</ul>
+			</div>
+		</div>
+		<div class="field">
+			<div class="name">[`Data in the left block`]</div>
+			<div class="value no-shift s-ibutton-checkbox">
+				<input type="hidden" name="{$plugin_shop}[LEFT_DATA]" value="0">
+				<ul class="menu-h">
+					<li><span class="gray" id="status-disabled">[`off`]</span></li>
+					<li><input {if $settings.LEFT_DATA}checked{/if} type="checkbox" id="status-status" name="{$plugin_shop}[LEFT_DATA]" value="1"></li>
+					<li><span id="status-enabled">[`on`]</span>
+				</ul>
+			</div>
+		</div>
+		<div class="field">
+			<div class="name">[`Article`]</div>
+			<div class="value no-shift s-ibutton-checkbox">
+				<input type="hidden" name="{$plugin_shop}[SKU]" value="0">
+				<ul class="menu-h">
+					<li><span class="gray" id="status-disabled">[`off`]</span></li>
+					<li><input {if $settings.SKU}checked{/if} type="checkbox" id="status-status" name="{$plugin_shop}[SKU]" value="1"></li>
+					<li><span id="status-enabled">[`on`]</span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="field">
+			<div class="name">[`Taxation`]</div>
+			<div class="value no-shift s-ibutton-checkbox">
+				<input type="hidden" name="{$plugin_shop}[NDS]" value="0">
+				<ul class="menu-h">
+					<li><span id="status-disabled">[`«VAT»`]</span></li>
+					<li><input {if $settings.NDS}checked{/if} type="checkbox" id="status-status" name="{$plugin_shop}[NDS]" value="1"></li>
+					<li><span id="status-enabled">[`«Without VAT»`]</span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="field">
+			<div class="name">[`Show shipping`]</div>
+			<select name="{$plugin_shop}[SHIPPING]">
+				<option value="0" {if $settings.SHIPPING=="0"}selected{/if}>[`not show`]</option>
+				<option value="1" {if $settings.SHIPPING=="1"}selected{/if}>[`as the position on the invoice`]</option>
+				<option value="2" {if $settings.SHIPPING=="2"}selected{/if}>[`smudge delivery`]</option>
+			</select>
+		</div>
+		<div class="field">
+			<div class="name">[`Services`]</div>
+			<div class="value no-shift s-ibutton-checkbox">
+				<input type="hidden" name="{$plugin_shop}[services]" value="0">
+				<ul class="menu-h">
+					<li><span class="gray" id="status-disabled">[`off`]</span></li>
+					<li><input {if $settings.services}checked{/if} type="checkbox" id="status-status" name="{$plugin_shop}[services]" value="1"></li>
+					<li><span id="status-enabled">[`on`]</span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="field">
+			<div class="name">[`Quick print`]</div>
+			<div class="value no-shift s-ibutton-checkbox">
+				<input type="hidden" name="{$plugin_shop}[SPEED_PRINT]" value="0">
+				<ul class="menu-h SPEED_PRINT">
+					<li><span class="gray" id="status-disabled">[`off`]</span></li>
+					<li><input {if $settings.SPEED_PRINT}checked{/if} type="checkbox" id="status-status" class="SPEED_PRINT" name="{$plugin_shop}[SPEED_PRINT]" value="1"></li>
+					<li><span id="status-enabled">[`on`]</span></li>
+					<input type="text" name="{$plugin_shop}[SPEED_PRINT_T]" value="{$settings.SPEED_PRINT_T|escape}" class="SPEED_PRINT_T" placeholder="3000" style="min-width: 50px;width: 50px !important;margin: 0 0 5px;" /> 
+					<span class="SPEED_PRINT_T">[`ms.`] - [`a delay of 1000 ms. = 1 sec`]</span></li>
+				</ul>
+				<span class="hint">[`Print immediately after clicking the button.`]</span>
+			</div>
+		</div>
+		<script>
+			$(function () {
+				$("input.SPEED_PRINT").change(function(){
+					if ($(this).attr("checked")) {
+						$('.SPEED_PRINT_T').fadeIn().show();
+						return;
+					} else {
+						$('.SPEED_PRINT_T').fadeOut(300); 
+					}
+				});
+				{if empty($settings.SPEED_PRINT)}
+					$('.SPEED_PRINT_T').hide();
+				{/if}
+			});
+		</script>
+		<div class="field">
+			<div class="name">[`The print format`]</div>
+			<div class="value no-shift s-ibutton-checkbox">
+				<input type="hidden" name="{$plugin_shop}[PRINT_FORMAT]" value="0">
+				<ul class="menu-h">
+					<li><span id="s-status-addr-disabled-label">[`landscape`]</span></li>
+					<li><input {if $settings.PRINT_FORMAT}checked{/if} type="checkbox" id="status-status" name="{$plugin_shop}[PRINT_FORMAT]" value="1"></li>
+					<li><span id="s-status-addr-enabled-label">[`book`]</span></li>
+				</ul>
+				<span class="hint">[`This feature, "book", turns 90% of the invoice. Portrait format works for orders where no more than 23 positions, including delivery.`]</span>
+			</div>
+		</div>
+    </div>
+	 <!-----------------------TEMPLATE----------------------------------->
+	<div id="template" class="tab_content">		
+		<div class="field" style="text-align: center;width: 100%;{if $wa->user('name') == 'demo'} display: none;{/if}">
+				{if $template.change_tpl}
+					<span class="gray"><i class="icon16 exclamation"></i>[`The default template has been changed.`]</span>
+				{else}	
+					<span class="gray"><i class="icon16 star"></i>[`Template to default settings.`]</span>
+				{/if}
+			<div class="value no-shift s-ibutton-checkbox" style="margin: 0;">
+				<input type="checkbox" name="{$plugin_shop}[reset_tpl]" value="1" style="display: none;" {if $wa->user('name') == 'demo'}checked{/if} />
+				<input type="hidden" name="{$plugin_shop}[resettpl]" value="1">
+				<ul class="menu-h">
+					<li><span id="status-disabled-label">[`not save`]</span></li>
+					<li><input {if empty($settings.resettpl)}checked{/if} type="checkbox" id="status-status" name="{$plugin_shop}[resettpl]" value="0"></li>
+					<li><span id="status-enabled-label">[`save`]</span>
+				</ul>
+			</div>
+			<div class="field" style="font-size: 12px; text-align: center; padding-bottom: 5px;">
+				{if $wa->user('name') != 'demo'}[` - Selecting don't save will delete all your changes in the template!`]{/if}
+				<span class="hint"><br>{$template.name} HTML + Smarty</span>
+			</div>
+		</div>
+		<div style="width: 100%; border: 1px solid #ccc;">
+			{if $wa->user('name') != 'demo'}
+				<textarea id="template-template" class="body" name="{$plugin_shop}[template]">{$template.template|escape}</textarea>
+			{else}
+				<textarea id="template-template" class="body">[`IN DEMO MODE IS NOT AVAILABLE`]</textarea>
+			{/if}
+		</div>
+	</div>
+	<!-----------------------CSS------------------------------------>
+	<div id="css" class="tab_content">
+		<div style="width: 95%; border: 1px solid #ccc;">
+			<span class="hint">[`Add your own styles if you want something to change or add to the template`]</span>
+			<textarea name="{$plugin_shop}[USERCSS]" id="template-css" placeholder="[`example:`] .amount.total-style-left { font-size: 54px; }" >{$settings.USERCSS|escape}</textarea>
+		</div>
+	</div>
+	<!-------------------------------------------------------------->		
+	<div class="field" style="position: fixed;bottom: 0;width: 80%;background: #fff;padding-bottom:10px;border-top: 2px solid #ccc;z-index: 999;">
+		<div class="value submit">
+			<input type="submit" class="button green" id="save" value="[`Save`]">
+			<span id="plugins-settings-form-status" style="display:none"><i style="vertical-align:middle" class="icon16 yes"></i> [`Saved`]</span>
+			<span style="color:red;">*</span> [`After every change don't forget to click on the "save"button`]<br><br>
+		</div>
+	</div>		
+		<span style="display:none;" id="{$plugin_shop}-confirm-text">[`Are you sure you want to remove the picture?`]</span>
+    </form>
+		<iframe style="display:none" name="plugins-settings-iframe" id="plugins-settings-iframe"></iframe>
+</div>
+<script type="text/javascript">
+$(function () {
+	var Images = ['faximile_1', 'stamp_1', 'faximile_2', 'stamp_2'];
+		$.each(Images, function(index, value){
+			console.log(value);
+			var filesrc = ('file'+value+'src');
+			$.plugins.options.useIframeTransport = true;
+			$($.plugins).bind('success', function(event, r) {			
+				//alert(JSON.stringify( r.data ));
+				if (r.data[filesrc]) {
+					$('#{$plugin_shop}-image-'+value).html(			
+						'<img src="'+r.data[filesrc]+'"><br>'+
+						'<a href="javascript:void(0);" class="'+value+' {$plugin_shop}-delete-'+value+'-link" title="[`Delete`]"><i class="icon16 delete"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;'+
+						'<a href="'+r.data[filesrc]+'" target="_blank" class="'+value+'" title="[`open the original image`]"><i class="icon16 search"></i></a>'+
+						'<input type="hidden" name="{$plugin_shop}[delete_'+value+'_image]" value="0"><br><br><table border="0" cellpadding="0" cellspacing="0">'
+					);
+				}
+				bindDeleteImageHandler();
+			});
+			var bindDeleteImageHandler = function() {
+				$('.{$plugin_shop}-delete-'+value+'-link').click(function() {
+					if (confirm($('#{$plugin_shop}-confirm-text').text())) {
+						$(this).parent().find('input').attr('value', 1);
+						$('#save').trigger('click');
+						$('.file').val('');
+						$.get('?plugin={$plugin_id}&module=image&action=delete&'+$(this).parent().data('image'));
+						$(this).parent().html('<img src="{$plugin_path}img/noimage.jpg">');
+					}
+					return false;
+				});
+			};
+		bindDeleteImageHandler();	
+	});
+});
+
+$(function() {
+    $('#wordtext').redactor();
+	var EditBox = ["template-template", "template-css"];
+		$.each(EditBox, function(index, value){
+			console.log(value);			
+		var c = CodeMirror.fromTextArea(document.getElementById(value), {
+			mode: "text/html",
+			tabMode: "indent",
+			height: "auto",
+			matchBrackets: true,
+			lineWrapping: true,
+			lineNumbers: true
+		});	
+		$(value).change(function() {
+		c.setValue($(this).val())
+		});	
+	});	
+	
+	$('.DATE_FORM').change(function() {	
+		var DATE_FORM = $(this).val();	
+		if(DATE_FORM == 2) {
+			$(".DATE_FORM_DEF").show();
+		}else{		
+			$('.DATE_FORM_DEF').hide();
+		}
+	});	
+});
+
+$(document).ready(function() {
+    //Действия по умолчанию
+    $("#plugins-settings-form .tab_content").hide(); //скрыть весь контент
+    $("#plugins-settings-form ul.tabs li:first").addClass("active").show(); //Активировать первую вкладку
+    $("#plugins-settings-form .tab_content:first").show(); //Показать контент первой вкладки
+        //Событие по клику
+    $("#plugins-settings-form ul.tabs li").click(function() {
+        $("#plugins-settings-form ul.tabs li").removeClass("active"); //Удалить "active" класс
+        $(this).addClass("active"); //Добавить "active" для выбранной вкладки
+        $("#plugins-settings-form .tab_content").hide(); //Скрыть контент вкладки
+        var activeTab = $(this).find("a").attr("href"); //Найти значение атрибута, чтобы определить активный таб + контент
+        $(activeTab).fadeIn(); //Исчезновение активного контента
+        return false;
+    });
+	
+	
+	
+	$("#plugins-settings-form .tab_content_companys").hide(); //скрыть весь контент
+    $("#plugins-settings-form ul.tabs_companys li:first").addClass("active").show(); //Активировать первую вкладку
+    $("#plugins-settings-form .tab_content_companys:first").show(); //Показать контент первой вкладки
+        //Событие по клику
+    $("#plugins-settings-form ul.tabs_companys li").click(function() {
+        $("#plugins-settings-form ul.tabs_companys li").removeClass("active"); //Удалить "active" класс
+        $(this).addClass("active"); //Добавить "active" для выбранной вкладки
+        $("#plugins-settings-form .tab_content_companys").hide(); //Скрыть контент вкладки
+        var activeTab = $(this).find("a").attr("href"); //Найти значение атрибута, чтобы определить активный таб + контент
+        $(activeTab).fadeIn(); //Исчезновение активного контента
+        return false;
+    });
+});
+(function(){
+	var ibuttons = $('#status-status, #captcha-status, #comment-status');
+	var wrappers = ibuttons.closest('.field');
+	ibuttons.iButton({ labelOn: "", labelOff: "", className: 'mini', resizeHandle: false, resizeContainer: false }).change(function() {
+		var self = $(this);
+		if ($(this).is(':checked')) {
+			self.parents('.value').siblings('.value').show(200);
+		} else {
+			self.parents('.value').siblings('.value').hide(200);
+		}
+	});
+})();
+</script>

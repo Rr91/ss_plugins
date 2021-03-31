@@ -1,0 +1,36 @@
+<div class="field">
+    <div class="name">
+        Переопределять существующие META-теги
+    </div>
+    <div class="value">
+        <input type="hidden" name="meta_tags[{$type}][fields][override]" value="0" />
+        <input type="checkbox" name="meta_tags[{$type}][fields][override]" value="1"{if $meta_tags.fields.override|default:''} checked="checked"{/if} />
+    </div>
+</div>
+
+<div class="field">
+    <div class="name">
+        META Title
+    </div>
+    <div class="value">
+        <textarea name="meta_tags[{$type}][fields][meta_title]" placeholder="{$placeholders.meta_title|default:''|escape}">{$meta_tags.fields.meta_title|default:''|escape}</textarea>
+    </div>
+</div>
+
+<div class="field">
+    <div class="name">
+        META Keywords
+    </div>
+    <div class="value">
+        <textarea name="meta_tags[{$type}][fields][meta_keywords]" placeholder="{$placeholders.meta_keywords|default:''|escape}">{$meta_tags.fields.meta_keywords|default:''|escape}</textarea>
+    </div>
+</div>
+
+<div class="field">
+    <div class="name">
+        META Description
+    </div>
+    <div class="value">
+        <textarea name="meta_tags[{$type}][fields][meta_description]" placeholder="{$placeholders.meta_description|default:''|escape}">{$meta_tags.fields.meta_description|default:''|escape}</textarea>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+<p class="small"><i class="icon10 exclamation"></i> Для работы с брендами необходим плагин <a target="_blank" href="https://www.webasyst.ru/store/plugin/shop/productbrands/">«Бренды с картинками и описаниями»</a></p>
+
+{include file="./include.standartMetaTagsFields.html"}
+
+{literal}
+    <div class="field">
+        <div class="value">
+            <div class="block half-padded">
+                <ul class="menu-h with-icons">
+                    <li><a class="inline-link helper-link" href="#"><i class="icon16 script"></i><b><i>Шпаргалка</i></b><i class="icon10 darr-tiny"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="value help-content">
+            <div class="block s-cheatsheet">
+                <div class="fields">
+                    <div class="field">
+                        <div class="name bold">
+                            {$brand}
+                        </div>
+                        <div class="value no-shift">
+                            Массив с информацией о бренде
+                        </div>
+                    </div>
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$brand.name}
+                        </div>
+                        <div class="value no-shift">
+                            Название бренда
+                        </div>
+                    </div>
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$brand.summary|strip_tags}
+                        </div>
+                        <div class="value no-shift">
+                            краткое описание бренда
+                        </div>
+                    </div>
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$brand.description|strip_tags}
+                        </div>
+                        <div class="value no-shift">
+                            Описание бренда
+                        </div>
+                    </div>
+
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$brand.title}
+                        </div>
+                        <div class="value no-shift">
+                            Заголовок бренда
+                        </div>
+                    </div>
+
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$brand.h1}
+                        </div>
+                        <div class="value no-shift">
+                            H1 бренда
+                        </div>
+                    </div>
+
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$brand.meta_keywords}
+                        </div>
+                        <div class="value no-shift">
+                            Meta keywords бренда
+                        </div>
+                    </div>
+
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$brand.meta_description}
+                        </div>
+                        <div class="value no-shift">
+                            Meta description бренда
+                        </div>
+                    </div>
+
+                    <div class="field s-sub-field">
+                        <div class="name">
+                            {$brand.params}
+                        </div>
+                        <div class="value no-shift">
+                            Массив с параметрами бренда
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name bold">
+                            {$wa->shop->settings('name')}
+                        </div>
+                        <div class="value no-shift">
+                            Название магазина
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name bold">
+                            {$wa->shop->settings('phone')}
+                        </div>
+                        <div class="value no-shift">
+                            Телефон магазина
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+        </div>
+    </div>
+{/literal}

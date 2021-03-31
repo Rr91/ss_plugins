@@ -1,0 +1,5 @@
+<script type="text/template" id="FileDataRow">
+    <% _.each(attributes, function(property, i){ %> 
+        <td <% if (property.not_exists) { %>class="not-exists"<% } %>><%- property.value %></td>
+    <% }) %>
+</script>

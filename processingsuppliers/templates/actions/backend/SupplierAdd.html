@@ -1,0 +1,189 @@
+<script type="text/template" id="SupplierAdd">
+    <div class="dialog-background"></div>
+    <div class="dialog-window">
+        <div class="dialog-content">
+            <div class="dialog-content-indent">
+                <h2>Добавить нового поставщика</h2>
+                <form>
+                    <div class="errormsg hidden processing-suppliers"><i class="icon10 no"></i> <span></span></div>
+                    <div class="block fields form">
+                        <div class="field-group">
+                            <div class="field">
+                                <div class="name">Имя</div>
+                                <div class="value">
+                                    <input type="text" class="bold" name="name" placeholder="Новый поставщик" />
+                                    <p class="hint">Имя поставщика, которое Вы будете видеть в таблицах</p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">Номер первой строки с данными</div>
+                                <div class="value">
+                                    <input type="text" class="bold" name="first_row" placeholder="2" />
+                                    <p class="hint">Обязательное поле</p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">Постфикс для товаров</div>
+                                <div class="value">
+                                    <input type="text" class="bold" name="postfix" >
+                                    <p class="hint">Обязательное поле</p>
+                                </div>
+                            </div>
+                            <div class="columns-table"></div>
+                            <div class="columns-table-hint"></div>
+                        </div>
+                        <div class="field-group">
+                            <a class="inline-link pointer add-hint"><b><i>Показать подсказку</i></b></a>
+                        </div>
+                        <div class="field-group">
+                            <h3>Настройки ниже являются копией глобальных настроек плагина, но применяются только для данного поставщика. Вы можете не заполнять эти поля, тогда будут применены глобальные <a class="underline" href="{wa_backend_url()}shop/?action=plugins#/processingsuppliers/">настройки</a></h3>
+                            <hr>
+                            <h2>Общие настройки</h2>
+                            <div class="field">
+                                <div class="name">Разделитель (для формата CSV)</div>
+                                <div class="value">
+                                    <input type="text" class="bold" name="delimiter" placeholder=";" />
+                                    <p class="hint">Разделитель значений колонок</p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">Кол-во обрабатываемых товаров за итерацию</div>
+                                <div class="value">
+                                    <input type="text" class="bold" name="limit" placeholder="500" />
+                                    <p class="hint">
+                                        Влияет на скорость загрузки файлов
+                                        <br>
+                                        <span class="underline bold">Внимание!</span> Чем больше значение данного параметра, тем быстрее будет происходить загрузка прайс-листа и его обработка, однако количество потребляемой оперативной памяти сервера увеличится
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">Имя или номер листа</div>
+                                <div class="value">
+                                    <input type="text" class="bold" name="sheet" placeholder="Лист1" />
+                                    <p class="hint">
+                                        С какого листа будет считываться информация
+                                        <br>
+                                        <span class="underline bold">Внимание!</span> Если лист с таким именем будет не найден, то по умолчанию выберется первый лист
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <h2>Добавление товаров</h2>
+                            <div class="field">
+                                <div class="name">Добавлять ли новые товары</div>
+                                <div class="value">
+                                    Да <input type="radio" name="add_new" value="1">
+                                    Нет <input type="radio" name="add_new" value="0">
+                                    Не выбрано <input type="radio" name="add_new" value="-1" checked>
+                                    <p class="hint">Если не отмечено будет использоваться общее значение из настроек плагина</p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">ID категории для новых товаров</div>
+                                <div class="value">
+                                    <input class="bold short" name="category_new" value="" placeholder="0">
+                                    <p class="hint">
+                                        Если не отмечено будет использоваться общее значение из настроек плагина
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">Email для отчета</div>
+                                <div class="value">
+                                    <input class="bold" name="report_email" value="" placeholder="example@domain.ru">
+                                    <p class="hint">
+                                         Если не отмечено будет использоваться общее значение из настроек плагина
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <h2>Настройки цен</h2>
+                            <div class="field">
+                                <div class="name">Обновлять цену если она меньше цены на сайте</div>
+                                <div class="value">
+                                    Да <input type="radio" name="update_greater_price" value="1">
+                                    Нет <input type="radio" name="update_greater_price" value="0">
+                                    Не выбрано <input type="radio" name="update_greater_price" value="-1" checked>
+                                    <p class="hint">
+                                        <span class="underline bold">Внимание!</span> При сравнении цен учитываются наценки на артикулы (вариации)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">Валюта прайс-листа</div>
+                                <div class="value">
+                                    <select name="currency">
+                                        <option value="0">Не выбрано</option>
+                                        {foreach $currencies as $currency}
+                                            <option value="{$currency.code}">{$currency.title}</option>
+                                        {/foreach}
+                                    </select>
+                                    <p class="hint">Добавить валюту можно в <a href="{wa_backend_url()}shop/?action=settings#/currencies/">настройках</a> магазина</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <h2>Настройки наценок</h2>
+                            <div class="field">
+                                <div class="name">Добавлять наценку</div>
+                                <div class="value">
+                                    Да <input type="radio" name="add_markup" value="1">
+                                    Нет <input type="radio" name="add_markup" value="0">
+                                    Не выбрано <input type="radio" name="add_markup" value="-1" checked>
+                                    <p class="hint">Добавление наценок на цены артикулов (вариаций)</p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">Тип наценки</div>
+                                <div class="value">
+                                    <select name="markup_type">
+                                        <option value="0">Не выбрано</option>
+                                        <option value="1">Абсолютная</option>
+                                        <option value="2">Процентная</option>
+                                    </select>
+                                    <p class="hint"></p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">Величина наценки</div>
+                                <div class="value">
+                                    <input class="bold short" name="markup" placeholder="100%">
+                                    <p class="hint"><span class="underline bold">Внимание!</span> Указывайте целое значение, вся дробная часть будет отброшена</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <h2>Настройки остатков</h2>
+                            <div class="field">
+                                <div class="name">Изменять доступность артикулов (вариаций)</div>
+                                <div class="value">
+                                    Да <input type="radio" name="update_sku_availability" value="1">
+                                    Нет <input type="radio" name="update_sku_availability" value="0">
+                                    Не выбрано <input type="radio" name="update_sku_availability" value="-1" checked>
+                                    <p class="hint">Артикулы (вариации) с нулевыми остатками будут недоступны для покупки</p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">Изменять видимость товаров</div>
+                                <div class="value">
+                                    Да <input type="radio" name="update_product_visibility" value="1">
+                                    Нет <input type="radio" name="update_product_visibility" value="0">
+                                    Не выбрано <input type="radio" name="update_product_visibility" value="-1" checked>
+                                    <p class="hint">Товары со всеми недоступными артикулами (вариациями) будут скрыты с сайта</p>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="dialog-buttons">
+            <div class="dialog-buttons-gradient">
+                <div>
+                    <a href="#/processingsuppliers/suppliers/" class="button green add">Добавить</a> или
+                    <a href="#/processingsuppliers/suppliers/" class="cancel">отменить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

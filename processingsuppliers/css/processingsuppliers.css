@@ -1,0 +1,80 @@
+.wauto {
+	width: auto!important;
+}
+.w70px {
+	width: 70px!important;
+}
+.w185px {
+	width: 185px!important;
+}
+.w115px {
+    width: 115px!important;
+}
+.w150px {
+    width: 150px;!important;
+}
+.mr40 {
+    margin-right: 40px;
+}
+.table-button {
+	height: 32px;
+}
+.clr {
+    clear: both;
+}
+.processing-suppliers.progressbar {
+    width: 95%!important;
+}
+.sidebar-separator {
+    border-bottom: 1px solid #DDD;
+}
+.no-margin {
+    margin: 0;
+}
+.pt10 {
+    padding-top: 10px;
+}
+.pb10 {
+    padding-bottom: 10px;
+}
+.dialog.processing-suppliers {
+	display: block;
+}
+.dialog-window.small-window.processing-suppliers {
+    top: 20%;
+    left: 35%;
+    right: 35%;
+    bottom: 20%;
+    min-width: 0;
+    min-height: 0;
+    height: 100px;
+}
+.pointer {
+    cursor: pointer;
+}
+.hidden.processing-suppliers {
+    display: none!important;
+}
+.files-table-actions {
+    width: 140px;
+}
+.block.content-area.processing-suppliers {
+    padding-top: 1px;
+    padding-right: 0;
+}
+.block.content-area.processing-suppliers th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#s-importexport-header {
+    padding-bottom: 0;
+}
+#s-importexport-content > div.block {
+    padding-top: 0;
+}
+.not-exists {
+    background-color: rgba(240,42,46,0.15)!important;
+}
+.dialog-content {
+    overflow-x: auto;
+}

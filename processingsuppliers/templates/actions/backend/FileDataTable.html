@@ -1,0 +1,12 @@
+<script type="text/template" id="FileDataTable">
+    <thead>
+        <tr>
+            <% if (_.size(models)) { %>
+                <% _.each(models[0].attributes, function(property, i) { %>
+                    <th><%- property.name %></th>
+                <% }) %>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</script>

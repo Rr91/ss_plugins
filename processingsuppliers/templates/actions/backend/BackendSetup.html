@@ -1,0 +1,39 @@
+{$settings = shopProcessingsuppliersPlugin::getCorrectSettings()}
+
+{* templates autoloader *}
+{foreach $templates as $t}
+    {include file="`$PLUGIN_DIR`templates/actions/backend/`$t`"}
+{/foreach}
+
+<script data-main="{$wa_url}{$PLUGIN_DIR}js/main.js" src="{$wa_url}{$PLUGIN_DIR}js/vendors/require/require-min.js"></script>
+<script>
+    /**
+     * хранилище плагина, доступно в любом классе
+     * @FileRows - данные для таблицы файлов
+     * @SupplierRows - данные для таблицы поставщиков
+     * @FileDataTableLimit - настройка, отвечающая за количество подгружаемых строк в таблице с данными выгрузки
+     * @CoreModules - список штатных модулей
+     * @CustomModules - список дополнительных модулей для загрузки в плагин
+     */
+    define('storage', ['backbone'], function(Backbone) {
+        return {
+            FileRows: new Backbone.Collection({$files}),
+            SupplierRows: new Backbone.Collection({$suppliers}),
+            FileDataTableLimit: {$settings.file_data_table_limit},
+            CoreModules: ['files', 'suppliers'],
+            CustomModules: {$modules}
+        }
+    });
+</script>
+
+<p>Обновление товаров поставщиков</p>
+<div class="sidebar right200px sidebar-area processing-suppliers"></div>
+<div class="content right200px blank bordered-right">
+    <ul class="tabs main-tabs processing-suppliers"></ul>
+    <div class="tab-content">
+        <div class="block content-area processing-suppliers"></div>
+    </div>
+</div>
+<div class="clr"></div>
+
+<link rel="stylesheet" type="text/css" href="{$wa_url}{$PLUGIN_DIR}css/processingsuppliers.css">

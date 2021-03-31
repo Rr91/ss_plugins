@@ -1,0 +1,21 @@
+<script type="text/template" id="SupplierColumnsTableRow">
+    <td>
+        <input type="text" class="bold" value="<%- attributes.column %>" placeholder="A">
+    </td>
+    <td>
+        <select>
+            <option>Выберите привязываемое свойство</option>
+            {foreach $supplierColumnProperties as $groupName => $groupProperties}
+                <optgroup label="{$groupName}">
+                    {foreach $groupProperties as $property}
+                        <option value="{$property.property}" <% if (attributes.property == '{$property.property}') { %>selected<% } %>>{$property.name}</option>
+                    {/foreach}
+                </optgroup>
+            {/foreach}
+        </select>
+    </td>
+    <td><input type="checkbox" <% if (attributes.visibleInUploadTable) { %>checked<% } %>></td>
+    <td>
+        <% if (attributes.number > 0) { %><a class="pointer delete-row">Удалить</a><% } %>
+    </td>
+</script>

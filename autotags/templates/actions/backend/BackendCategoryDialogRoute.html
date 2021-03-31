@@ -1,0 +1,22 @@
+{foreach $engines as $engine}     
+    {$type = $engine->getType()}
+    {if $engine->isCategorySettings()}
+        <div class="field-group">
+            <div class="field">
+                <div class="name">
+                    <h3>{$engine->getName()}</h3>
+                </div>
+                <div class="value no-shift s-ibutton-checkbox">
+                    
+                    {$enabled = $engine->getCategoryAutotags($category.id, $route_hash, 'enabled')}
+                    <input type="hidden" name="autotags_category[{$type}][enabled]" value="0" />
+                    <input class="enabled-engine-checkbox" type="checkbox" name="autotags_category[{$type}][enabled]" value="1"{if $enabled} checked="checked"{/if} />
+                </div>
+            </div>
+        </div>
+
+        <div class="field-group"{if !$enabled} style="display:none"{/if}>
+            {$engine->getHtmlCategoryDialogFields($category.id, $route_hash)}
+        </div>
+    {/if}
+{/foreach}

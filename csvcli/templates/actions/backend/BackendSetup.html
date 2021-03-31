@@ -1,0 +1,115 @@
+<div class="block" style="padding-bottom: 10px;">
+    <h1>Расширенный импорт из CSV</h1>
+    <p>Расширенные возможности для стандартного импорта из CSV</p>
+</div>
+
+<link rel="stylesheet" type="text/css" href="{$wa_url}wa-apps/shop/plugins/csvcli/css/csvcli.css">
+
+<script src="{$wa_app_static_url}js/csv/csvproduct.js?{$wa->version()}"></script>
+<script type="text/javascript" src="{$wa_app_static_url}js/tmpl.min.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/fileupload/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/fileupload/jquery.fileupload.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-apps/shop/plugins/csvcli/js/csvcli.js"></script>
+
+<div id="csvcli">
+
+    <ul class="tabs csvcli-profiles" id="s-csvcli-profile" style="padding-left: 10px;">
+        <li{if !$profile_id} class="selected"{/if} id="csvcli-default-profile"><a href="#/csvcli/">{ifempty($default_name,'Без названия')}</a></li>
+
+        {if !empty($profiles)}
+            {foreach $profiles as $p_id => $p}
+                <li data-id="{$p_id}" id="profile{$p_id}"{if $profile_id == $p_id} class="selected"{/if}>
+                    <a href="#/csvcli:{$p_id}/">
+                        {$p.name}
+                    </a>
+                </li>
+            {/foreach}
+        {/if}
+
+        <li class="no-tab float-right small delete-link-wrapper" style="">
+            <a href="#" data-confirm-text="Удалить этот профиль вместе с настройками и всеми файлами, загруженными с его помощью?">
+                <i class="icon16 delete"></i> Удалить профиль
+            </a>
+        </li>
+
+        <li class="no-tab add-profile" id="new-profile"><a href="#"><i class="icon16 add"></i>Новый профиль</a></li>
+    </ul>
+
+    <div class="block double-padded s-csv-settings" id="s-csvproduct-form">
+        <form id="s-csvproduct" method="post" action="?module=csv&action=productrun">
+            <input type="hidden" name="direction" value="import">
+            {$wa->csrf()}
+            <div class="fields form" style="width: 100%;">
+                <div class="field">
+                    <div class="name">Название</div>
+                    <div class="value">
+                        <input type="text" name="profile_name" value="{ifempty($settings.profile_name,'')}">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="name">Ссылка на файл</div>
+                    <div class="value">
+                        <input type="text" name="profile_link" value="{ifempty($settings.profile_link,'')}">
+
+                        <span class="upload-file-url"><i class="icon16 import"></i></span>
+                    </div>
+                </div>
+
+                {include file="../../../../../templates/actions/csv/CsvProductsetup.{$direction|default:'import'}.html"}
+            </div>
+            <input type="hidden" name="profile_id" value="{ifempty($profile_id, 0)}">
+        </form>
+
+        <div class="csvcli-info">
+            <b style="display: block; margin-bottom: 3px">Путь к файлу:</b>
+            <div class="path-to-file">
+                /wa-data/public/shop/plugins/csvcli/{$profile_id}/csvcli.csv
+            </div>
+
+            <div class="csvcli-c">
+                <b style="margin-bottom: 3px;display: block;">Команда для CRON:</b>
+                <span class="csvcli-command">php {$root_path}/cli.php shop csvcliRun -profile {$profile_id}</span>
+            </div>
+        </div>
+
+        {if !$profile_id}
+            <style type="text/css">
+                .delete-link-wrapper {
+                    display: none !important
+                }
+            </style>
+        {/if}
+
+        <button type="button" class="button green csvcli-save">Сохранить</button>
+        <button type="button" class="button yellow csvcli-change">Другой файл</button>
+        <span id="csvcli-status"></span>
+
+            <script type="text/javascript">
+                csvcli_settings  = {json_encode(ifempty($settings, []))};
+                csvcli_view_data = {json_encode(ifempty($view_data, []))};
+                csvcli_csv_map   = {json_encode(ifempty($settings.csv_map, []))};
+
+                {if !empty(csvcli_view_data)}
+                    initCsv();
+                {/if}
+            </script>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $.importexport.csv_productInit();
+                $.importexport.profiles.set('csv:product:import', []);
+            });
+        </script>
+
+        <div class="clear"></div>
+
+        {if !empty($smarty.capture)}{foreach $smarty.capture as $name => $template} {if strpos($name,'template-js')}
+        <script type="text/x-jquery-tmpl" id="{$name}">
+        <!-- begin {$name} {$template|replace:'</':'<\\/'} end {$name} -->
+        </script>
+        {/if} {/foreach}{/if}
+
+    </div>
+
+</div>

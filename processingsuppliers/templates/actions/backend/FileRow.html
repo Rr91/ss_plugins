@@ -1,0 +1,21 @@
+<script type="text/template" id="FileRow">
+    <td class="min-width"><%- attributes.id %></td>
+    <td><%- supplier.attributes.name %></td>
+    <td><%- attributes.name %></td>
+    <td class="w150px"><%- attributes.create_datetime %></td>
+    <td class="min-width align-center">
+        <% if (attributes.status == 1) { %>
+            <i class="icon16 yes" title="Выгружен"></i>
+        <% } else { %>
+            <i class="icon16 no" title="Не выгружался"></i>
+        <% } %>
+    </td>
+    <td class="files-table-actions">
+        <a class="inline" href="#/processingsuppliers/files/upload/<%- attributes.id %>"><i class="icon16 download" title="Выгрузить файл на сайт"></i></a>
+        <!--<a class="inline" href="#/processingsuppliers/files/report/<%- attributes.id %>"><i class="icon16 reports" title="Отчет о выгрузке"></i></a>-->
+        <!--<a class="inline" href="#/processingsuppliers/files/missing/<%- attributes.id %>"><i class="icon16 exclamation" title="Отсутствующие товары на сайте из файла"></i></a>-->
+        <!--<a class="inline" href="#/processingsuppliers/files/compare/<%- attributes.id %>"><i class="icon16 routing" title="Сравнить файлы"></i></a>-->
+        <a class="inline" href="#/processingsuppliers/files/delete/<%- attributes.id %>"><i class="icon16 delete" title="Удалить файл"></i></a>
+        <a class="inline" href="#/processingsuppliers/suppliers/edit/<%- attributes.supplier_id %>"><i class="icon16 settings" title="Настройки поставщика"></i></a>
+    </td>
+</script>

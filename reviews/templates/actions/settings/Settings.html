@@ -1,0 +1,251 @@
+<style>
+    #wa .CodeMirror{
+        border: 1px solid #ccc;
+        padding: 2px;
+    }
+    .CodeMirror-scroll {
+        height: auto;
+        overflow-y: hidden;
+        overflow-x: auto;
+    }
+</style>
+<h1>[`Reviews`]</h1>
+<div class="fields form">
+    <form action="?module=plugins&id=reviews&action=save" method="post" id="plugins-settings-form">
+        {$wa->csrf()}
+
+        <div class="field">
+            <div class="name">[`Manage reviews (moderation, the ability to respond)`]</div>
+            <div class="value no-shift">
+                <a href="{$wa_app_url}?action=customers#/reviews/">{$wa->domainUrl()}{$wa_app_url}?action=customers#/reviews/</a>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">{_w('URL')}</div>
+            <div class="value no-shift">
+                {$wa->getUrl('shop/frontend', [], true)}<input class="short" type="text" name="shop_reviews[url]" placeholder="reviews" value="{$settings.url|escape}">/
+                <br>
+                <span class="hint">[`When changing, make sure that the new address not used by other pages (for example, static pages or other plugins)`]</span>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="field">
+            <div class="name">{_w('Settings')}</div>
+            <div class="value no-shift">
+                <label>
+                    <input type="checkbox" name="shop_reviews[premoderation]" {if !empty($settings.premoderation)}checked="checked"{/if} value="1">
+                    [`Enable premodereation`]
+                </label>
+            </div>
+            <div class="value">
+                <label>
+                    <input type="checkbox" name="shop_reviews[require_captcha]" {if !empty($settings.require_captcha)}checked="checked"{/if} value="1">
+                    [`Protect review form with CAPTCHA`]
+                </label>
+            </div>
+            <div class="value">
+                <label>
+                    <input type="checkbox" name="shop_reviews[require_authorization]" {if !empty($settings.require_authorization)}checked="checked"{/if} value="1">
+                    [`Only authorized users can post reviews`]
+                    <br>
+                    <p class="hint">
+                        {_w('If enabled, user needs to sign in to post a review.')}<br>
+                        <strong>{sprintf(_w('Make sure sign up and login forms are enabled in your <a href="%s">Site app settings</a>.'),$wa_backend_url|cat:'site/#/personal/settings/')}</strong>
+                    </p>
+                </label>
+            </div>
+            <div class="value">
+                <label>
+                    <input type="checkbox" name="shop_reviews[enable_response_info]" {if !empty($settings.enable_response_info)}checked="checked"{/if} value="1">
+                    [`Display author and time of responses`]
+                </label>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">
+                [`Rating`]
+            </div>
+
+            <div class="value">
+                <label>
+                    <input type="checkbox" name="shop_reviews[enable_rating]" {if !empty($settings.enable_rating)}checked="checked"{/if} value="1">
+                    [`Enable rating (stars)`]
+                </label>
+            </div>
+
+            <div class="value no-shift">
+                <label>
+                    <input type="checkbox" name="shop_reviews[stats]" {if !empty($settings.stats)}checked="checked"{/if} value="1">
+                    Выводить среднюю оценку и распределение оценок
+                </label>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">[`Records per page`]</div>
+            <div class="value no-shift">
+                <input type="text" name="shop_reviews[records_per_page]" value="{$settings.records_per_page}">
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">[`Notification email`]</div>
+            <div class="value no-shift">
+                <input type="text" name="shop_reviews[email]" value="{ifempty($settings.email)}">
+                <br>
+                <span class="hint">
+                    [`Email to send notification about new reviews.`]
+                </span>
+            </div>
+        </div>
+
+
+        <div class="field">
+            <div class="name">{_w('Title')}</div>
+            <div class="value no-shift">
+                <input type="text" name="shop_reviews[title]" placeholder="[`Reviews`]" value="{$settings.title|escape}">
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">{_w('Meta Title')}</div>
+            <div class="value no-shift">
+                <input type="text" name="shop_reviews[meta_title]" placeholder="{$settings.title|escape}" value="{$settings.meta_title|escape}">
+                <br>
+                <span class="hint">
+                    [`By default, the same as the title`]<br>
+                    [`To add the page number use the following code: [ - page %page%]`]
+                </span>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">{_w('Meta Description')}</div>
+            <div class="value no-shift">
+                <input type="text" class="long" name="shop_reviews[meta_description]" placeholder="" value="{$settings.meta_description|escape}">
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">{_w('Meta Keywords')}</div>
+            <div class="value no-shift">
+                <input type="text" class="long" name="shop_reviews[meta_keywords]" placeholder="" value="{$settings.meta_keywords|escape}">
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">[`User photos`]</div>
+            <div class="value no-shift">
+                <label>
+                    <input type="checkbox" name="shop_reviews[enable_photo_upload]" {if !empty($settings.enable_photo_upload)}checked="checked"{/if} value="1">
+                    [`Allow users to upload their photos (only for guests, authorized users can upload a photo in your prpfile)`]
+                </label>
+            </div>
+            <div class="value no-shift">
+                <label>
+                    <input type="checkbox" name="shop_reviews[empty_photo]" {if !empty($settings.empty_photo)}checked="checked"{/if} value="1">
+                    [`Show default photo, if the user has no photo.`]
+                </label>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">[`Photos`]</div>
+            <div class="value no-shift">
+                <label>
+                    <input type="checkbox" name="shop_reviews[enable_photos_upload]" {if !empty($settings.enable_photos_upload)}checked="checked"{/if} value="1">
+                    [`Allow users to upload photos in a review`]
+                </label>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">[`Frontend nav template (frontend_nav)`]<br><span class="hint">HTML + Smarty</span></div>
+            <div class="value no-shift">
+                <div class="s-editor-core-wrapper">
+                    <textarea class="template-code" name="shop_reviews[template_nav]">{$template_nav}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">
+                [`Hook`]<br>
+                <span class="hint">[`What hook to use?`]</span>
+            </div>
+            <div class="value no-shift">
+                <select name="shop_reviews[hook]">
+                    <option {if $settings.hook === 'frontend_nav'}selected{/if} value="frontend_nav">frontend_nav</option>
+                    <option {if $settings.hook === 'frontend_nav_aux'}selected{/if} value="frontend_nav_aux">frontend_nav_aux</option>
+                    <option {if !$settings.hook}selected{/if} value="">[`Don't use hook (manual)`]</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">
+                [`Sitemap`]<br>
+                <span class="hint">[`Select priority`]</span>
+            </div>
+            <div class="value no-shift">
+                <select name="shop_reviews[sitemap]">
+                    <option {if !$settings.sitemap}selected{/if} value="">[`Don't include in sitemap.xml`]</option>
+                    {for $v=1 to 10}
+                    <option {if !$settings.sitemap == $v}selected{/if} value="0.{$v}">{round($v * 10)}%</option>
+                    {/for}
+                </select>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="name">[`Frontend reviews template`]<br><span class="hint">HTML + Smarty</span></div>
+            <div class="value no-shift">
+                <a id="template-link" class="s-product-edit-link" href="#"><i class="icon16 edit"></i>{_w('edit')}</a>
+                <div id="template-div" class="s-editor-core-wrapper" style="display:none">
+                    <textarea id="template-textarea" disabled="disabled" name="shop_reviews[template_reviews]">{$template_reviews|escape}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="value submit">
+                <input type="submit" class="button green" value="[`Save`]">
+                <span id="plugins-settings-form-status" style="display:none">
+                    <i style="vertical-align:middle" class="icon16 yes"></i> {_w('Saved')}
+                </span>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("textarea.template-code").each(function () {
+            CodeMirror.fromTextArea(this, {
+                mode: "text/html",
+                tabMode: "indent",
+                height: "dynamic",
+                lineWrapping: true
+            });
+        });
+
+        $('#template-link').click(function () {
+            $(this).hide();
+            $('#template-div').show();
+            $('#template-textarea').removeAttr('disabled');
+            CodeMirror.fromTextArea(document.getElementById('template-textarea'), {
+                mode: "text/html",
+                tabMode: "indent",
+                height: "dynamic",
+                lineWrapping: true,
+                onChange: function(cm) {
+                    $('#template-textarea').val(cm.getValue());
+                }
+            });
+            return false;
+        });
+    });
+</script>

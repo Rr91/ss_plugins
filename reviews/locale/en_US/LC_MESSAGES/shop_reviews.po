@@ -1,0 +1,127 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: shop/plugins/reviews\n"
+"POT-Creation-Date: 2013-07-30 03:30+0400\n"
+"PO-Revision-Date: \n"
+"Last-Translator:  shop/plugins/reviews\n"
+"Language-Team:  shop/plugins/reviews\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: en_US\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: /wa-apps/shop/plugins/reviews/templates/frontendReviews.html:27
+msgid "Email"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/lib/config/plugin.php:4
+msgid "Reviews"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:28
+msgid "Protect review form with CAPTCHA"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:45
+msgid "Frontend nav template (frontend_nav)"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:54
+msgid "Frontend reviews template"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:66
+msgid "Saved"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/lib/config/plugin.php:5
+msgid "The plugin adds Reviews section to your storefront"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/backend/Backend.html:22
+msgid "approve"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/js/reviews.js:37
+msgid "Are you sure?"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/frontendReviews.html:70
+msgid "Response"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:22
+msgid "Enable premodereation"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:18
+msgid "Manage reviews (moderation, the ability to respond)"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:29
+msgid "When changing, make sure that the new address not used by other pages (for example, static pages or other plugins)"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:52
+msgid "Only authorized users can post reviews"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:63
+msgid "Records per page"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:82
+msgid "By default, the same as the title"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:101
+msgid "User photos"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:105
+msgid "Allow users to upload their photos (only for guests, authorized users can upload a photo in your prpfile)"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:111
+msgid "Show default photo, if the user has no photos."
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:128
+msgid "Hook"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:129
+msgid "What hook to use?"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:135
+msgid "Don't use hook (manual)"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:152
+msgid "Save"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:70
+msgid "Notification email"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:75
+msgid "Email to send notification about new reviews."
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/templates/actions/settings/Settings.html:122
+msgid "Show default photo, if the user has no photo."
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/lib/actions/shopReviewsPluginFrontendReviews.action.php:127
+msgid "The new review has been written in your store:"
+msgstr ""
+
+#: /wa-apps/shop/plugins/reviews/lib/actions/shopReviewsPluginFrontendReviews.action.php:125
+msgid "New review"
+msgstr ""

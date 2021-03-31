@@ -1,0 +1,27 @@
+<script type="text/template" id="FileUpload">
+    <div class="dialog-background"></div>
+    <div class="dialog-window">
+        <div class="dialog-content">
+            <div class="dialog-content-indent">
+                <h2>Выгрузить файл &laquo;<%- attributes.name %>&raquo; поставщика &laquo;<%- supplier.attributes.name %>&raquo;  на сайт</h2>
+                <hr>
+                <div class="upload-table processing-suppliers"></div>
+                <div class="block align-center loading processing-suppliers">
+                    <i class="icon16 loading"></i>
+                </div>
+                <div class="block align-center">
+                    <a class="inline-link pointer more"><b><i>показать еще</i></b></a>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-buttons">
+            <div class="progressbar-field float-right mr40"></div>
+            <div class="dialog-buttons-gradient">
+                <div>
+                    <a href="#/processingsuppliers/files/" class="button green upload">Выгрузить</a> или
+                    <a href="#/processingsuppliers/files/" class="cancel pointer">отменить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
