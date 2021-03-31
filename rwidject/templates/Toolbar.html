@@ -1,0 +1,48 @@
+{if $products}
+	{literal}
+		<style type="text/css">
+			.my_form { display: flex; }
+			.my_form .my_item {  display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #ccc; padding: 0px 12px; margin-right: 10px; }
+			.my_form .my_item:hover { border-color: #3686a7; }
+			.my_form .my_price{ color: #238b08;display: inline-block;font-weight: bold;font-size: 19px; }
+			.my_form .my_form_offers { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; }
+			.my_form .thumbs-summary { margin-bottom:12px; }
+			.my_form .image-wrapper { display:flex; justify-content: center; }
+		</style>
+	{/literal}
+	{if $title}
+		<h2>{$title|escape}</h2>
+	{/if}
+	<ul class="my_form product-list">
+		{foreach $products as $p}
+			<li class="my_item" style="width: {$width};">
+				<a href="{$p.frontend_url}" title="{$p.name}" class="image-wrapper">
+            		<div class="image">
+						<div class="badge-wrapper">
+                            {$badge_html = $wa->shop->badgeHtml($p.badge)}
+                            {if $badge_html}
+                                <div class="corner top left">{$badge_html}</div>
+                            {/if}
+                        </div>
+                        {$wa->shop->productImgHtml($p, '220', ['itemprop' => 'image', 'alt' => $p.name, 'default' => "`$wa_real_theme_url`img/dummy48.png"])}
+            		</div>
+        		</a>
+		        <div class="info">
+		            <div class="thumbs-name">
+		                <h5><a href="{$p.frontend_url}" title="{$p.name|escape}"><span>{$p.name|escape}</span></a></h5>
+		            </div>
+		            <div class="thumbs-summary">{$p.summary}</div>
+		        </div>
+		        <div>
+		            <form class="purchase addtocart my_form_offers" method="post" action="/cart/add/">
+		                <div class="price-wrapper">
+		                	<span class="price nowrap my_price">{shop_currency_html($p.price)}</span>
+		                	<input type="hidden" name="product_id" value="{$p.id}">
+		                </div>
+		                <button type="submit" class="button button_add2cart"><i class="fa fa-shopping-cart"></i><span>В корзину</span></button>
+		            </form>
+		        </div>
+			</li>
+		{/foreach}
+	</ul>
+{/if}
